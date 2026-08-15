@@ -14,6 +14,7 @@ import SquadDetail from './screens/SquadDetail';
 import Registry from './screens/Registry';
 import Readiness from './screens/Readiness';
 import Wall from './screens/Wall';
+import Primitives from './screens/Primitives';
 
 function ShellLayout() {
   return (
@@ -44,6 +45,8 @@ export default function App() {
             <Route path="/registry" element={<Registry />} />
             <Route path="/readiness" element={<RequireRole role="admin"><Readiness /></RequireRole>} />
             <Route path="/wall" element={<Wall />} />
+            {/* Scratch route for §6.5 primitives — intentionally not in nav. */}
+            <Route path="/_primitives" element={<Primitives />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
