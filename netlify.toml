@@ -1,0 +1,10 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Client-side routing 404s on refresh without this. Spec §9.4.
+# Verify by hard-refreshing directly on /wall and /need/hansen-flood.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

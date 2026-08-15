@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * PitchIn — dual palette (spec §6, §9.3)
+ *
+ * Wrap each screen in an element carrying data-surface="ops" or "warm".
+ * Semantic tokens below resolve per surface, so components stay
+ * palette-agnostic: the same StatCard works on the readiness dashboard
+ * and on The Wall.
+ *
+ * These are NOT light/dark modes of each other. No theme toggle.
+ */
+
+:root {
+  color-scheme: dark;
+}
+
+/* ─── Ops: dark, operational. Every screen except / and /wall. ─── */
+[data-surface='ops'] {
+  --canvas: #0e1116;
+  --surface: #161b22;
+  --raised: #1c232d;
+  --rule: #2a3441;
+  --text-primary: #e6edf3;
+  --text-secondary: #8b98a9;
+  --text-muted: #5e6b7d;
+  --accent: #e8a33d;
+  --accent-dim: #6b4d1c;
+  background-color: var(--canvas);
+  color: var(--text-primary);
+}
+
+/* ─── Warm: letterpress community board. Landing and The Wall only. ─── */
+[data-surface='warm'] {
+  --canvas: #f4efe4;
+  --surface: #eae2d2;
+  --raised: #eae2d2;
+  --rule: #c9bfa9;
+  --text-primary: #2a2620;
+  --text-secondary: #6b6250;
+  --text-muted: #6b6250;
+  --accent: #a63d2e;
+  background-color: var(--canvas);
+  color: var(--text-primary);
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: #0e1116;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Mono numerals should align in tables and stat cards. */
+.font-mono {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Spec §8.5 — skip the scanline sweep and the staggered task reveal, but
+   still land on the same end state so the decomposition flow reads. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
