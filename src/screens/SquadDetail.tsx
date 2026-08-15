@@ -11,6 +11,7 @@ import { showRate, squadAssets, squadQualsHeld, squadShowRate } from '../lib/der
 import { SquadStreakBar } from '../components/SquadStreakBar';
 import { StatCard } from '../components/StatCard';
 import { PersonCard } from '../components/PersonCard';
+import { Ann } from '../components/Ann';
 
 export default function SquadDetail() {
   const { squadId } = useParams();
@@ -33,7 +34,8 @@ export default function SquadDetail() {
         {members.length} MEMBERS · FORMED {fmtShort(squad.formedDate)} · STANDING: {squad.standing.toUpperCase()}
       </div>
 
-      <div className="mt-5">
+      <div className="relative mt-5">
+        <Ann route="squad" n={1} className="-left-6 top-0" />
         <SquadStreakBar squad={squad} />
       </div>
 

@@ -9,6 +9,7 @@ import { DEMO_TODAY } from '../data/seed';
 import { daysSince } from '../lib/format';
 import { NeedCard } from '../components/NeedCard';
 import { RepCard } from '../components/RepCard';
+import { Ann } from '../components/Ann';
 
 type Filter = 'ALL' | 'SURGE' | 'SUSTAINMENT' | 'STALLED' | 'MET';
 const FILTERS: Filter[] = ['ALL', 'SURGE', 'SUSTAINMENT', 'STALLED', 'MET'];
@@ -75,7 +76,11 @@ export default function Board() {
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-12">
         <div className="space-y-4 lg:col-span-8">
           {ordered.map((need) => (
-            <NeedCard key={need.id} need={need} />
+            <div key={need.id} className="relative">
+              {need.mode === 'surge' ? <Ann route="board" n={2} className="-left-6 top-4" /> : null}
+              {need.status === 'stalled' ? <Ann route="board" n={1} className="-left-6 top-4" /> : null}
+              <NeedCard need={need} />
+            </div>
           ))}
           {ordered.length === 0 ? (
             <p className="font-mono text-sm text-ops-text-3">No needs match this filter.</p>
@@ -84,7 +89,8 @@ export default function Board() {
 
         <aside className="space-y-6 lg:col-span-4">
           {role === 'resident' ? (
-            <div>
+            <div className="relative">
+              <Ann route="board" n={3} className="-left-6 top-2" />
               <RepCard variant="compact" onAccept={acceptRep} onWaive={waiveRep} />
             </div>
           ) : null}

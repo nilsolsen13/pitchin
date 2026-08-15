@@ -9,6 +9,7 @@ import { showRate } from '../lib/derive';
 import { RepCard } from '../components/RepCard';
 import { QualBadge } from '../components/QualBadge';
 import { ShowRateRing } from '../components/ShowRateRing';
+import { Ann } from '../components/Ann';
 
 const STRIP_COLOR: Record<Commitment['outcome'], string> = {
   kept: '#3FA66A',
@@ -39,7 +40,8 @@ export default function MyRep() {
       <h1 className="text-3xl font-semibold text-ops-text">My Rep</h1>
 
       <div className="mt-5 grid grid-cols-1 gap-6 lg:grid-cols-12">
-        <div className="lg:col-span-8">
+        <div className="relative lg:col-span-8">
+          <Ann route="me" n={1} className="-left-6 top-1" />
           <RepCard variant="large" onAccept={acceptRep} onWaive={waiveRep} />
 
           {/* Demo control — reach all three shrinking-ask states. */}
@@ -87,7 +89,8 @@ export default function MyRep() {
         </div>
 
         <aside className="space-y-6 lg:col-span-4">
-          <div className="flex flex-col items-center rounded-ops border border-ops-border bg-ops-surface p-5">
+          <div className="relative flex flex-col items-center rounded-ops border border-ops-border bg-ops-surface p-5">
+            <Ann route="me" n={2} className="-left-6 top-2" />
             <ShowRateRing value={showRate(nora) * 100} size={112} />
             <div className="mt-3 font-mono text-xs uppercase tracking-wider text-ops-text-2">
               {nora.keptCount} KEPT · {nora.missedCount} MISSED
@@ -97,7 +100,8 @@ export default function MyRep() {
             </p>
           </div>
 
-          <div className="rounded-ops border border-ops-border bg-ops-surface p-4">
+          <div className="relative rounded-ops border border-ops-border bg-ops-surface p-4">
+            <Ann route="me" n={3} className="-left-6 top-2" />
             <div className="font-mono text-sm uppercase tracking-wider text-ops-text">
               {creekSide.name} · {creekSide.streakWeeks} weeks
             </div>

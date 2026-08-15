@@ -14,6 +14,7 @@ import { ModeBadge } from '../components/ModeBadge';
 import { StatusChip } from '../components/StatusChip';
 import { StatCard } from '../components/StatCard';
 import { TaskRow } from '../components/TaskRow';
+import { Ann } from '../components/Ann';
 
 const CLAIM_TOAST = 'COMMITMENT LOGGED · THU 12 MAR · COUNTS TOWARD YOUR SHOW-RATE';
 const GROUP_ORDER: TaskStatus[] = ['blocked', 'open', 'claimed', 'in_progress', 'verified', 'missed'];
@@ -132,7 +133,8 @@ export default function NeedDetail() {
         REQUESTED BY {org?.name ?? need.requesterOrgId} · POSTED {fmtShort(need.submittedAt)} · {daysOpen} DAYS OPEN
       </div>
 
-      <div className="mt-4 rounded-ops border border-l-[3px] border-ops-border border-l-ops-accent bg-ops-raised p-4">
+      <div className="relative mt-4 rounded-ops border border-l-[3px] border-ops-border border-l-ops-accent bg-ops-raised p-4">
+        <Ann route="need" n={1} className="-left-6 top-3" />
         <div className="mb-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-ops-text-3">
           AS SUBMITTED
         </div>
@@ -148,7 +150,9 @@ export default function NeedDetail() {
 
       <div className="mt-8 space-y-6">
         {grouped.map((g) => (
-          <section key={g.status}>
+          <section key={g.status} className="relative">
+            {g.status === 'in_progress' ? <Ann route="need" n={2} className="-left-6 top-0" /> : null}
+            {g.status === 'blocked' ? <Ann route="need" n={3} className="-left-6 top-0" /> : null}
             <h2 className="mb-2 font-mono text-[11px] uppercase tracking-[0.08em] text-ops-text-3">
               {(g.status === 'in_progress' ? 'IN PROGRESS' : g.status.toUpperCase())} · {g.items.length}
             </h2>
