@@ -45,7 +45,7 @@ export function NeedCard({ need }: { need: Need }) {
 
   return (
     <Link
-      to={`/need/${need.id}`}
+      to={`/need/${need.id.replace(/^need-/, '')}`}
       className="block rounded-ops border bg-ops-surface p-4 transition-colors hover:bg-ops-raised"
       style={
         stalled

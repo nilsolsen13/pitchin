@@ -81,7 +81,9 @@ function ActionButton({ label, tooltip, enabled, onClick }: {
 export default function NeedDetail() {
   const { needId } = useParams();
   const { needs, tasks, people, role, claimTask, verifyTask } = useDemo();
-  const need = needs.find((n) => n.id === needId);
+  // Accept both the full seed id ("need-hansen-flood") and the spec's short
+  // slug ("hansen-flood", used in §7.3 / §7.4 and Appendix C's refresh test).
+  const need = needs.find((n) => n.id === needId || n.id.replace(/^need-/, '') === needId);
 
   if (!need) {
     return <p className="font-mono text-sm text-ops-text-3">Need not found.</p>;
