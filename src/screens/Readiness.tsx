@@ -13,6 +13,7 @@ import { daysBetween, daysSince, fmtPct1, fmtPctInt } from '../lib/format';
 import { StatCard } from '../components/StatCard';
 import { ModeBadge } from '../components/ModeBadge';
 import { StatusChip } from '../components/StatusChip';
+import { Ann } from '../components/Ann';
 
 const CAPACITY_GAPS = [
   'PUMP OPERATOR — 3 pumps registered, 1 qualified operator',
@@ -34,11 +35,14 @@ export default function Readiness() {
       {/* Row 1 — five stat cards */}
       <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
         <StatCard label="TOWN SHOW-RATE" value={fmtPct1(townShowRate(people))} sub="915 kept / 94 missed" />
-        <StatCard
-          label="MEDIAN UNBROKEN WEEKS"
-          value={medianStreak(people)}
-          sub={`retention at 6 mo: ${fmtPctInt(townHistory.retention6Month)}  ·  12 mo: ${fmtPctInt(townHistory.retention12Month)}`}
-        />
+        <div className="relative">
+          <Ann route="readiness" n={1} className="-left-6 top-2" />
+          <StatCard
+            label="MEDIAN UNBROKEN WEEKS"
+            value={medianStreak(people)}
+            sub={`retention at 6 mo: ${fmtPctInt(townHistory.retention6Month)}  ·  12 mo: ${fmtPctInt(townHistory.retention12Month)}`}
+          />
+        </div>
         <StatCard
           label="MEDIAN TIME TO MET"
           value={townHistory.medianDaysToMet}
@@ -91,7 +95,8 @@ export default function Readiness() {
           </p>
         </div>
 
-        <div className="lg:col-span-5">
+        <div className="relative lg:col-span-5">
+          <Ann route="readiness" n={2} className="-left-6 top-0" />
           <h2 className="mb-3 font-mono text-[11px] uppercase tracking-[0.08em] text-ops-text-3">Capacity gaps</h2>
           <div className="space-y-2">
             {CAPACITY_GAPS.map((g) => (

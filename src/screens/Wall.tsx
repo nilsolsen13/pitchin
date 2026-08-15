@@ -9,6 +9,7 @@ import {
   commitmentsForNeed, outcomeCount, peopleCommitted,
 } from '../lib/derive';
 import { daysBetween, daysSince, fmtLongNoYear, fmtMonthYearUpper } from '../lib/format';
+import { Ann } from '../components/Ann';
 
 function needById(needs: ReturnType<typeof useDemo>['needs'], id: string) {
   return needs.find((n) => n.id === id)!;
@@ -75,13 +76,17 @@ export default function Wall() {
         </section>
 
         {/* Section 2 — AFTER-ACTION REPORT */}
-        <section className="mt-10">
+        <section className="relative mt-10">
+          <Ann route="wall" n={1} className="-left-6 top-1" warm />
           <h2 className="font-display text-lg font-semibold uppercase tracking-[0.06em] text-warm-stamp">
             After-action report
           </h2>
           <div className="mt-3 space-y-5 rounded-warm border border-warm-rule bg-warm-paper-deep p-6">
             {aarBlocks.map((b) => (
-              <div key={b.label}>
+              <div key={b.label} className="relative">
+                {b.label === "WHAT WE'D DO DIFFERENTLY" ? (
+                  <Ann route="wall" n={2} className="-left-6 top-0" warm />
+                ) : null}
                 <div className="font-display text-sm font-semibold uppercase tracking-[0.06em] text-warm-stamp">
                   {b.label}
                 </div>

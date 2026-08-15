@@ -15,6 +15,7 @@ import { Avatar } from '../components/Avatar';
 import { StatCard } from '../components/StatCard';
 import { PersonCard } from '../components/PersonCard';
 import { MaterielChip } from '../components/MaterielChip';
+import { Ann } from '../components/Ann';
 
 type View = 'PEOPLE' | 'QUALS' | 'EQUIPMENT';
 const VIEWS: View[] = ['PEOPLE', 'QUALS', 'EQUIPMENT'];
@@ -93,7 +94,8 @@ export default function Registry() {
                 const holders = qualHolders(qual.id as QualId, people);
                 const spof = holders.length === 1;
                 return (
-                  <div key={qual.id} className="rounded-ops border border-ops-border bg-ops-surface p-4">
+                  <div key={qual.id} className="relative rounded-ops border border-ops-border bg-ops-surface p-4">
+                    {qual.id === 'pump-operator' ? <Ann route="registry" n={1} className="-left-6 top-3" /> : null}
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="font-medium text-ops-text">{qual.name}</span>
                       <span className="font-mono text-[11px] uppercase tracking-wider text-ops-text-3">
@@ -170,7 +172,8 @@ export default function Registry() {
           ) : null}
         </div>
 
-        <aside className="lg:col-span-4">
+        <aside className="relative lg:col-span-4">
+          <Ann route="registry" n={2} className="-left-6 top-2" />
           <div className="rounded-ops border border-ops-border bg-ops-surface p-4">
             <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-ops-text-3">Utilization</div>
             <p className="mt-2 font-mono text-sm text-ops-text">

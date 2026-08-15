@@ -8,6 +8,7 @@ import { needs, tasks as seedTasks } from '../data/seed';
 import { fmtDuration } from '../lib/format';
 import { QualBadge } from '../components/QualBadge';
 import { MaterielChip } from '../components/MaterielChip';
+import { Ann } from '../components/Ann';
 
 type Stage = 'compose' | 'decomposing' | 'done';
 
@@ -158,7 +159,10 @@ export default function PostNeed() {
       ) : null}
 
       {stage !== 'compose' ? (
-        <div className="mt-4 font-mono text-sm uppercase tracking-wider text-ops-accent">{statusLine}</div>
+        <div className="relative mt-4">
+          <Ann route="post" n={1} className="-left-6 top-0" />
+          <div className="font-mono text-sm uppercase tracking-wider text-ops-accent">{statusLine}</div>
+        </div>
       ) : null}
 
       {revealed > 0 ? (
@@ -201,8 +205,11 @@ export default function PostNeed() {
       ) : null}
 
       {showSummary ? (
-        <div className="mt-4 rounded-ops border border-ops-border bg-ops-raised p-3 font-mono text-sm text-ops-text">
-          {SUMMARY}
+        <div className="relative mt-4">
+          <Ann route="post" n={2} className="-left-6 top-2" />
+          <div className="rounded-ops border border-ops-border bg-ops-raised p-3 font-mono text-sm text-ops-text">
+            {SUMMARY}
+          </div>
         </div>
       ) : null}
 
