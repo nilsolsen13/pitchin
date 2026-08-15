@@ -8,8 +8,16 @@ authoritative.** Read it in full before your first edit. It contains the data mo
 machines, both color palettes, nine screen specs with literal copy, and a fully enumerated seed
 data appendix.
 
-`PitchIn_spec_v1.md` is the original pitch narrative. Read it for tone and vocabulary. Do not
-build from it — it describes no screens.
+### The other two markdown files are NOT build targets
+
+Three files in this repo have "spec" in the name. **Only one of them is buildable.** Do not be
+misled by the version numbers — `v2` does not supersede `v1`, and neither supersedes the build spec.
+
+| File | What it actually is | Build from it? |
+|---|---|---|
+| `PitchIn_MVP_build_spec.md` | The specification. Screens, data, copy, seed. | **Yes — this one.** |
+| `PitchIn_spec_v1.md` | Original pitch narrative. Read for tone and vocabulary. Describes no screens. | No |
+| `PitchIn_spec_v2.md` | Planning notes recording *how* the build spec was scoped. Despite the filename it is **not a spec**, and some of its details (notably the stack row) are stale. | **No — and prefer the build spec wherever they disagree.** |
 
 ---
 
