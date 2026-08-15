@@ -64,6 +64,49 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* Motion (spec §8.5). */
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes task-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Amber scanline that sweeps the textarea once during decomposition (§7.3). */
+@keyframes scanline {
+  from {
+    top: 0;
+    opacity: 0.9;
+  }
+  to {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+.animate-toast-in {
+  animation: toast-in 180ms ease-out;
+}
+
+.animate-task-reveal {
+  animation: task-reveal 220ms ease-out both;
+}
+
 /* Spec §8.5 — skip the scanline sweep and the staggered task reveal, but
    still land on the same end state so the decomposition flow reads. */
 @media (prefers-reduced-motion: reduce) {
