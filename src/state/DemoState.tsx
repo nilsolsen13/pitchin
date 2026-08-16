@@ -1,6 +1,6 @@
-// Global demo state (spec §8.1). One context, in-memory only.
-// resetDemo re-clones the seed; every action produces new arrays so the seed
-// module is never mutated (§8.1) and Reset actually restores state.
+// Global demo state (spec §8.1). Seed, tasks, and toasts are in-memory only.
+// Increment 2 §1.4 persists just two flags — role and annotations — in
+// sessionStorage so a hard-refresh keeps the County view and the notes on.
 
 import { createContext, useContext, useEffect, useReducer } from 'react';
 import type { ReactNode } from 'react';
@@ -30,6 +30,55 @@ type Action =
   | { type: 'RESET' }
   | { type: 'SET_TOAST'; toast: string | null };
 
+const ROLE_KEY = 'pitchin.role';
+const ANNOTATIONS_KEY = 'pitchin.annotations';
+
+function readStoredRole(): Role {
+  try {
+    const v = sessionStorage.getItem(ROLE_KEY);
+    if (v === 'resident' || v === 'requester' || v === 'admin') return v;
+  } catch {
+    // Blocked storage — degrade to in-memory defaults.
+  }
+  return 'resident';
+}
+
+function readStoredAnnotations(): boolean {
+  try {
+    const v = sessionStorage.getItem(ANNOTATIONS_KEY);
+    if (v === 'true') return true;
+    if (v === 'false') return false;
+  } catch {
+    // Blocked storage — degrade to in-memory defaults.
+  }
+  return true;
+}
+
+function persistRole(role: Role): void {
+  try {
+    sessionStorage.setItem(ROLE_KEY, role);
+  } catch {
+    // ignore
+  }
+}
+
+function persistAnnotations(on: boolean): void {
+  try {
+    sessionStorage.setItem(ANNOTATIONS_KEY, on ? 'true' : 'false');
+  } catch {
+    // ignore
+  }
+}
+
+function clearPersistedFlags(): void {
+  try {
+    sessionStorage.removeItem(ROLE_KEY);
+    sessionStorage.removeItem(ANNOTATIONS_KEY);
+  } catch {
+    // ignore
+  }
+}
+
 function freshSeed() {
   const s = structuredClone(initialState);
   return s;
@@ -38,8 +87,8 @@ function freshSeed() {
 function makeInitial(): DemoState {
   const s = freshSeed();
   return {
-    role: 'resident',
-    annotationsOn: true,
+    role: readStoredRole(),
+    annotationsOn: readStoredAnnotations(),
     people: s.people,
     needs: s.needs,
     tasks: s.tasks,
@@ -160,14 +209,23 @@ export function DemoStateProvider({ children }: { children: ReactNode }) {
 
   const value: DemoContextValue = {
     ...state,
-    setRole: (role) => dispatch({ type: 'SET_ROLE', role }),
-    toggleAnnotations: () => dispatch({ type: 'TOGGLE_ANNOTATIONS' }),
+    setRole: (role) => {
+      persistRole(role);
+      dispatch({ type: 'SET_ROLE', role });
+    },
+    toggleAnnotations: () => {
+      persistAnnotations(!state.annotationsOn);
+      dispatch({ type: 'TOGGLE_ANNOTATIONS' });
+    },
     claimTask: (taskId, personId, toast) => dispatch({ type: 'CLAIM_TASK', taskId, personId, toast }),
     verifyTask: (taskId) => dispatch({ type: 'VERIFY_TASK', taskId }),
     setRepState: (repState) => dispatch({ type: 'SET_REP_STATE', repState }),
     acceptRep: () => dispatch({ type: 'ACCEPT_REP' }),
     waiveRep: () => dispatch({ type: 'WAIVE_REP' }),
-    resetDemo: () => dispatch({ type: 'RESET' }),
+    resetDemo: () => {
+      clearPersistedFlags();
+      dispatch({ type: 'RESET' });
+    },
     setToast: (toast) => dispatch({ type: 'SET_TOAST', toast }),
   };
 
