@@ -61,7 +61,7 @@ product's personality.
 | Town | South Park, Park County, Colorado. Pop. 4,187. Elevation 9,800 ft. |
 | Demo date | **Thursday, March 12, 2026.** Hardcode as `DEMO_TODAY`. Never use `new Date()` for display logic. |
 | Hero persona | The requester (county, churches, schools, sports teams, neighbors) |
-| Visual system | Dual: **Ops** palette for working screens, **Warm** palette for The Wall only |
+| Visual system | **Cork bulletin board on every screen** — pinned flyers, paper stock, warm ink, wood chrome. Superseded the original Ops/Warm split after Increment 1 at the owner's direction. Both token sets remain defined; cork is a property of the screens, not a theme toggle. **Do not restore the ops console.** See Increment 3 §3.1 |
 | Routes | 9 (landing + 8 product screens) |
 | Framing | Landing page carries the thesis; annotations toggle available on every product screen, default OFF |
 
@@ -289,6 +289,7 @@ the transcription, never the displayed number.
 | Town show-rate | 915 kept / 94 missed = **90.7%** |
 | Median unbroken participation | **19.5 weeks** |
 | Squad show-rates | Creek Side 90.3% · Kenosha Pass 91.8% · Red Hill 92.0% · Tarryall 87.7% |
+| Quals in circulation | 17 (16 in Increment 1; `emt-paramedic` added in Increment 3) |
 | Chainsaw-qualified | 12 |
 | Pump operators | 1 |
 | Spanish interpreters | 1 |
@@ -350,6 +351,11 @@ the fact and reduces the ask. Approved copy per state is in §7.5. Do not write 
 ---
 
 ## 6. Design system
+
+> **Superseded in part.** §6.1–§6.2 define two palettes and the sections below assign Ops to working
+> screens. That assignment no longer holds: every screen is the cork bulletin treatment (Increment 3
+> §3.1). The tokens, the status colors, the type scale, and the mono-for-measurements rule are all
+> still binding — only the per-screen palette assignment changed.
 
 Two palettes. **Ops** is the default for every screen except The Wall. **Warm** is used *only* on
 `/wall` and on the landing page (`/`). The switch is deliberate and should feel like walking from a
@@ -537,7 +543,7 @@ and a diagnosis line in mono 0.75rem:
 1. `RepCard` — "Your rep this week" (only in `resident` role; see §7.5 for states). Compact
    variant, links to `/me`.
 2. **Town capacity** panel — mono list:
-   `"24 RESIDENTS REGISTERED"` / `"31 ASSETS REGISTERED"` / `"16 QUALS IN CIRCULATION"` /
+   `"24 RESIDENTS REGISTERED"` / `"31 ASSETS REGISTERED"` / `"17 QUALS IN CIRCULATION"` /
    `"4 SQUADS"`, with a `"View registry →"` link.
 3. **This month on the wall** — one line per met need, with a `"See the wall →"` link.
 
@@ -698,12 +704,15 @@ Canonical: `/squad/creek-side`.
 
 - H1: `"Creek Side"`, mono sub: `"8 MEMBERS · FORMED 14 JUN 2024 · STANDING: SPONSORING"`
 - `SquadStreakBar`: `"31 WEEKS UNBROKEN"` + 12-cell recent strip
-- Stat row: `SQUAD SHOW-RATE 90.3%` · `MEMBERS 8` · `QUALS HELD 11` · `ASSETS 6`
+- Stat row: `SQUAD SHOW-RATE 90.3%` · `MEMBERS 8` · `QUALS HELD 13` · `ASSETS 13`
+  (both derived from the seed — corrected from an earlier hardcoded 11/6, see Increment 3 §1)
 - Member grid — `PersonCard` per member with individual show-rate ring, quals, equipment
 - **Visibility note panel**, mono 0.75rem, `--ops-text-3`:
   `"You can see individual show-rates because you're a squadmate. The town cannot. Public rankings are squad-level only."`
 - **Coverage panel** — which quals the squad holds and which it lacks, e.g.
-  `"NO PUMP OPERATOR"`, `"NO PLOW"` in `--status-missed`
+  Creek Side's real derived gaps are `"NO SPANISH INTERPRETER"`, `"NO WILDERNESS FIRST RESPONDER"`,
+  `"NO SNOW REMOVAL — PLOW"` in `--status-missed`. (An earlier draft wrongly listed "NO PUMP
+  OPERATOR" — Creek Side holds the town's only pump operator, Ray Ferrin.)
 
 **Annotation (1):** `"Four to eight neighbors. Small enough that you know everyone, large enough to absorb a bad month. The squad is the unit of accountability precisely so the individual isn't."`
 
@@ -719,6 +728,10 @@ Canonical: `/squad/creek-side`.
 
 **Headline strip** — four mono `StatCard`s. These must be computed and must match the seed:
 `4 GENERATORS` · `9 TOW-CAPABLE TRUCKS` · `12 CHAINSAW-QUALIFIED` · `1 BILINGUAL PARAMEDIC`
+
+`1 BILINGUAL PARAMEDIC` derives from holders of **both** `emt-paramedic` and `spanish-interpreter`
+— Marisol Vega, exactly 1. (Increment 3 added the `emt-paramedic` qual; the figure was previously
+derived from `wfr`, which is not a paramedic certification.)
 
 **Quals view** — one row per qual: name, category, holder count, holder avatars, `demonstration`
 text. Rows with `holders === 1` render a `--status-missed` mono tag `"SINGLE POINT OF FAILURE"`.
@@ -768,7 +781,7 @@ Beneath the table, mono 0.75rem `--ops-text-3`:
 **Row 2 — Capacity gaps** (right, 5 cols). Three items, each with a `--status-blocked` marker:
 1. `"PUMP OPERATOR — 3 pumps registered, 1 qualified operator"`
 2. `"PLOW COVERAGE — 2 plow trucks, both registered to Kenosha Pass. Tarryall and Red Hill uncovered."`
-3. `"SPANISH INTERPRETER — 1 qualified. Tuesday county services desk has no backup."`
+3. `"SPANISH INTERPRETER — 1 qualified, and she is also the county's only paramedic. A surge takes her, and the Tuesday services desk goes dark."`
 
 **Row 3 — Participation over 12 weeks.** Simple bar chart, hand-rolled with divs (no chart
 library). One bar per week = residents completing their rep. Values, weeks ending Dec 25 → Mar 12:
@@ -806,7 +819,8 @@ NEEDED` / `WHO TURNED OUT` / `WHAT IT TOOK` / `WHAT WE'D DO DIFFERENTLY`. Text i
 use verbatim. Signature line: `"— Filed by Priya Raghavan, Creek Side · 5 March 2026"`.
 
 **Section 3 — `STILL OPEN`**
-Three entries in a plain list, each with days-open in mono. The Vasquez driveway shows
+Three entries in a plain list, in this order: the **Hansen flood**, the **Vasquez driveway**, and
+the **Tuesday interpreter desk**. Days open are derived. The Vasquez driveway shows
 `"6 DAYS · NEEDS A PLOW TRUCK ON THE TARRYALL SIDE"` in `--warm-stamp`.
 
 **Section 4 — `SQUADS`**
@@ -865,6 +879,10 @@ appear to do nothing.
 
 Bottom-right, `--ops-raised`, 1px border, mono 0.75rem uppercase, amber left border 3px, auto-
 dismiss after 4s. Used for: commitment logged, task verified, rep accepted, rep waived, demo reset.
+
+Exact strings: `"COMMITMENT LOGGED · THU 12 MAR · COUNTS TOWARD YOUR SHOW-RATE"` ·
+`"TASK VERIFIED"` · `"REP ACCEPTED"` · `"WAIVED · DOES NOT COUNT AGAINST YOUR SHOW-RATE"` ·
+`"DEMO RESET"` · `"VIEW CHANGED · {ROLE}"`.
 
 ### 8.4 Reset
 
@@ -989,7 +1007,7 @@ export const TOWN = {
 };
 ```
 
-### A.2 Quals (16)
+### A.2 Quals (17)
 
 | id | name | category | demonstration |
 |---|---|---|---|
@@ -1009,6 +1027,7 @@ export const TOWN = {
 | `livestock` | Livestock Handling | Logistics | "Moved and penned cattle under observation." |
 | `child-cleared` | Child Supervision Cleared | Care | "Background check on file with the school district." |
 | `ham-radio` | Ham Radio Operator | Response | "Current FCC Technician license or above." |
+| `emt-paramedic` | EMT-Paramedic | Response | "Current Colorado EMT-Paramedic certification, verified with the fire district." |
 
 ### A.3 Squads (4)
 
@@ -1041,7 +1060,7 @@ Kenosha Pass, `"Saturday 9:00 AM"` for Tarryall. Languages default to `["English
 
 | id | name | age | quals | kept | missed | streak | partner | notes |
 |---|---|---|---|---|---|---|---|---|
-| `p-vega` | Marisol Vega | 36 | spanish-interpreter, wfr, first-aid | 72 | 3 | 41 | `p-mwangi` | **the bilingual paramedic.** Languages: English, Spanish (native) |
+| `p-vega` | Marisol Vega | 36 | spanish-interpreter, wfr, first-aid, **emt-paramedic** | 72 | 3 | 41 | `p-mwangi` | **the bilingual paramedic** — the only holder of both `emt-paramedic` and `spanish-interpreter`. Languages: English, Spanish (native) |
 | `p-tanaka` | Bud Tanaka | 66 | plow, generator, heavy-tow | 58 | 5 | 38 | `p-grange` | |
 | `p-grange` | Hollis Grange | 44 | plow, heavy-tow | 33 | 5 | 20 | `p-tanaka` | |
 | `p-mwangi` | Estelle Mwangi | 31 | wfr, elder-checkin | 27 | 3 | 16 | `p-vega` | |
@@ -1069,7 +1088,8 @@ Kenosha Pass, `"Saturday 9:00 AM"` for Tarryall. Languages default to `["English
 | `p-cardoza` | Ines Cardoza | 35 | elder-checkin, food-safety | 29 | 4 | 17 | `p-vasquez` | Languages: English, Spanish (conversational) |
 
 **Verification:** chainsaw holders = Dana, Ray, Cal, Tom, Wes, Andy, Gil, Owen, Duke, Petra,
-Marcus, Hank = **12**. Pump operators = Ray only = **1**. Spanish interpreters = Marisol only =
+Marcus, Hank = **12**. Pump operators = Ray only = **1**. EMT-Paramedics = Marisol only = **1**.
+Spanish interpreters = Marisol only =
 **1**. Sum kept = **915**, sum missed = **94**.
 
 ### A.5 Equipment (31 items)
@@ -1283,10 +1303,14 @@ on `/need/hansen-flood` derive rather than being hardcoded. Additionally seed **
 12 weekly reps** as commitments so the 12-week strip on `/me` renders from data:
 
 ```
-kept ×9  (weeks ending 2025-12-25 through 2026-02-19)
-waived ×1 (2026-02-19)
-missed ×2 (2026-02-26, 2026-03-05)
+kept   ×9  (Thursdays 2025-12-18 through 2026-02-12)
+waived ×1  (2026-02-19)
+missed ×2  (2026-02-26, 2026-03-05)
 pending ×1 (2026-03-12, isWeeklyRep: true, scopeMinutes: 5)
+
+# The strip renders exactly 12 COMPLETED cells: 9 kept + 1 waived + 2 missed.
+# The pending current rep is shown in the rep card, NOT as a 13th cell.
+# (An earlier draft ended the kept run at 2026-02-19, double-counting the waived week.)
 ```
 
 ### A.13 Town history — aggregates that predate the ledger
@@ -1341,7 +1365,8 @@ toasts. Screens can be stubs.
 
 **Phase 4 — Board and Need Detail.** §7.2, §7.4. Claim and verify with real state changes and
 permission enforcement.
-✅ *Checkpoint:* as `resident`, claiming task 10 adds Nora and increments "people committed" to 15;
+✅ *Checkpoint:* as `resident`, claiming task 10 adds Nora and increments "people committed" from
+16 to **17** (an earlier draft said 15, written before the seed was final);
 `Verify` is disabled with the correct tooltip; as `requester`, verifying task 2 moves it to the
 verified group.
 
@@ -1361,7 +1386,10 @@ both carry the single-point-of-failure tag; the readiness squad table matches §
 leak through.
 ✅ *Checkpoint:* `/wall` shows the full AAR verbatim, no individual show-rates anywhere.
 
-**Phase 9 — Landing and annotations.** §7.0, §8.2. Wire all 20 annotations.
+**Phase 9 — Landing and annotations.** §7.0, §8.2. Wire all annotations enumerated in §7.2–§7.9 —
+that is **18** in Increment 1 (Board 3, Post 2, Need 3, My Rep 3, Squad 1, Registry 2, Readiness 2,
+Wall 2). An earlier draft said "20"; the landing page specifies none. Increments 2–3 raise the
+total to 22.
 ✅ *Checkpoint:* toggle on, every product screen shows its markers, each opens the correct text.
 
 **Phase 10 — Deploy.** Add `vercel.json` and `netlify.toml`. Build and deploy.

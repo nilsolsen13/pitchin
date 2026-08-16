@@ -106,6 +106,8 @@ export interface Task {
   requiredEquipment: EquipmentType[]; // empty array = none
   peopleNeeded: number;
   window: string; // "Thu 3/12, afternoon"
+  scheduledDate: ISODate | null; // "2026-03-12"; null = unscheduled (lists, not grid)
+  recurrenceNote: string | null; // "Weekly, Tuesdays" — display only
   status: TaskStatus;
   assigneeIds: string[];
   verifiedById: string | null; // must be a person acting for the requester org
@@ -153,3 +155,39 @@ export interface Merchant {
 // ─── Demo state (spec §8.1) ──────────────────────────────────────────────────
 
 export type RepState = 'STANDARD' | 'SCOPED_DOWN' | 'KEEP_THE_CHAIN' | 'WAIVED' | 'ACCEPTED';
+
+// ─── Calendar view model (Increment 2 §2.3) ──────────────────────────────────
+
+export type CalendarEntryKind = 'rep' | 'commitment' | 'opportunity';
+export type CalendarEntryOutcome = 'pending' | 'kept' | 'missed' | 'waived' | 'open';
+
+export interface CalendarEntry {
+  id: string;
+  kind: CalendarEntryKind;
+  outcome: CalendarEntryOutcome;
+  title: string;
+  date: ISODate | null;
+  durationMin: number;
+  needTitle: string | null;    // null for weekly reps
+  needId: string | null;
+  partnerName: string | null;  // reps only
+  recurrenceNote: string | null;
+}
+
+// ─── Direct messages (demo chrome — not Appendix A) ──────────────────────────
+// 1:1 threads only. Seed lives in src/data/messages.ts so Appendix A stays
+// verbatim. Reset clones this the same way it clones needs/tasks.
+
+export interface ChatThread {
+  id: string;
+  participantIds: [string, string];
+}
+
+export interface ChatMessage {
+  id: string;
+  threadId: string;
+  fromId: string;
+  body: string;
+  sentAt: ISODateTime;
+  readBy: string[];
+}

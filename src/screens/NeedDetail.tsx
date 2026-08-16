@@ -4,11 +4,11 @@
 import { useParams } from 'react-router-dom';
 import type { Equipment, Person, Task, TaskStatus } from '../types';
 import { useDemo } from '../state/DemoState';
-import { equipment as seedEquipment, orgs, quals, squads } from '../data/seed';
+import { equipment as seedEquipment, orgs, quals } from '../data/seed';
 import { DEMO_TODAY } from '../data/seed';
 import { daysBetween, daysSince, fmtShort } from '../lib/format';
 import {
-  capacityGaps, peopleCommitted, personHours, tasksForNeed, tasksVerified,
+  capacityGaps, peopleCommitted, personHours, squadHasEquipment, tasksForNeed, tasksVerified,
 } from '../lib/derive';
 import { PAPER } from '../lib/paper';
 import { ModeBadge } from '../components/ModeBadge';
@@ -26,21 +26,9 @@ function fmtHours(h: number): string {
   return Number.isInteger(h) ? String(h) : h.toFixed(2).replace(/\.?0+$/, '');
 }
 
-function squadHasEquipment(
-  person: Person,
-  type: Equipment['type'],
-  equipment: Equipment[],
-): boolean {
-  const squad = squads.find((s) => s.id === person.squadId);
-  const memberIds = squad ? squad.memberIds : [];
-  return equipment.some(
-    (e) => e.type === type && e.ownerId !== null && (e.ownerId === person.id || memberIds.includes(e.ownerId)),
-  );
-}
-
-function claimEval(person: Person, task: Task, equipment: Equipment[]) {
+function claimEval(person: Person, task: Task, people: Person[], equipment: Equipment[]) {
   const missingQual = task.requiredQuals.find((q) => !person.quals.includes(q));
-  const missingEquip = task.requiredEquipment.find((t) => !squadHasEquipment(person, t, equipment));
+  const missingEquip = task.requiredEquipment.find((t) => !squadHasEquipment(person, t, people, equipment));
   if (missingQual) {
     const qual = quals.find((q) => q.id === missingQual);
     return {
@@ -99,7 +87,7 @@ export default function NeedDetail() {
 
   function actionFor(task: Task) {
     if (task.status === 'open' && role === 'resident') {
-      const ev = claimEval(nora, task, seedEquipment);
+      const ev = claimEval(nora, task, people, seedEquipment);
       return (
         <ActionButton
           label="Claim"

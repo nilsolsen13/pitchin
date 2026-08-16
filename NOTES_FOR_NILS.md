@@ -80,3 +80,11 @@ diagnosis, shrinking-ask strings, permission rules, derived figures, and the ann
 are unchanged. Palettes are still not a theme toggle: both token sets remain, and cork
 is applied as a property of the screens.
 
+### 11. Chat drawer restored after Increment 2 §1.5
+
+Increment 2 asked to delete the messages rail (not in the MVP spec, wrong palette on
+cork, stubs that go nowhere). It was removed in Phase 1. Nils asked to restore it, so
+the drawer, seed threads, and header button are back — left of the avatar, after the
+role switcher and annotations toggle. Reset still reclones the message seed. This
+disagrees with Increment 2 §1.5 on purpose.
+

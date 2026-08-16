@@ -265,7 +265,9 @@ export const needs: Need[] = [
 
 const V_AT = '2026-03-11T09:00:00-07:00'; // verifiedAt for flood tasks 1, 6, 7
 
-export const tasks: Task[] = [
+type TaskRow = Omit<Task, 'scheduledDate' | 'recurrenceNote'>;
+
+const taskRows: TaskRow[] = [
   // Hansen flood (A.8)
   { id: 't-flood-01', needId: 'need-hansen-flood', title: 'Pump standing water from the basement', detail: 'Three feet in the basement. Draw down before the foundation takes more.', durationMin: 90, requiredQuals: ['pump-operator'], requiredEquipment: ['trash-pump'], peopleNeeded: 1, window: 'Mon 3/9, morning', status: 'verified', assigneeIds: ['p-ferrin'], verifiedById: 'p-vega', verifiedAt: V_AT, blockReason: null },
   { id: 't-flood-02', needId: 'need-hansen-flood', title: 'Muck-out — pull saturated drywall to 4 feet', detail: 'Everything below the waterline comes out or it goes to mold.', durationMin: 180, requiredQuals: ['muck-out'], requiredEquipment: [], peopleNeeded: 2, window: 'Thu 3/12, all day', status: 'in_progress', assigneeIds: ['p-whitlock', 'p-delacroix'], verifiedById: null, verifiedAt: null, blockReason: null },
@@ -310,6 +312,49 @@ export const tasks: Task[] = [
   // Interpreter desk (A.9) — 1 in_progress, p-vega
   { id: 't-desk-01', needId: 'need-interpreter-desk', title: 'Interpret at the Tuesday services desk', detail: 'Interpret benefits enrollment at the Tuesday morning county services desk.', durationMin: 180, requiredQuals: ['spanish-interpreter'], requiredEquipment: [], peopleNeeded: 1, window: 'Tue mornings', status: 'in_progress', assigneeIds: ['p-vega'], verifiedById: null, verifiedAt: null, blockReason: null },
 ];
+
+// Increment 2 §2.2 — scheduledDate / recurrenceNote transcribed verbatim.
+// window is unchanged. Vasquez stays unscheduled (null) because nobody claimed it.
+const TASK_SCHEDULE: Record<string, Pick<Task, 'scheduledDate' | 'recurrenceNote'>> = {
+  't-flood-01': { scheduledDate: '2026-03-09', recurrenceNote: null },
+  't-flood-02': { scheduledDate: '2026-03-12', recurrenceNote: null },
+  't-flood-03': { scheduledDate: '2026-03-12', recurrenceNote: null },
+  't-flood-04': { scheduledDate: '2026-03-13', recurrenceNote: null },
+  't-flood-05': { scheduledDate: '2026-03-14', recurrenceNote: null },
+  't-flood-06': { scheduledDate: '2026-03-10', recurrenceNote: null },
+  't-flood-07': { scheduledDate: '2026-03-09', recurrenceNote: null },
+  't-flood-08': { scheduledDate: '2026-03-12', recurrenceNote: null },
+  't-flood-09': { scheduledDate: '2026-03-12', recurrenceNote: null },
+  't-flood-10': { scheduledDate: '2026-03-13', recurrenceNote: null },
+  't-flood-11': { scheduledDate: '2026-03-14', recurrenceNote: null },
+  't-ramp-01': { scheduledDate: '2026-02-25', recurrenceNote: null },
+  't-ramp-02': { scheduledDate: '2026-02-26', recurrenceNote: null },
+  't-ramp-03': { scheduledDate: '2026-02-28', recurrenceNote: null },
+  't-ramp-04': { scheduledDate: '2026-03-01', recurrenceNote: null },
+  't-ramp-05': { scheduledDate: '2026-03-02', recurrenceNote: null },
+  't-ramp-06': { scheduledDate: '2026-03-03', recurrenceNote: null },
+  't-plow-01': { scheduledDate: null, recurrenceNote: null },
+  't-plow-02': { scheduledDate: null, recurrenceNote: null },
+  't-chap-01': { scheduledDate: '2026-04-16', recurrenceNote: null },
+  't-chap-02': { scheduledDate: '2026-04-16', recurrenceNote: null },
+  't-chap-03': { scheduledDate: '2026-04-16', recurrenceNote: null },
+  't-chap-04': { scheduledDate: '2026-04-16', recurrenceNote: null },
+  't-chap-05': { scheduledDate: '2026-04-16', recurrenceNote: null },
+  't-chap-06': { scheduledDate: '2026-04-16', recurrenceNote: null },
+  't-cows-01': { scheduledDate: '2026-04-11', recurrenceNote: null },
+  't-cows-02': { scheduledDate: '2026-04-11', recurrenceNote: null },
+  't-cows-03': { scheduledDate: '2026-04-11', recurrenceNote: null },
+  't-cows-04': { scheduledDate: '2026-04-25', recurrenceNote: null },
+  't-cows-05': { scheduledDate: '2026-04-25', recurrenceNote: null },
+  't-cows-06': { scheduledDate: '2026-04-25', recurrenceNote: null },
+  't-desk-01': { scheduledDate: '2026-03-17', recurrenceNote: 'Weekly, Tuesdays' },
+};
+
+export const tasks: Task[] = taskRows.map((t) => {
+  const sched = TASK_SCHEDULE[t.id];
+  if (!sched) throw new Error(`seed: missing scheduledDate for ${t.id}`);
+  return { ...t, ...sched };
+});
 
 // ─── A.10 The AAR ────────────────────────────────────────────────────────────
 
