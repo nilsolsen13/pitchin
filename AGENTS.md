@@ -30,7 +30,7 @@ one destroys something load-bearing.
 
 ### 1. Transcribe Appendix A verbatim. Never regenerate seed data.
 
-The 24 residents, 31 equipment items, 16 quals, 6 needs, and 11 flood tasks are not examples. They
+The 24 residents, 31 equipment items, 17 quals, 6 needs, and 11 flood tasks are not examples. They
 are the data. Every dashboard figure in the app is *derived* from them and has been verified to
 reconcile:
 

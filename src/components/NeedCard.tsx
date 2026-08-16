@@ -18,8 +18,12 @@ import { Photo } from './Photo';
 import { PHOTOS } from '../data/photos';
 
 // §7.2 board diagnosis for the stalled Vasquez need (literal copy).
-const STALLED_DIAGNOSIS =
+// Increment 3 §2.3 adds the Park County policy as a second line in this block.
+export const STALLED_DIAGNOSIS =
   'CAPACITY GAP — both plow-equipped trucks registered to Kenosha Pass, 22 min from Tarryall Rd.';
+
+export const PARK_COUNTY_DRIVE_POLICY =
+  'Park County Road & Bridge maintains county-system roads only.\nPrivate drives are the owner\'s responsibility.';
 
 function paperFor(need: Need): string {
   if (need.status === 'stalled') return PAPER.rose;
@@ -108,8 +112,9 @@ export function NeedCard({ need }: { need: Need }) {
       )}
 
       {stalled ? (
-        <div className="mt-3 font-mono text-[11px] leading-relaxed text-status-blocked">
-          {STALLED_DIAGNOSIS}
+        <div className="mt-3 font-mono text-[0.6875rem] leading-relaxed">
+          <div className="text-status-blocked">{STALLED_DIAGNOSIS}</div>
+          <div className="mt-1 whitespace-pre-line text-warm-ink-2">{PARK_COUNTY_DRIVE_POLICY}</div>
         </div>
       ) : null}
     </Flyer>

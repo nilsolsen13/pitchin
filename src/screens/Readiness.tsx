@@ -21,7 +21,7 @@ import { Bulletin, Masthead } from '../components/Bulletin';
 const CAPACITY_GAPS = [
   'PUMP OPERATOR — 3 pumps registered, 1 qualified operator',
   'PLOW COVERAGE — 2 plow trucks, both registered to Kenosha Pass. Tarryall and Red Hill uncovered.',
-  'SPANISH INTERPRETER — 1 qualified. Tuesday county services desk has no backup.',
+  'SPANISH INTERPRETER — 1 qualified, and she is also the county\'s only paramedic. A surge takes her, and the Tuesday services desk goes dark.',
 ];
 
 export default function Readiness() {

@@ -20,6 +20,7 @@ import { Flyer } from '../components/Flyer';
 import { Photo } from '../components/Photo';
 import { Bulletin, Masthead } from '../components/Bulletin';
 import { PHOTOS } from '../data/photos';
+import { PARK_COUNTY_DRIVE_POLICY, STALLED_DIAGNOSIS } from '../components/NeedCard';
 
 const CLAIM_TOAST = 'COMMITMENT LOGGED · THU 12 MAR · COUNTS TOWARD YOUR SHOW-RATE';
 const GROUP_ORDER: TaskStatus[] = ['blocked', 'open', 'claimed', 'in_progress', 'verified', 'missed'];
@@ -127,6 +128,17 @@ export default function NeedDetail() {
           </div>
         }
       />
+
+      {need.status === 'stalled' ? (
+        <div className="mx-auto mt-8 max-w-3xl">
+          <Flyer id="need-stall" paper={PAPER.rose} className="board-flyer-stalled">
+            <div className="font-mono text-[0.6875rem] leading-relaxed">
+              <div className="text-status-blocked">{STALLED_DIAGNOSIS}</div>
+              <div className="mt-1 whitespace-pre-line text-warm-ink-2">{PARK_COUNTY_DRIVE_POLICY}</div>
+            </div>
+          </Flyer>
+        </div>
+      ) : null}
 
       <div className="relative mx-auto mt-8 max-w-3xl">
         <Ann route="need" n={1} className="-left-6 top-3" />
