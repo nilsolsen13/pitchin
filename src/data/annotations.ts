@@ -1,5 +1,5 @@
-// Annotation copy (spec §8.2 + Increment 2), keyed by {route}:{n}. Verbatim.
-// 18 from Increment 1, calendar:1–3 (notes 19–21), wall:3 (note 22) in Phase 8.
+// Annotation copy (spec §8.2 + Increment 2 + final spec Parts B–C).
+// Keyed by {route}:{n}. Verbatim.
 
 export const annotations: Record<string, string> = {
   // §7.2 Board (3)
@@ -69,4 +69,8 @@ export const annotations: Record<string, string> = {
   // Final spec Part B — annotation 23
   'wall:4':
     "The people who most need help are the least likely to use software, so somebody else has to be able to ask on their behalf. That creates a problem — a vulnerable neighbour's name on a public board — and the answer is the same boundary the rest of the system uses: squads see who, the town sees roughly where, and the name is public only if she says so.",
+
+  // Final spec Part C — annotation 24
+  'map:1':
+    'The registry already knew there were two plough trucks. It took a map to notice they are both on the same side of the basin, twenty-two minutes from the person who needed one. That is the difference between an inventory and a readiness picture, and it is the thing a county is actually buying.',
 };

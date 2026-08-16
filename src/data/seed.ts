@@ -101,11 +101,38 @@ export const quals: Qual[] = QUAL_META.map((q) => ({
 const membersOf = (squadId: string) =>
   people.filter((p) => p.squadId === squadId).map((p) => p.id);
 
+const TERRITORY: Record<string, Squad['territory']> = {
+  'kenosha-pass': {
+    label: 'KENOSHA PASS',
+    cx: 500,
+    cy: 150,
+    path: 'M 55,38 L 945,42 L 925,195 L 780,235 L 560,205 L 390,240 L 220,215 L 70,185 Z',
+  },
+  tarryall: {
+    label: 'TARRYALL',
+    cx: 790,
+    cy: 380,
+    path: 'M 790,245 L 925,205 L 960,280 L 968,470 L 820,545 L 680,500 L 655,360 L 720,280 Z',
+  },
+  'creek-side': {
+    label: 'CREEK SIDE',
+    cx: 330,
+    cy: 380,
+    path: 'M 70,200 L 220,228 L 390,252 L 560,218 L 780,248 L 720,285 L 655,365 L 680,505 L 480,555 L 200,530 L 60,490 L 48,320 Z',
+  },
+  'red-hill': {
+    label: 'RED HILL',
+    cx: 520,
+    cy: 590,
+    path: 'M 60,545 L 200,545 L 480,570 L 680,520 L 820,560 L 968,490 L 955,668 L 50,662 Z',
+  },
+};
+
 export const squads: Squad[] = [
-  { id: 'creek-side', name: 'Creek Side', memberIds: membersOf('creek-side'), streakWeeks: 31, standing: 'Sponsoring', formedDate: FORMED_CREEK },
-  { id: 'kenosha-pass', name: 'Kenosha Pass', memberIds: membersOf('kenosha-pass'), streakWeeks: 38, standing: 'Sponsoring', formedDate: FORMED_KENOSHA },
-  { id: 'red-hill', name: 'Red Hill', memberIds: membersOf('red-hill'), streakWeeks: 44, standing: 'Sponsoring', formedDate: FORMED_REDHILL },
-  { id: 'tarryall', name: 'Tarryall', memberIds: membersOf('tarryall'), streakWeeks: 19, standing: 'Established', formedDate: FORMED_TARRYALL },
+  { id: 'creek-side', name: 'Creek Side', memberIds: membersOf('creek-side'), streakWeeks: 31, standing: 'Sponsoring', formedDate: FORMED_CREEK, territory: TERRITORY['creek-side'] },
+  { id: 'kenosha-pass', name: 'Kenosha Pass', memberIds: membersOf('kenosha-pass'), streakWeeks: 38, standing: 'Sponsoring', formedDate: FORMED_KENOSHA, territory: TERRITORY['kenosha-pass'] },
+  { id: 'red-hill', name: 'Red Hill', memberIds: membersOf('red-hill'), streakWeeks: 44, standing: 'Sponsoring', formedDate: FORMED_REDHILL, territory: TERRITORY['red-hill'] },
+  { id: 'tarryall', name: 'Tarryall', memberIds: membersOf('tarryall'), streakWeeks: 19, standing: 'Established', formedDate: FORMED_TARRYALL, territory: TERRITORY.tarryall },
 ];
 
 // ─── A.6 Organizations (8) ───────────────────────────────────────────────────
@@ -263,10 +290,19 @@ const NEED_SEED: Omit<Need, 'postedByResident' | 'mapPoint' | 'onBehalfOf'>[] = 
   },
 ];
 
+const MAP_POINTS: Record<string, { x: number; y: number }> = {
+  'need-hansen-flood': { x: 295, y: 300 },
+  'need-vasquez-plow': { x: 820, y: 350 },
+  'need-duthie-ramp': { x: 350, y: 415 },
+  'need-school-chaperones': { x: 315, y: 440 },
+  'need-cows-timing': { x: 375, y: 455 },
+  'need-interpreter-desk': { x: 340, y: 470 },
+};
+
 export const needs: Need[] = NEED_SEED.map((n) => ({
   ...n,
   postedByResident: false,
-  mapPoint: null,
+  mapPoint: MAP_POINTS[n.id] ?? null,
   onBehalfOf:
     n.id === 'need-vasquez-plow'
       ? {

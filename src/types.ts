@@ -53,6 +53,13 @@ export interface Person {
   // showRate is DERIVED: keptCount / (keptCount + missedCount). Never store it.
 }
 
+export interface SquadTerritory {
+  label: string;
+  path: string; // SVG path in viewBox 0 0 1000 700
+  cx: number;
+  cy: number;
+}
+
 export interface Squad {
   id: string;
   name: string; // "Creek Side"
@@ -60,6 +67,7 @@ export interface Squad {
   streakWeeks: number; // squad-held streak
   standing: 'Provisional' | 'Established' | 'Sponsoring';
   formedDate: ISODate;
+  territory: SquadTerritory;
   // showRate is DERIVED from member kept/missed sums.
 }
 
@@ -92,7 +100,7 @@ export interface Need {
   aarId: string | null;
   stallReason: string | null; // shown on the board when status === 'stalled'
   postedByResident: boolean; // true only for needs this resident posted in-session
-  mapPoint: { x: number; y: number } | null; // schematic coords; seed filled in Part C
+  mapPoint: { x: number; y: number } | null; // schematic coords (Part C)
   onBehalfOf: OnBehalfOf | null;
 }
 

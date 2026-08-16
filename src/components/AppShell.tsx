@@ -29,6 +29,7 @@ const NAV: NavItem[] = [
   { to: '/me', label: 'My Rep', roles: ['resident'] },
   { to: '/calendar', label: 'Calendar', roles: ['resident'] },
   { to: '/readiness', label: 'Readiness', roles: ['admin'] },
+  { to: '/map', label: 'Map', roles: ['admin'] },
   { to: '/wall', label: 'The Wall', roles: 'all' },
 ];
 

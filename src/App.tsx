@@ -13,6 +13,7 @@ import MyRep from './screens/MyRep';
 import SquadDetail from './screens/SquadDetail';
 import Registry from './screens/Registry';
 import Readiness from './screens/Readiness';
+import CountyMap from './screens/Map';
 import Wall from './screens/Wall';
 import Calendar from './screens/Calendar';
 import Rewards from './screens/Rewards';
@@ -47,6 +48,7 @@ export default function App() {
             <Route path="/squad/:squadId" element={<SquadDetail />} />
             <Route path="/registry" element={<Registry />} />
             <Route path="/readiness" element={<RequireRole role="admin"><Readiness /></RequireRole>} />
+            <Route path="/map" element={<RequireRole role="admin"><CountyMap /></RequireRole>} />
             <Route path="/wall" element={<Wall />} />
             <Route path="/rewards" element={<Rewards />} />
             {/* Scratch route for §6.5 primitives — intentionally not in nav. */}
