@@ -8,7 +8,7 @@ import { equipment as seedEquipment, orgs, quals } from '../data/seed';
 import { DEMO_TODAY } from '../data/seed';
 import { daysBetween, daysSince, fmtShort } from '../lib/format';
 import {
-  canVerify, capacityGaps, peopleCommitted, personHours, squadHasEquipment, tasksForNeed, tasksVerified,
+  canVerify, capacityGaps, onBehalfWorkingLine, peopleCommitted, personHours, squadHasEquipment, tasksForNeed, tasksVerified,
 } from '../lib/derive';
 import { PAPER } from '../lib/paper';
 import { ModeBadge } from '../components/ModeBadge';
@@ -125,6 +125,9 @@ export default function NeedDetail() {
             <span className="font-mono text-[11px] uppercase tracking-wider">
               REQUESTED BY {need.postedByResident ? 'Nora Beckett' : (org?.name ?? need.requesterOrgId)} · POSTED {fmtShort(need.submittedAt)} · {daysOpen} DAYS OPEN
             </span>
+            {need.onBehalfOf ? (
+              <span className="text-sm text-warm-ink-2">{onBehalfWorkingLine(need.onBehalfOf)}</span>
+            ) : null}
           </div>
         }
       />

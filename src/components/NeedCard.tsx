@@ -7,7 +7,7 @@ import { useDemo } from '../state/DemoState';
 import { orgs } from '../data/seed';
 import { DEMO_TODAY } from '../data/seed';
 import { daysSince } from '../lib/format';
-import { tasksForNeed, tasksVerified } from '../lib/derive';
+import { tasksForNeed, tasksVerified, onBehalfWorkingLine } from '../lib/derive';
 import { ModeBadge } from './ModeBadge';
 import { StatusChip } from './StatusChip';
 import { QualBadge } from './QualBadge';
@@ -73,6 +73,9 @@ export function NeedCard({ need }: { need: Need }) {
       </div>
 
       <h3 className="mt-2.5 text-lg font-semibold leading-snug text-warm-ink">{need.title}</h3>
+      {need.onBehalfOf ? (
+        <div className="mt-1 text-sm text-warm-ink-2">{onBehalfWorkingLine(need.onBehalfOf)}</div>
+      ) : null}
       <div className="mt-1 font-mono text-[11px] uppercase tracking-wider text-warm-ink-2">
         {requesterLabel} · posted {days} day{days === 1 ? '' : 's'} ago
       </div>

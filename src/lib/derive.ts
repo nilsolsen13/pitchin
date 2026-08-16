@@ -4,7 +4,7 @@
 
 import type {
   AAR, CalendarEntry, Commitment, Equipment, EquipmentType, HonorStatus, ISODate,
-  Merchant, Need, Person, QualId, Role, Squad, Task,
+  Merchant, Need, OnBehalfOf, Person, QualId, Role, Squad, Task,
 } from '../types';
 import { DEMO_TODAY } from '../data/seed';
 import { dayNumber, fmtLongNoYear } from './format';
@@ -159,6 +159,16 @@ export function canVerify(role: Role, need: Need): boolean {
     return need.requesterOrgId === 'org-pcem' || need.requesterOrgId === 'org-county';
   }
   return need.postedByResident;
+}
+
+export function onBehalfWorkingLine(ob: OnBehalfOf): string {
+  const age = ob.age !== null ? `, ${ob.age}` : '';
+  return `${ob.name}${age} · ${ob.locationSpecific}`;
+}
+
+export function onBehalfPublicLine(ob: OnBehalfOf): string {
+  if (ob.publicNameConsent) return onBehalfWorkingLine(ob);
+  return `a resident on ${ob.locationGeneral}`;
 }
 
 export function canClaimTask(

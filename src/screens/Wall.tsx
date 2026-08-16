@@ -6,7 +6,7 @@ import { useDemo } from '../state/DemoState';
 import { aars, orgs, squads } from '../data/seed';
 import { DEMO_TODAY } from '../data/seed';
 import {
-  commitmentsForNeed, outcomeCount, peopleCommitted,
+  commitmentsForNeed, outcomeCount, peopleCommitted, onBehalfPublicLine,
 } from '../lib/derive';
 import { daysBetween, daysSince, fmtLongNoYear, fmtMonthYearUpper } from '../lib/format';
 import { PAPER } from '../lib/paper';
@@ -126,11 +126,23 @@ export default function Wall() {
                 <span className="font-mono text-sm text-warm-ink-2">{daysSince(hansen.submittedAt, DEMO_TODAY)} DAYS OPEN</span>
               </div>
             </li>
-            <li className="flex flex-wrap items-baseline justify-between gap-2 px-5 py-3">
-              <span className="text-warm-ink">{vasquez.title}</span>
-              <span className="font-mono text-sm font-medium text-warm-stamp">
-                {daysSince(vasquez.submittedAt, DEMO_TODAY)} DAYS · NEEDS A PLOW TRUCK ON THE TARRYALL SIDE
-              </span>
+            <li className="relative flex flex-col gap-1 px-5 py-3">
+              <Ann route="wall" n={4} className="-left-5 top-1" />
+              <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <span className="text-warm-ink">
+                  {vasquez.onBehalfOf
+                    ? `Driveway plowing — ${onBehalfPublicLine(vasquez.onBehalfOf)}`
+                    : vasquez.title}
+                </span>
+                <span className="font-mono text-sm font-medium text-warm-stamp">
+                  {daysSince(vasquez.submittedAt, DEMO_TODAY)} DAYS · NEEDS A PLOW TRUCK ON THE TARRYALL SIDE
+                </span>
+              </div>
+              {vasquez.onBehalfOf && !vasquez.onBehalfOf.publicNameConsent ? (
+                <p className="font-mono text-[0.6875rem] text-warm-ink-2">
+                  Named only with the resident's say-so. Nobody has reached Eleanor yet.
+                </p>
+              ) : null}
             </li>
             <li className="flex flex-wrap items-baseline justify-between gap-2 px-5 py-3">
               <span className="text-warm-ink">{interpreter.title}</span>

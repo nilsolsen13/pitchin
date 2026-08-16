@@ -175,7 +175,7 @@ export const equipment: Equipment[] = [
 
 // ─── A.7 Needs (6) ───────────────────────────────────────────────────────────
 
-const NEED_SEED: Omit<Need, 'postedByResident' | 'mapPoint'>[] = [
+const NEED_SEED: Omit<Need, 'postedByResident' | 'mapPoint' | 'onBehalfOf'>[] = [
   {
     id: 'need-hansen-flood',
     title: 'Flood response — the Hansen place, Middle Fork',
@@ -267,6 +267,26 @@ export const needs: Need[] = NEED_SEED.map((n) => ({
   ...n,
   postedByResident: false,
   mapPoint: null,
+  onBehalfOf:
+    n.id === 'need-vasquez-plow'
+      ? {
+          name: 'Eleanor Vasquez',
+          age: 82,
+          locationSpecific: 'Tarryall Road',
+          locationGeneral: 'the Tarryall side',
+          relationship: 'Neighbour',
+          publicNameConsent: false,
+        }
+      : n.id === 'need-duthie-ramp'
+        ? {
+            name: 'Alma Duthie',
+            age: 79,
+            locationSpecific: 'Bijou Street',
+            locationGeneral: 'the Bijou Street end of town',
+            relationship: 'Parish',
+            publicNameConsent: true,
+          }
+        : null,
 }));
 
 // ─── A.8 Tasks — the Hansen flood (11) + A.9 other needs' tasks ──────────────

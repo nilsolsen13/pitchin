@@ -65,4 +65,8 @@ export const annotations: Record<string, string> = {
   // Increment 2 §3.6 The Wall (note 22) — wired with the photo in Phase 8
   'wall:3':
     "Photographing the damage is task ten on the flood job — it is work somebody signed up for, not decoration. That is why the record has pictures in it at all: the system asked someone to take them, and it knows who.",
+
+  // Final spec Part B — annotation 23
+  'wall:4':
+    "The people who most need help are the least likely to use software, so somebody else has to be able to ask on their behalf. That creates a problem — a vulnerable neighbour's name on a public board — and the answer is the same boundary the rest of the system uses: squads see who, the town sees roughly where, and the name is public only if she says so.",
 };

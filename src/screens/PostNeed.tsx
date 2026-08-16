@@ -3,7 +3,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { Need, NeedMode, Task } from '../types';
+import type { Need, NeedMode, OnBehalfOf, Task } from '../types';
 import { DEMO_TODAY, needs as seedNeeds, tasks as seedTasks } from '../data/seed';
 import { useDemo } from '../state/DemoState';
 import { fmtDuration } from '../lib/format';
@@ -41,6 +41,12 @@ export default function PostNeed() {
   const [statusLine, setStatusLine] = useState('');
   const [revealed, setRevealed] = useState(0);
   const [showSummary, setShowSummary] = useState(false);
+  const [proxy, setProxy] = useState(false);
+  const [proxyName, setProxyName] = useState('');
+  const [proxyAge, setProxyAge] = useState('');
+  const [proxyWhere, setProxyWhere] = useState('');
+  const [proxyRelationship, setProxyRelationship] = useState('');
+  const [proxyConsent, setProxyConsent] = useState(false);
   const timers = useRef<number[]>([]);
 
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
@@ -84,6 +90,12 @@ export default function PostNeed() {
     setStatusLine('');
     setRevealed(0);
     setShowSummary(false);
+    setProxy(false);
+    setProxyName('');
+    setProxyAge('');
+    setProxyWhere('');
+    setProxyRelationship('');
+    setProxyConsent(false);
   }
 
   function postToBoard() {
@@ -107,6 +119,16 @@ export default function PostNeed() {
         verifiedAt: null,
       };
     });
+    const onBehalfOf: OnBehalfOf | null = proxy
+      ? {
+          name: proxyName.trim() || 'A neighbour',
+          age: proxyAge.trim() !== '' && Number.isFinite(Number(proxyAge)) ? Number(proxyAge) : null,
+          locationSpecific: proxyWhere.trim() || 'South Park',
+          locationGeneral: proxyWhere.trim() || 'town',
+          relationship: proxyRelationship.trim() || 'Neighbour',
+          publicNameConsent: proxyConsent,
+        }
+      : null;
     const need: Need = {
       id: needId,
       title,
@@ -121,6 +143,7 @@ export default function PostNeed() {
       stallReason: null,
       postedByResident,
       mapPoint: { x: 340, y: 430 },
+      onBehalfOf,
     };
     postNeed(need, newTasks);
     navigate(`/need/${needId.replace(/^need-/, '')}`);
@@ -158,6 +181,7 @@ export default function PostNeed() {
           </div>
 
           {stage === 'compose' ? (
+            <>
             <div className="mt-4 flex flex-wrap items-end gap-6">
               <label className="flex flex-col">
                 <span className="mb-1 font-mono text-[11px] uppercase tracking-wider text-warm-ink-2">Requester</span>
@@ -168,6 +192,16 @@ export default function PostNeed() {
                     <option value="resident">Nora Beckett, Creek Side</option>
                   )}
                 </select>
+              </label>
+
+              <label className="flex items-center gap-2 text-sm text-warm-ink">
+                <input
+                  type="checkbox"
+                  checked={proxy}
+                  onChange={(e) => setProxy(e.target.checked)}
+                  className="accent-warm-stamp"
+                />
+                I'm posting this for someone else
               </label>
 
               <fieldset className="flex flex-col">
@@ -196,6 +230,41 @@ export default function PostNeed() {
                 Decompose
               </button>
             </div>
+            {proxy ? (
+              <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <label className="flex flex-col">
+                  <span className="mb-1 font-mono text-[11px] uppercase tracking-wider text-warm-ink-2">Their name</span>
+                  <input value={proxyName} onChange={(e) => setProxyName(e.target.value)} className="paper-input" />
+                </label>
+                <label className="flex flex-col">
+                  <span className="mb-1 font-mono text-[11px] uppercase tracking-wider text-warm-ink-2">Age (optional)</span>
+                  <input value={proxyAge} onChange={(e) => setProxyAge(e.target.value)} className="paper-input" />
+                </label>
+                <label className="flex flex-col">
+                  <span className="mb-1 font-mono text-[11px] uppercase tracking-wider text-warm-ink-2">Where they are</span>
+                  <input value={proxyWhere} onChange={(e) => setProxyWhere(e.target.value)} className="paper-input" />
+                </label>
+                <label className="flex flex-col">
+                  <span className="mb-1 font-mono text-[11px] uppercase tracking-wider text-warm-ink-2">Your relationship to them</span>
+                  <input value={proxyRelationship} onChange={(e) => setProxyRelationship(e.target.value)} className="paper-input" />
+                </label>
+                <label className="sm:col-span-2 flex items-start gap-2 text-sm text-warm-ink">
+                  <input
+                    type="checkbox"
+                    checked={proxyConsent}
+                    onChange={(e) => setProxyConsent(e.target.checked)}
+                    className="mt-0.5 accent-warm-stamp"
+                  />
+                  They know I'm posting this, and they're happy to be named publicly.
+                </label>
+                {!proxyConsent ? (
+                  <p className="sm:col-span-2 text-sm text-warm-ink-2">
+                    That's fine. Their name will show to squads working the need, and the public wall will say only roughly where they are.
+                  </p>
+                ) : null}
+              </div>
+            ) : null}
+            </>
           ) : null}
         </Flyer>
       </div>

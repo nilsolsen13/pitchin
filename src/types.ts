@@ -93,6 +93,16 @@ export interface Need {
   stallReason: string | null; // shown on the board when status === 'stalled'
   postedByResident: boolean; // true only for needs this resident posted in-session
   mapPoint: { x: number; y: number } | null; // schematic coords; seed filled in Part C
+  onBehalfOf: OnBehalfOf | null;
+}
+
+export interface OnBehalfOf {
+  name: string;
+  age: number | null;
+  locationSpecific: string;
+  locationGeneral: string;
+  relationship: string;
+  publicNameConsent: boolean;
 }
 
 export type TaskStatus =
