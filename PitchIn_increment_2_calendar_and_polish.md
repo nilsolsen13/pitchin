@@ -393,3 +393,133 @@ From `AGENTS.md`, unchanged and non-negotiable:
   library or a calendar component. `Date` arithmetic on ISO strings is sufficient at this scale.
 - **No persistence beyond the two flags in §1.4.** Seed state still resets on reload.
 - **Disagreements go in `NOTES_FOR_NILS.md`**, not into unilateral changes.
+
+---
+
+# PART 3 — Photography
+
+## 3.1 Why photographs, and why these
+
+The site is currently all text. Three things it cannot currently do: show the problem, document that
+the work happened, and show a finished result.
+
+This is not decoration. **`t-flood-10` is already a task in the system — "Photograph and inventory
+damage for the insurer."** The product produces photographs as a work artifact. Showing them is the
+system doing its job, not a designer filling space. Treat photographs as *evidence in the record*,
+not as stock imagery.
+
+The photos are installed at `public/photos/` and are **public domain FEMA disaster-response
+photography**. Sources, photographers, and one known caveat are in **`PHOTO_CREDITS.md` — read it.**
+
+| File | Depicts |
+|---|---|
+| `flood-interior.jpg` | Gutted room stripped to studs, silt on the floor |
+| `muckout.jpg` | Masked worker pulling saturated drywall |
+| `debris-carry.jpg` | Volunteer in a respirator carrying siding out |
+| `debris-haul.jpg` | Debris loaded into a truck on a residential street |
+| `sandbag-line.jpg` | Neighbours of mixed ages filling sandbags together |
+| `ramp-finished.jpg` | **RESERVED — file does not exist yet.** See §3.5 |
+
+**Do not add, swap, rename, or source additional photographs.** If a slot has no file, it renders
+nothing (§3.5). Do not substitute a different image to fill a gap, and never caption a photo as
+something it does not depict.
+
+## 3.2 The `Photo` component
+
+New: `src/components/Photo.tsx`. Polaroid-style print pinned to the cork board.
+
+```tsx
+interface PhotoProps {
+  src: string;             // "/photos/sandbag-line.jpg"
+  alt: string;             // real description — screen readers get the truth
+  caption: string;         // handwritten caption, see §3.4 for exact strings
+  tilt?: number;           // degrees, default 0. Use -3..3 only
+  width?: 'sm' | 'md' | 'lg';  // 180px | 260px | 420px
+  fastener?: 'pin' | 'tape' | 'none';  // default 'pin'
+}
+```
+
+Structure and styling:
+
+- Outer print: `--warm-paper` (`#F4EFE4`) background, **12px** border on top/left/right, **44px**
+  on the bottom for the caption, 2px radius, and the existing `.board-flyer` shadow.
+- Rotation via `transform: rotate(var(--photo-tilt))`, set from the `tilt` prop. On hover/focus,
+  rotate to `0deg` with the existing 160ms transition, matching `.board-flyer`.
+- Image fills the frame, `object-fit: cover`, aspect ratio **4:3**.
+- **Warm filter so photos sit in the palette rather than fighting it:**
+  `filter: sepia(0.18) saturate(0.85) contrast(1.04) brightness(1.02);`
+- Caption in **`font-hand`** (Kalam — already loaded for the wordmark), 0.8125rem,
+  `--warm-ink-2`, centred in the bottom border.
+- `fastener: 'pin'` renders the existing `.board-pin`; `'tape'` renders `.board-tape`.
+- `loading="lazy"` and explicit `width`/`height` attributes to prevent layout shift.
+
+Add to `tailwind.config.ts` if not present: nothing new required — `font-hand` already exists.
+
+## 3.3 Where photos go
+
+| Screen | Photo | Width | Placement |
+|---|---|---|---|
+| `/` landing | `sandbag-line.jpg` | `lg` | Hero, right of the deck. Tilt `-2`. The thesis image: neighbours, mixed ages, doing it themselves |
+| `/board` | `flood-interior.jpg` | `sm` | Thumbnail on the Hansen flood flyer only. Tilt `2`, fastener `tape` |
+| `/need/hansen-flood` | `flood-interior.jpg`, `muckout.jpg`, `debris-haul.jpg` | `md` | A row directly under the "AS SUBMITTED" quote, headed `FILED WITH THE REQUEST` (mono, uppercase). Tilts `-3`, `1`, `-1` |
+| `/squad/creek-side` | `sandbag-line.jpg` | `md` | Beside the member grid. Tilt `2` |
+| `/wall` | `debris-carry.jpg` | `md` | In `STILL OPEN`, beside the Hansen flood entry. Tilt `-2` |
+| `/wall` | `ramp-finished.jpg` | `lg` | In `MET THIS MONTH`, beside the Duthie ramp. Tilt `1`. **Renders nothing until the file exists** |
+
+Every other screen stays text-only. `/readiness` and `/registry` get **no photographs** — they are
+instruments, and photographs would undercut their seriousness.
+
+## 3.4 Caption and alt text — exact strings
+
+Captions are diegetic: written as a neighbour would label a print, not as a caption writer would.
+
+| File | `caption` | `alt` |
+|---|---|---|
+| `sandbag-line.jpg` | `"Sandbag line at the culvert — 9 March"` | `"About a dozen people of different ages standing in a line, filling and passing sandbags."` |
+| `flood-interior.jpg` | `"Ground floor, day one"` | `"The interior of a flood-damaged house, stripped back to wall studs, with silt across the floor."` |
+| `muckout.jpg` | `"Drywall out to four feet"` | `"A person in a dust mask crouching to pull saturated drywall away from a kitchen wall."` |
+| `debris-haul.jpg` | `"Load two, to the transfer station"` | `"Flood debris being loaded into the back of a truck on a residential street."` |
+| `debris-carry.jpg` | `"Still going — Hansen place"` | `"A volunteer wearing a respirator carrying a length of siding out of a flood-damaged house."` |
+| `ramp-finished.jpg` | `"Alma's ramp, finished 3 March"` | `"A finished wooden wheelchair ramp leading up to the front door of a house."` |
+
+**Alt text describes the photograph truthfully.** It is not the caption repeated, and it must not
+claim the image shows South Park or any named resident — it does not.
+
+## 3.5 The missing-file rule — important
+
+`ramp-finished.jpg` **does not exist yet** and may never be supplied.
+
+`Photo` must handle this without any visible failure:
+
+- Maintain a module-level constant listing the filenames that actually ship.
+- If `src` is not in that list, `Photo` returns `null`.
+- **No placeholder box, no grey rectangle, no "image missing" text, no broken-image icon.** The
+  surrounding layout must reflow cleanly as though the photo was never specified.
+- When someone later drops a real file at `public/photos/ramp-finished.jpg`, adding its name to
+  that constant is the only change needed.
+
+> A missing photo that renders nothing looks intentional. A broken image icon in front of a grader
+> looks like the build failed. This rule is why the reserved slot is safe to ship.
+
+## 3.6 Annotation 22
+
+Key `wall:3` in `src/data/annotations.ts`, anchored to the photo beside the Hansen flood entry:
+
+`"Photographing the damage is task ten on the flood job — it is work somebody signed up for, not decoration. That is why the record has pictures in it at all: the system asked someone to take them, and it knows who."`
+
+## 3.7 Build phase
+
+Insert as **Phase 8** (after annotations, before the AGENTS.md update):
+
+| Phase | Work | Checkpoint |
+|---|---|---|
+| **8** | `Photo` component, the six placements, captions, alt text, missing-file rule, annotation 22 | All five shipped photos render with warm filter and handwritten captions. `/wall` shows the Duthie ramp entry with **no** visual gap or broken icon. `npm run build` clean. Total `public/photos/` under 1 MB |
+
+## 3.8 Additions to the acceptance checklist
+
+- [ ] Five photographs render; each caption matches §3.4 exactly
+- [ ] `ramp-finished.jpg` is absent and its slot renders **nothing** — no placeholder, no broken icon
+- [ ] Photos carry the warm filter and read as prints on the board, not as stock photography
+- [ ] `/readiness` and `/registry` contain no photographs
+- [ ] Every `alt` describes the actual photograph and claims nothing about South Park
+- [ ] `PHOTO_CREDITS.md` is present and unmodified
