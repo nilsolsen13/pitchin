@@ -96,4 +96,13 @@ replaced the header control with Post a Need. Part F puts honors on `/me`. I
 dropped REWARDS from the landing index so THE MAP is the tenth entry. The route
 and coupon files are still in the tree, unlinked from the spec chrome.
 
+### 19. `'requester'` still appears once, as a sessionStorage migration
+
+`Role` is `'resident' | 'admin'`. `readStoredRole` still treats the string
+`'requester'` as resident so a tab that last ran Increment 2 does not crash.
+Unknown values already fall through to resident, so the extra clause is
+redundant. I left it. A strict reading of "no `'requester'` anywhere" fails
+on that one line in `DemoState.tsx`.
+
+
 
