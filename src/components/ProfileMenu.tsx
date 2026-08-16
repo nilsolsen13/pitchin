@@ -1,39 +1,15 @@
-// Profile menu — identity + the demo controls that used to sit in the header
-// cluster (spec §7.1 Viewing as / annotations / reset). Individual show-rates
-// stay off this menu; they belong on /me and /squad/:id.
+// Profile menu — identity header, My Rep, Creek Side squad, Reset demo
+// (Increment 2 §1.1–§1.2). Role switcher and annotations live in the top bar.
 
 import { useEffect, useRef, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import type { Role } from '../types';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDemo } from '../state/DemoState';
 import { actorForRole } from '../lib/actors';
 import { Avatar } from './Avatar';
 
-const ROLE_OPTIONS: { role: Role; label: string }[] = [
-  { role: 'resident', label: 'Nora Beckett · Resident' },
-  { role: 'requester', label: 'Park County EM · Requester' },
-  { role: 'admin', label: 'Park County · Administrator' },
-];
-
-function isRouteAllowed(path: string, role: Role): boolean {
-  if (path.startsWith('/post')) return role === 'requester';
-  if (path.startsWith('/me')) return role === 'resident';
-  if (path.startsWith('/readiness')) return role === 'admin';
-  return true;
-}
-
 export function ProfileMenu() {
-  const {
-    role,
-    setRole,
-    annotationsOn,
-    toggleAnnotations,
-    resetDemo,
-    setToast,
-    people,
-  } = useDemo();
+  const { role, resetDemo, people } = useDemo();
   const navigate = useNavigate();
-  const location = useLocation();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -56,15 +32,6 @@ export function ProfileMenu() {
       document.removeEventListener('keydown', onKey);
     };
   }, [open]);
-
-  function onSelectRole(newRole: Role) {
-    const allowed = isRouteAllowed(location.pathname, newRole);
-    setRole(newRole);
-    if (!allowed) {
-      navigate('/board');
-      setToast(`VIEW CHANGED · ${newRole.toUpperCase()}`);
-    }
-  }
 
   function onReset() {
     setOpen(false);
@@ -128,52 +95,7 @@ export function ProfileMenu() {
             ) : null}
           </div>
 
-          <div className="space-y-3 px-4 py-3">
-            <div className="font-mono text-[11px] uppercase tracking-wider text-warm-ink-2">
-              Settings
-            </div>
-
-            <label className="flex flex-col">
-              <span className="mb-1 font-mono text-[0.65rem] tracking-wider text-warm-ink-2">
-                VIEWING AS
-              </span>
-              <select
-                value={role}
-                onChange={(e) => onSelectRole(e.target.value as Role)}
-                className="paper-select"
-              >
-                {ROLE_OPTIONS.map((o) => (
-                  <option key={o.role} value={o.role}>
-                    {o.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <button
-              type="button"
-              onClick={toggleAnnotations}
-              className="flex w-full items-center justify-between text-sm text-warm-ink"
-              aria-pressed={annotationsOn}
-            >
-              <span>Explain this screen</span>
-              <span
-                className={`inline-flex h-4 w-7 items-center rounded-full border transition-colors ${
-                  annotationsOn
-                    ? 'border-warm-stamp bg-warm-stamp/20'
-                    : 'border-warm-rule bg-[#f4efe4]'
-                }`}
-              >
-                <span
-                  className={`h-3 w-3 rounded-full transition-transform ${
-                    annotationsOn
-                      ? 'translate-x-3.5 bg-warm-stamp'
-                      : 'translate-x-0.5 bg-warm-ink-2'
-                  }`}
-                />
-              </span>
-            </button>
-
+          <div className="px-4 py-3">
             <button
               type="button"
               onClick={onReset}

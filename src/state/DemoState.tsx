@@ -39,7 +39,7 @@ function makeInitial(): DemoState {
   const s = freshSeed();
   return {
     role: 'resident',
-    annotationsOn: false,
+    annotationsOn: true,
     people: s.people,
     needs: s.needs,
     tasks: s.tasks,
@@ -114,7 +114,7 @@ function reducer(state: DemoState, action: Action): DemoState {
       const s = freshSeed();
       return {
         role: 'resident',
-        annotationsOn: false,
+        annotationsOn: true,
         people: s.people,
         needs: s.needs,
         tasks: s.tasks,

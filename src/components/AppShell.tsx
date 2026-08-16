@@ -13,6 +13,7 @@ import { fmtPct1, fmtStatusDate } from '../lib/format';
 import { actorForRole } from '../lib/actors';
 import { Toast } from './Toast';
 import { ProfileMenu } from './ProfileMenu';
+import { AnnotationsSwitch, RoleSwitcher } from './DemoControls';
 import { Wordmark } from './Wordmark';
 
 interface NavItem {
@@ -44,12 +45,12 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-[#3a2410] text-[#f4efe4]">
       <header className="sticky top-0 z-40 h-16 border-b border-[#2a1a0c] bg-[#5c3a1e]">
-        <div className="mx-auto flex h-16 max-w-content items-center gap-6 px-8">
+        <div className="mx-auto flex h-16 max-w-content flex-nowrap items-center gap-6 overflow-hidden px-8">
           <Link to="/" className="text-xl text-[#f4efe4]">
             <Wordmark />
           </Link>
 
-          <nav className="flex items-center gap-5">
+          <nav className="flex min-w-0 items-center gap-5 whitespace-nowrap">
             {NAV.filter((item) => navVisible(item, role)).map((item) => (
               <NavLink
                 key={item.to}
@@ -68,9 +69,11 @@ export function AppShell({ children }: { children: ReactNode }) {
           </nav>
 
           <div
-            className="ml-auto flex items-center gap-3"
+            className="ml-auto flex shrink-0 items-center gap-3"
             aria-label={`Demo controls, viewing as ${actor.name}`}
           >
+            <RoleSwitcher />
+            <AnnotationsSwitch />
             <ProfileMenu />
           </div>
         </div>
