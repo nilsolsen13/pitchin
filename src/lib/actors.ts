@@ -1,6 +1,5 @@
 // Who "you" are in the demo chrome. Resident is Nora Beckett (the prescribed
-// persona). Requester and admin are org desks, not Appendix A people — they
-// still need stable ids so DMs can address them.
+// persona). Requester and admin are org desks, not Appendix A people.
 
 import type { Person, Role } from '../types';
 import { squads } from '../data/seed';
@@ -35,8 +34,4 @@ export function actorForRole(role: Role, people: Person[]): Actor {
 
 export function displayName(id: string, people: Person[]): string {
   return DESKS[id]?.name ?? people.find((p) => p.id === id)?.name ?? id;
-}
-
-export function isDesk(id: string): boolean {
-  return id in DESKS;
 }

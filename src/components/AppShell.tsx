@@ -1,9 +1,8 @@
 // Persistent chrome for routes 1–8 (spec §7.1). Wood hallway trim around
 // the cork bulletin. Top bar (64px) + status bar (36px). Nav gates by role.
-// Profile menu holds Viewing as / annotations / reset; messages open a
-// right-rail drawer. Role change still redirects off gated routes (§9.2).
+// Profile menu holds identity, My Rep, Creek Side squad, and reset.
+// Role change still redirects off gated routes (§9.2).
 
-import { useCallback, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import type { Role } from '../types';
@@ -12,10 +11,8 @@ import { DEMO_TODAY } from '../data/seed';
 import { townShowRate } from '../lib/derive';
 import { fmtPct1, fmtStatusDate } from '../lib/format';
 import { actorForRole } from '../lib/actors';
-import { unreadTotal } from '../lib/chat';
 import { Toast } from './Toast';
 import { ProfileMenu } from './ProfileMenu';
-import { ChatDrawer } from './ChatDrawer';
 import { Wordmark } from './Wordmark';
 
 interface NavItem {
@@ -38,14 +35,11 @@ function navVisible(item: NavItem, role: Role): boolean {
 }
 
 export function AppShell({ children }: { children: ReactNode }) {
-  const { role, people, needs, threads, messages } = useDemo();
-  const [chatOpen, setChatOpen] = useState(false);
-  const closeChat = useCallback(() => setChatOpen(false), []);
+  const { role, people, needs } = useDemo();
 
   const surgeCount = needs.filter((n) => n.mode === 'surge' && n.status !== 'met').length;
   const showRate = fmtPct1(townShowRate(people));
   const actor = actorForRole(role, people);
-  const unread = unreadTotal(threads, messages, actor.id);
 
   return (
     <div className="min-h-screen bg-[#3a2410] text-[#f4efe4]">
@@ -73,21 +67,10 @@ export function AppShell({ children }: { children: ReactNode }) {
             ))}
           </nav>
 
-          <div className="ml-auto flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => setChatOpen(true)}
-              className="relative flex h-9 w-9 items-center justify-center rounded-warm text-[#d4c4a8] hover:text-[#f6e6a8]"
-              aria-label={unread > 0 ? `Open messages, ${unread} unread` : 'Open messages'}
-              aria-expanded={chatOpen}
-            >
-              <ChatIcon />
-              {unread > 0 ? (
-                <span className="absolute -right-1 -top-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-warm-stamp px-1 font-mono text-[10px] text-[#f4efe4]">
-                  {unread}
-                </span>
-              ) : null}
-            </button>
+          <div
+            className="ml-auto flex items-center gap-3"
+            aria-label={`Demo controls, viewing as ${actor.name}`}
+          >
             <ProfileMenu />
           </div>
         </div>
@@ -101,24 +84,6 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <main className="mx-auto max-w-content px-8 py-8">{children}</main>
       <Toast />
-      <ChatDrawer open={chatOpen} onClose={closeChat} />
     </div>
-  );
-}
-
-function ChatIcon() {
-  return (
-    <svg
-      width="22"
-      height="22"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.75"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M5 6.5A2.5 2.5 0 0 1 7.5 4h9A2.5 2.5 0 0 1 19 6.5v7A2.5 2.5 0 0 1 16.5 16H9l-4 3v-3.2A2.5 2.5 0 0 1 5 13.5v-7Z" />
-    </svg>
   );
 }

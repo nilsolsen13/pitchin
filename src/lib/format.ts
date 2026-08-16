@@ -79,13 +79,6 @@ export function fmtMonthYearUpper(iso: string): string {
   return `${MON_LONG[m - 1].toUpperCase()} ${y}`;
 }
 
-// Chat stamp — civil date + clock from the ISO string, no Date().
-// "11 MAR · 18:12"
-export function fmtChatStamp(iso: string): string {
-  const { m, d } = parseISODate(iso);
-  return `${d} ${MON_SHORT[m - 1]} · ${iso.slice(11, 16)}`;
-}
-
 // Compact operational duration: "45 MIN", "1 HR", "3 HR", "1H 30M".
 export function fmtDuration(min: number): string {
   if (min < 60) return `${min} MIN`;

@@ -153,21 +153,3 @@ export interface Merchant {
 // ─── Demo state (spec §8.1) ──────────────────────────────────────────────────
 
 export type RepState = 'STANDARD' | 'SCOPED_DOWN' | 'KEEP_THE_CHAIN' | 'WAIVED' | 'ACCEPTED';
-
-// ─── Direct messages (demo chrome — not Appendix A) ──────────────────────────
-// 1:1 threads only. Seed lives in src/data/messages.ts so Appendix A stays
-// verbatim. Reset clones this the same way it clones needs/tasks.
-
-export interface ChatThread {
-  id: string;
-  participantIds: [string, string];
-}
-
-export interface ChatMessage {
-  id: string;
-  threadId: string;
-  fromId: string;
-  body: string;
-  sentAt: ISODateTime;
-  readBy: string[];
-}
