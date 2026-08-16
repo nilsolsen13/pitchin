@@ -27,6 +27,7 @@ const NAV: NavItem[] = [
   { to: '/post', label: 'Post a Need', roles: ['requester'] },
   { to: '/registry', label: 'Registry', roles: 'all' },
   { to: '/me', label: 'My Rep', roles: ['resident'] },
+  { to: '/calendar', label: 'Calendar', roles: ['resident'] },
   { to: '/readiness', label: 'Readiness', roles: ['admin'] },
   { to: '/wall', label: 'The Wall', roles: 'all' },
 ];
