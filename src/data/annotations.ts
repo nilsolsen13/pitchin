@@ -1,6 +1,5 @@
-// Annotation copy (spec §8.2), keyed by {route}:{n}. Verbatim from §7.2–§7.9.
-// Exactly 18 annotations across the eight product screens — the landing page has
-// none (do not invent two extra to force "20"; see NOTES_FOR_NILS.md #2).
+// Annotation copy (spec §8.2 + Increment 2), keyed by {route}:{n}. Verbatim.
+// 18 from Increment 1, calendar:1–3 (notes 19–21), wall:3 (note 22) in Phase 8.
 
 export const annotations: Record<string, string> = {
   // §7.2 Board (3)
@@ -54,4 +53,16 @@ export const annotations: Record<string, string> = {
     'Every completed need gets a short public after-action report. Effort becomes visible and legible, which is what actually produces the next turnout. Most volunteer software has no concept of an outcome at all.',
   'wall:2':
     "An honest AAR names what went wrong. This one says the town bought lumber it already owned — which is exactly the failure the registry exists to prevent, admitted in public.",
+
+  // Increment 2 §2.4 Calendar (3) — notes 19–21
+  'calendar:1':
+    "A civic system that doesn't appear in your actual calendar is asking you to remember it. Twenty minutes a week survives only if it lives where the rest of your week lives.",
+  'calendar:2':
+    "You are shown what you're qualified for, not everything that's open. That is the registry doing its job in the other direction — matching capability to need instead of broadcasting to everyone and hoping.",
+  'calendar:3':
+    "Your record is commitments, not hours. Nine kept weeks and two missed ones is a truer picture of whether a town can count on you than any total ever printed on a volunteer certificate.",
+
+  // Increment 2 §3.6 The Wall (note 22) — wired with the photo in Phase 8
+  'wall:3':
+    "Photographing the damage is task ten on the flood job — it is work somebody signed up for, not decoration. That is why the record has pictures in it at all: the system asked someone to take them, and it knows who.",
 };

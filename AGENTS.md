@@ -3,20 +3,20 @@
 This repo builds **PitchIn**, a clickable prototype of a civic readiness platform, set in South
 Park, Park County, Colorado.
 
-**The specification is [`PitchIn_MVP_build_spec.md`](./PitchIn_MVP_build_spec.md). It is
-authoritative.** Read it in full before your first edit. It contains the data model, three state
-machines, both color palettes, nine screen specs with literal copy, and a fully enumerated seed
-data appendix.
+**The specification is [`PitchIn_MVP_build_spec.md`](./PitchIn_MVP_build_spec.md).** It is
+authoritative for Increment 1. Later increment docs win where they disagree, in this order:
+Increment 3 > Increment 2 > MVP spec. Read the increment doc you are building before editing.
 
 ### Spec files that are not the product spec
 
-Three files in this repo have "spec" in the name besides the logo brief. **Only one of them is
-the product build spec.** Do not be misled by the version numbers — `v2` does not supersede `v1`,
-and neither supersedes the build spec.
+Do not be misled by version numbers — `v2` does not supersede `v1`, and neither supersedes the
+build spec.
 
 | File | What it actually is | Build from it? |
 |---|---|---|
-| `PitchIn_MVP_build_spec.md` | The specification. Screens, data, copy, seed. | **Yes — this one.** |
+| `PitchIn_MVP_build_spec.md` | Increment 1 specification. Screens, data, copy, seed. | **Yes — Increment 1.** |
+| `PitchIn_increment_2_calendar_and_polish.md` | Demo legibility, calendar, photographs. | **Yes — Increment 2.** Wins over the MVP spec where they disagree. |
+| `PitchIn_increment_3_corrections.md` | EMT-Paramedic qual, Vasquez policy line, ratifications. | **Yes — Increment 3.** Wins over Increment 2 where they disagree. |
 | `PitchIn_logo_spec.md` | Mark + wordmark brief (🤲, hands from each side). | **Yes — the logo only.** Does not change screens, data, or copy. |
 | `PitchIn_spec_v1.md` | Original pitch narrative. Read for tone and vocabulary. Describes no screens. | No |
 | `PitchIn_spec_v2.md` | Planning notes recording *how* the build spec was scoped. Despite the filename it is **not a spec**, and some of its details (notably the stack row) are stale. | **No — and prefer the build spec wherever they disagree.** |
