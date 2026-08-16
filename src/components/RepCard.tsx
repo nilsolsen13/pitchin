@@ -5,6 +5,8 @@
 import { Link } from 'react-router-dom';
 import type { RepState } from '../types';
 import { useDemo } from '../state/DemoState';
+import { PAPER } from '../lib/paper';
+import { Flyer } from './Flyer';
 
 interface RepContent {
   headline: string;
@@ -37,30 +39,32 @@ export function RepCard({
   state,
   onAccept,
   onWaive,
+  className,
 }: {
   variant?: 'large' | 'compact';
   state?: RepState;
   onAccept?: () => void;
   onWaive?: () => void;
+  className?: string;
 }) {
   const ctx = useDemo();
   const repState = state ?? ctx.repState;
 
   if (repState === 'WAIVED') {
     return (
-      <div className="rounded-ops border border-ops-border bg-ops-surface p-5">
-        <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-ops-text-3">{EYEBROW}</div>
-        <p className="mt-2 text-lg text-ops-text">Noted. Nothing counts against you. Junie's covering the call.</p>
-      </div>
+      <Flyer id="rep-waived" paper={PAPER.green}>
+        <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-warm-ink-2">{EYEBROW}</div>
+        <p className="mt-2 text-lg text-warm-ink">Noted. Nothing counts against you. Junie's covering the call.</p>
+      </Flyer>
     );
   }
 
   if (repState === 'ACCEPTED') {
     return (
-      <div className="rounded-ops border border-ops-border bg-ops-surface p-5">
+      <Flyer id="rep-accepted" paper={PAPER.green}>
         <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-status-verified">REP ACCEPTED</div>
-        <p className="mt-2 text-lg text-ops-text">You're on it. Thursday at 6:00 PM with Junie.</p>
-      </div>
+        <p className="mt-2 text-lg text-warm-ink">You're on it. Thursday at 6:00 PM with Junie.</p>
+      </Flyer>
     );
   }
 
@@ -70,39 +74,42 @@ export function RepCard({
     return (
       <Link
         to="/me"
-        className="block rounded-ops border border-ops-border bg-ops-surface p-4 transition-colors hover:bg-ops-raised"
+        className={`block transition-colors ${
+          className ??
+          'rounded-warm border border-warm-rule bg-warm-paper p-4 hover:bg-warm-paper-deep'
+        }`}
       >
-        <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-ops-text-3">
+        <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-warm-ink-2">
           YOUR REP THIS WEEK
         </div>
-        <p className="mt-1.5 text-sm font-medium text-ops-text">{c.headline}</p>
-        <div className="mt-2 font-mono text-[11px] uppercase tracking-wider text-ops-accent">{c.meta}</div>
+        <p className="mt-1.5 text-sm font-medium text-warm-ink">{c.headline}</p>
+        <div className="mt-2 font-mono text-[11px] uppercase tracking-wider text-warm-stamp">{c.meta}</div>
       </Link>
     );
   }
 
   return (
-    <div className="rounded-ops border border-ops-border bg-ops-surface p-6">
-      <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-ops-text-3">{EYEBROW}</div>
-      <h2 className="mt-3 text-2xl font-semibold leading-snug text-ops-text">{c.headline}</h2>
-      <div className="mt-3 font-mono text-xs uppercase tracking-wider text-ops-accent">{c.meta}</div>
-      <p className="mt-3 text-ops-text-2">{c.body}</p>
+    <Flyer id={`rep-${repState}`} paper={PAPER.yellow}>
+      <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-warm-ink-2">{EYEBROW}</div>
+      <h2 className="mt-3 text-2xl font-semibold leading-snug text-warm-ink">{c.headline}</h2>
+      <div className="mt-3 font-mono text-xs uppercase tracking-wider text-warm-stamp">{c.meta}</div>
+      <p className="mt-3 text-warm-ink-2">{c.body}</p>
       <div className="mt-5 flex gap-3">
         <button
           type="button"
           onClick={onAccept}
-          className="rounded-ops bg-ops-accent px-4 py-2 text-sm font-medium text-ops-bg hover:brightness-110"
+          className="rounded-warm bg-warm-stamp px-4 py-2 text-sm font-medium text-warm-paper hover:brightness-110"
         >
           I'm on it
         </button>
         <button
           type="button"
           onClick={onWaive}
-          className="rounded-ops border border-ops-border px-4 py-2 text-sm text-ops-text-2 hover:border-ops-text-3 hover:text-ops-text"
+          className="rounded-warm border border-warm-rule px-4 py-2 text-sm text-warm-ink-2 hover:border-warm-ink hover:text-warm-ink"
         >
           Can't this week
         </button>
       </div>
-    </div>
+    </Flyer>
   );
 }

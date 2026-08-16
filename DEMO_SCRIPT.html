@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PitchIn — Demo Walkthrough Script</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Oswald:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --paper: #f4efe4;
+        --paper-deep: #eae2d2;
+        --ink: #2a2620;
+        --ink-2: #6b6250;
+        --rule: #c9bfa9;
+        --stamp: #a63d2e;
+        --green: #47643f;
+        --accent: #e8a33d;
+        --do: #3d5a80;
+        --say: #a63d2e;
+        --point: #47643f;
+        --dont: #8a3b32;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: Inter, system-ui, sans-serif;
+        font-size: 16px;
+        line-height: 1.55;
+      }
+
+      a {
+        color: var(--stamp);
+      }
+
+      .wrap {
+        display: grid;
+        grid-template-columns: 220px minmax(0, 52rem);
+        gap: 2.5rem;
+        max-width: 76rem;
+        margin: 0 auto;
+        padding: 2rem 2rem 6rem;
+      }
+
+      nav {
+        position: sticky;
+        top: 1.5rem;
+        align-self: start;
+        font-size: 0.8125rem;
+      }
+
+      nav .nav-label {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 0.65rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ink-2);
+        margin-bottom: 0.75rem;
+      }
+
+      nav a {
+        display: block;
+        color: var(--ink-2);
+        text-decoration: none;
+        padding: 0.28rem 0;
+        border-bottom: 1px solid transparent;
+      }
+
+      nav a:hover {
+        color: var(--ink);
+      }
+
+      header.mast {
+        border-bottom: 3px solid var(--stamp);
+        padding-bottom: 1.25rem;
+        margin-bottom: 2rem;
+      }
+
+      h1,
+      h2,
+      .display {
+        font-family: Oswald, sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        line-height: 1.15;
+      }
+
+      h1 {
+        font-size: 2.75rem;
+        margin: 0 0 0.75rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        margin: 2.75rem 0 0.85rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid var(--rule);
+      }
+
+      h2 .route {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 0.85rem;
+        font-weight: 500;
+        letter-spacing: 0;
+        text-transform: none;
+        color: var(--stamp);
+        display: block;
+        margin-bottom: 0.2rem;
+      }
+
+      h3 {
+        font-size: 1rem;
+        margin: 1.4rem 0 0.5rem;
+      }
+
+      p,
+      li {
+        color: var(--ink);
+      }
+
+      .lede {
+        font-size: 1.125rem;
+        max-width: 42rem;
+      }
+
+      .meta {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 0.8125rem;
+        color: var(--ink-2);
+      }
+
+      .callout {
+        background: var(--paper-deep);
+        border-left: 3px solid var(--stamp);
+        padding: 0.9rem 1rem;
+        margin: 1rem 0;
+      }
+
+      .cue {
+        display: grid;
+        grid-template-columns: 5.5rem minmax(0, 1fr);
+        gap: 0.75rem;
+        margin: 0.85rem 0;
+        align-items: start;
+      }
+
+      .tag {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 0.65rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.28rem 0.4rem;
+        text-align: center;
+        color: #fff;
+      }
+
+      .tag-do {
+        background: var(--do);
+      }
+      .tag-say {
+        background: var(--say);
+      }
+      .tag-point {
+        background: var(--point);
+      }
+      .tag-dont {
+        background: var(--dont);
+      }
+      .tag-next {
+        background: var(--ink);
+      }
+
+      .say {
+        margin: 0;
+        padding: 0.7rem 0.9rem;
+        background: #fbf6ea;
+        border-left: 3px solid var(--stamp);
+        font-size: 1.02rem;
+        line-height: 1.5;
+      }
+
+      .say + .say {
+        margin-top: 0.5rem;
+      }
+
+      .cue .body {
+        min-width: 0;
+      }
+
+      .cue .body > :first-child {
+        margin-top: 0;
+      }
+
+      .cue .body > :last-child {
+        margin-bottom: 0;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+        margin: 0.75rem 0 1.1rem;
+      }
+
+      th {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 0.68rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        text-align: left;
+        color: var(--ink-2);
+        border-bottom: 1px solid var(--rule);
+        padding: 0.45rem 0.5rem 0.45rem 0;
+      }
+
+      td {
+        border-bottom: 1px solid var(--rule);
+        padding: 0.5rem 0.5rem 0.5rem 0;
+        vertical-align: top;
+      }
+
+      code,
+      .mono {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 0.85em;
+      }
+
+      ol.steps,
+      ul {
+        margin: 0.4rem 0 0.8rem;
+        padding-left: 1.2rem;
+      }
+
+      .role {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 0.75rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--ink-2);
+        margin: 0 0 1rem;
+      }
+
+      .path {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin: 0.75rem 0 1.25rem;
+      }
+
+      .path span {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 0.72rem;
+        background: var(--paper-deep);
+        padding: 0.25rem 0.45rem;
+        border: 1px solid var(--rule);
+      }
+
+      footer.close {
+        margin-top: 2.5rem;
+        padding: 1.25rem 0 0;
+        border-top: 3px solid var(--stamp);
+      }
+
+      @media (max-width: 860px) {
+        .wrap {
+          grid-template-columns: 1fr;
+          padding: 1.25rem 1.25rem 4rem;
+        }
+
+        nav {
+          position: static;
+        }
+
+        .cue {
+          grid-template-columns: 1fr;
+          gap: 0.3rem;
+        }
+
+        .tag {
+          width: fit-content;
+        }
+      }
+
+      @media print {
+        nav {
+          display: none;
+        }
+
+        .wrap {
+          display: block;
+          max-width: none;
+          padding: 0;
+        }
+
+        h2 {
+          break-before: page;
+        }
+
+        h2:first-of-type {
+          break-before: auto;
+        }
+
+        a {
+          color: inherit;
+          text-decoration: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <nav aria-label="Sections">
+        <div class="nav-label">Script</div>
+        <a href="#how">How to use</a>
+        <a href="#setup">Before you start</a>
+        <a href="#overview">0 · Overview</a>
+        <a href="#mechanisms">Mechanisms</a>
+        <a href="#board">1 · Board</a>
+        <a href="#post">2 · Post a Need</a>
+        <a href="#need">3 · Hansen flood</a>
+        <a href="#me">4 · My Rep</a>
+        <a href="#squad">5 · Squad</a>
+        <a href="#registry">6 · Registry</a>
+        <a href="#readiness">7 · Readiness</a>
+        <a href="#wall">8 · The Wall</a>
+        <a href="#close">Close</a>
+        <a href="#timing">Timing</a>
+        <a href="#numbers">Numbers</a>
+        <a href="#clicks">Live clicks</a>
+        <a href="#questions">Questions</a>
+        <a href="#notes">Annotations</a>
+      </nav>
+
+      <main>
+        <header class="mast">
+          <h1>PitchIn</h1>
+          <p class="display" style="font-size: 1.25rem; margin: 0 0 0.75rem">
+            Demo Walkthrough Script
+          </p>
+          <p class="meta">
+            Thursday, 12 March 2026 · South Park, Park County, Colorado · Pop.
+            4,187
+          </p>
+          <p class="lede">
+            A spoken guide for presenting the prototype. Use this with the live
+            app open. Do not memorize every line. Hit the beats, keep the copy
+            honest, and let the seed data do the arguing.
+          </p>
+        </header>
+
+        <h2 id="how">How to use this</h2>
+        <p>Each stop has four parts:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Tag</th>
+              <th>Meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tag tag-do">Do</span></td>
+              <td>What to click. Do this first, then talk.</td>
+            </tr>
+            <tr>
+              <td><span class="tag tag-say">Say</span></td>
+              <td>
+                Spoken lines. Paraphrase if you need to, except where the script
+                says <em>verbatim</em>.
+              </td>
+            </tr>
+            <tr>
+              <td><span class="tag tag-point">Point</span></td>
+              <td>What the audience should be looking at.</td>
+            </tr>
+            <tr>
+              <td><span class="tag tag-dont">Don't</span></td>
+              <td>Easy ways to undercut the argument.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+          <strong>Recommended path (about 12 minutes):</strong>
+        </p>
+        <div class="path">
+          <span>Landing</span>
+          <span>Board</span>
+          <span>Post a Need</span>
+          <span>Hansen flood</span>
+          <span>My Rep</span>
+          <span>Squad</span>
+          <span>Registry</span>
+          <span>Readiness</span>
+          <span>The Wall</span>
+        </div>
+        <p>
+          <strong>Eight-minute cut:</strong> skip Squad and skip the live Claim /
+          Verify clicks. Still hit Vasquez, the shrinking ask, the registry
+          single-points, and the Wall AAR.
+        </p>
+        <div class="callout">
+          If nobody is narrating (async review): turn on
+          <strong>Explain this screen</strong> and leave it on. The numbered
+          notes <em>are</em> the walkthrough.
+        </div>
+
+        <h2 id="setup">Before you start</h2>
+        <ol class="steps">
+          <li>Open the app at <code>/</code>.</li>
+          <li>
+            Click the avatar (top right) → <strong>Reset demo</strong>. You land
+            on <code>/board</code> as Nora Beckett.
+          </li>
+          <li>
+            Click the <strong>PitchIn</strong> wordmark to return to
+            <code>/</code>.
+          </li>
+          <li>
+            Leave <strong>Explain this screen</strong> off unless you want the
+            numbered notes visible while you talk. They persist across routes
+            once on.
+          </li>
+          <li>
+            Desktop-first. Aim the window at ~1440px. Do not demo on a phone.
+          </li>
+        </ol>
+        <p>
+          Demo controls live in the <strong>avatar menu</strong>, not the top
+          nav:
+        </p>
+        <ul>
+          <li>
+            <strong>VIEWING AS</strong> — Nora Beckett · Resident / Park County
+            EM · Requester / Park County · Administrator
+          </li>
+          <li>
+            <strong>Explain this screen</strong> — numbered notes on each
+            product screen
+          </li>
+          <li>
+            <strong>Reset demo</strong> — restores seed, role back to resident,
+            annotations off, navigates to <code>/board</code>
+          </li>
+        </ul>
+        <p>
+          Nav items appear and disappear with the role. That is the permission
+          argument made visible: residents see <strong>My Rep</strong>,
+          requesters see <strong>Post a Need</strong>, admins see
+          <strong>Readiness</strong>.
+        </p>
+        <p>
+          Refresh resets everything. That is intended. If a live click goes
+          sideways, Reset.
+        </p>
+
+        <h2 id="overview">
+          <span class="route">/</span>
+          0. Overview — the thesis
+          <span class="meta" style="text-transform: none; letter-spacing: 0"
+            > · 60–90 seconds</span
+          >
+        </h2>
+
+        <div class="cue">
+          <span class="tag tag-do">Do</span>
+          <div class="body">
+            Stay on <code>/</code>. Do not scroll-race. Let them read the three
+            failure columns.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <blockquote class="say">
+              PitchIn is a readiness system for local service. It turns a town's
+              unmet needs into taskable units, matches them to what residents
+              actually have — skills, trucks, languages — and then rewards the
+              one thing civic life never measures: showing up when you said you
+              would, week after week.
+            </blockquote>
+            <blockquote class="say">
+              Civic volunteering does not fail on goodwill. It fails on three
+              things.
+            </blockquote>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-point">Point</span>
+          <div class="body">
+            The three columns, in order.
+            <ol>
+              <li>
+                <strong>Supply chain</strong> — demand is unstructured, capacity
+                is invisible, matching happens on a group text.
+              </li>
+              <li>
+                <strong>Loop closure</strong> — nobody reports the outcome, so
+                effort disappears and people don't come back.
+              </li>
+              <li>
+                <strong>Cadence</strong> — service is treated as episodic and
+                heroic. We know how to build a gym habit. We have almost nothing
+                for a civic one.
+              </li>
+            </ol>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <p class="meta">The claim — the product's one-sentence bet</p>
+            <blockquote class="say">
+              Volunteering forty hours once and then vanishing is worth less
+              than twenty minutes a week for two years. PitchIn is the first
+              system that says so out loud.
+            </blockquote>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-point">Point</span>
+          <div class="body">
+            The four anti-gaming lines under “Any metric becomes a target.” Hit
+            them as a list, not a speech:
+            <ul>
+              <li>One rep per week — show-rate can't be farmed.</li>
+              <li>The requester verifies the task — not self-report.</li>
+              <li>Rankings are squad-level — no individual glory board.</li>
+              <li>
+                Rewards stay symbolic and local — no gift-card economy.
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <blockquote class="say">
+              If we get the metric wrong, we crowd out the reason people showed
+              up. So the reward layer stays thin on purpose.
+            </blockquote>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-do">Do</span>
+          <div class="body">Click <strong>Enter South Park</strong>.</div>
+        </div>
+
+        <h2 id="mechanisms">The four mechanisms</h2>
+        <p>
+          Keep these in your head. You will not lecture this list. You will
+          <em>show</em> each one on a screen.
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Failure</th>
+              <th>Mechanism</th>
+              <th>Where it becomes visible</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Supply chain</td>
+              <td>
+                Decompose a need into tasks with time, skill, and materiel.
+                Match against a capability registry.
+              </td>
+              <td>
+                <code>/post</code>, <code>/need/hansen-flood</code>,
+                <code>/registry</code>
+              </td>
+            </tr>
+            <tr>
+              <td>Loop closure</td>
+              <td>
+                Requester verifies. Public after-action report on the wall.
+              </td>
+              <td><code>/need/hansen-flood</code>, <code>/wall</code></td>
+            </tr>
+            <tr>
+              <td>Cadence</td>
+              <td>
+                One weekly rep, fixed time, named partner. Miss and the ask
+                shrinks — it does not guilt.
+              </td>
+              <td><code>/me</code>, <code>/squad/creek-side</code></td>
+            </tr>
+            <tr>
+              <td>Anti-gaming</td>
+              <td>
+                One-rep cap, requester-only verify, squad-only public rankings,
+                local symbolic rewards.
+              </td>
+              <td>
+                Enforced in the UI on those screens, not just claimed on the
+                landing page
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          <strong>Vocabulary.</strong> The name is warm. The interior is
+          operational:
+          <em>reps, squads, quals, surge, sustainment, show-rate, AAR, standing, materiel.</em>
+          Do not translate these into “sessions,” “teams,” “badges,” or
+          “reports.” The tension is the personality.
+        </p>
+        <p>
+          <strong>The South Park rule.</strong> Landmarks and businesses carry
+          the TV-show names (Tweek Bros., City Wok, Hell's Pass, the Cows).
+          <strong>Residents never do.</strong> Every name is an invented
+          Colorado person. Play it straight. If a line would get a laugh, cut
+          it.
+        </p>
+
+        <h2 id="board">
+          <span class="route">/board</span>
+          1. Needs Board
+        </h2>
+        <p class="role">Role: Nora Beckett · Resident (default after Reset)</p>
+        <div class="cue">
+          <span class="tag tag-do">Do</span>
+          <div class="body">
+            Land here from <strong>Enter South Park</strong>. Glance at the
+            status bar:
+            <code
+              >SOUTH PARK, CO · THU 12 MAR 2026 · TOWN SHOW-RATE 90.7% · 1
+              ACTIVE SURGE</code
+            >.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <blockquote class="say">
+              This is Thursday the twelfth of March. Twenty-four residents, four
+              squads, one active surge. Town show-rate is 90.7 percent — 915
+              commitments kept against 94 missed. Every figure in this prototype
+              is derived from the seed, not hardcoded.
+            </blockquote>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-point">Point</span>
+          <div class="body">
+            The six cards. Order is surge first, then stalled, then by age. The
+            subhead is the board in one line:
+            <em>Six needs. Five active, one met. One surge. One stalled.</em>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-do">Do</span>
+          <div class="body">
+            Point at
+            <strong>Flood response — the Hansen place, Middle Fork</strong>
+            (SURGE). Then at
+            <strong>Driveway plow — Eleanor Vasquez, Tarryall Rd</strong>
+            (STALLED). Then, if you have a beat, at
+            <strong>Wheelchair ramp — Alma Duthie</strong> under MET — it stays
+            on the board because a board that hides what got done cannot close
+            the loop.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <p class="meta">Vasquez — the most important object on the screen</p>
+            <blockquote class="say">
+              An all-green board would read as fiction. Eleanor Vasquez's
+              driveway has been open six days with zero claims. The diagnosis is
+              printed on the card: both plow-equipped trucks are registered to
+              Kenosha Pass, twenty-two minutes from Tarryall Road. The equipment
+              exists. It is on the wrong side of the basin. That is a supply
+              failure, not an apathy problem.
+            </blockquote>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-dont">Don't</span>
+          <div class="body">
+            Staff it. Soften the copy. Joke that “someone should just drive
+            over.” The unmet need is the product's central argument made
+            concrete.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-do">Do</span>
+          <div class="body">
+            Optional, 10 seconds: click the <strong>STALLED</strong> filter,
+            then back to <strong>ALL</strong>, so they see the filters are real.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-point">Point</span>
+          <div class="body">
+            Right rail, resident only: “Your rep this week” — one rep, twenty
+            minutes, named partner. Town capacity: 24 residents, 31 assets, 16
+            quals, 4 squads.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <blockquote class="say">
+              Two modes. Sustainment is the weekly rep. Surge is the flood, the
+              fire, the funeral. The whole point of drilling weekly is that when
+              a surge comes, the town already knows who has a truck and who
+              answers their phone.
+            </blockquote>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-next">Next</span>
+          <div class="body">
+            Avatar → <strong>VIEWING AS</strong> →
+            <strong>Park County EM · Requester</strong>. Nav gains
+            <strong>Post a Need</strong>. Go there.
+          </div>
+        </div>
+
+        <h2 id="post">
+          <span class="route">/post</span>
+          2. Post a Need
+        </h2>
+        <p class="role">
+          Role: Park County EM · Requester. Residents cannot see this route.
+        </p>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <blockquote class="say">
+              A need arrives the way a person would say it out loud. The hard
+              technical problem is turning that into tasks someone can actually
+              staff — each with time, skill, and materiel — because a task
+              nobody is qualified to do is not a task. It is a wish.
+            </blockquote>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-do">Do</span>
+          <div class="body">
+            Click <strong>Use the Hansen flood</strong>. Do not type. The
+            prefill is the exact submitted text, so the demo cannot fail live.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-do">Do</span>
+          <div class="body">
+            Click <strong>Decompose</strong>. Wait. Do not talk over the first
+            second. The sequence is local <code>setTimeout</code> — no network,
+            it cannot fail:
+            <ol>
+              <li><code>PARSING REQUIREMENTS…</code></li>
+              <li><code>MATCHING AGAINST REGISTRY…</code></li>
+              <li><code>11 TASKABLE UNITS IDENTIFIED</code></li>
+              <li>Eleven rows stagger in. Then the summary bar.</li>
+            </ol>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-point">Point</span>
+          <div class="body">
+            The summary —
+            <code
+              >11 TASKS · 3 REQUIRE A TRUCK · 1 REQUIRES A PUMP OPERATOR · 1
+              BLOCKED ON MATERIEL</code
+            >.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <blockquote class="say">
+              “Help the Hansens after the flood” becomes eleven tasks. Three
+              need a truck. One needs someone who can run a pump. That is the
+              difference between a group text and a supply chain.
+            </blockquote>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-do">Do</span>
+          <div class="body">
+            Click <strong>Post to the board</strong>. You land on
+            <code>/need/hansen-flood</code>.
+          </div>
+        </div>
+
+        <h2 id="need">
+          <span class="route">/need/hansen-flood</span>
+          3. Need Detail
+        </h2>
+        <p class="role">
+          Role: still Requester for verify; switch back to Resident to claim.
+          Both clicks are worth doing if you have the time.
+        </p>
+        <div class="cue">
+          <span class="tag tag-point">Point</span>
+          <div class="body">
+            The <strong>AS SUBMITTED</strong> quote. The original words sit next
+            to the structured tasks.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <blockquote class="say">
+              Nobody has to trust that the decomposition was faithful. They can
+              check.
+            </blockquote>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-point">Point</span>
+          <div class="body">
+            The four derived stats. Say them once, correctly:
+            <ul>
+              <li><strong>3 / 11</strong> tasks verified</li>
+              <li><strong>16</strong> people committed</li>
+              <li><strong>26.75</strong> person-hours</li>
+              <li><strong>1</strong> capacity gap</li>
+            </ul>
+            Task list grouped blocked → open → claimed → in progress → verified.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-do">Do</span>
+          <div class="body">
+            Blocked task first: scroll to
+            <strong>Well-water potability test and report</strong>.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <blockquote class="say">
+              A blocked task is inventory intelligence. There is no well-water
+              test kit registered in South Park. Nearest is Park County Public
+              Health in Fairplay. It goes on the quarterly task menu that
+              members with standing vote on. The town now knows what it does not
+              own yet.
+            </blockquote>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-do">Do</span>
+          <div class="body">
+            Anti-gaming, as requester: find an <strong>in progress</strong> task
+            (muck-out, or haul debris). Hover <strong>Verify</strong> — it is
+            enabled because you own this need.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-do">Do</span>
+          <div class="body">
+            Avatar → <strong>VIEWING AS</strong> →
+            <strong>Nora Beckett · Resident</strong>. Hover the same
+            <strong>Verify</strong>.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <blockquote class="say">
+              Only the requester who owns the need can verify. As a resident the
+              button is disabled: “Only the requester can verify a task.” This
+              is the single most important anti-gaming defense, and it costs
+              nothing to enforce.
+            </blockquote>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-do">Do</span>
+          <div class="body">
+            Optional live claim, as Nora: on
+            <strong>Photograph and inventory damage for the insurer</strong>
+            (<code>t-flood-10</code>) — open, no quals required — click
+            <strong>Claim</strong>.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-point">Point</span>
+          <div class="body">
+            Toast
+            <code
+              >COMMITMENT LOGGED · THU 12 MAR · COUNTS TOWARD YOUR
+              SHOW-RATE</code
+            >. People committed ticks from 16 to 17. Her avatar appears on the
+            row.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-dont">Don't</span>
+          <div class="body">
+            Claim a task Nora is not qualified for and then look confused. Hover
+            <strong>Claim</strong> on a pump or plow task instead and read the
+            tooltip: quals are earned by demonstration. Do not switch to
+            Administrator and imply they can verify. Admins have oversight, not
+            verification.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-next">Next</span>
+          <div class="body">
+            Nav → <strong>My Rep</strong> (resident only). If you are still on
+            requester, switch to Nora first.
+          </div>
+        </div>
+
+        <h2 id="me">
+          <span class="route">/me</span>
+          4. My Rep
+        </h2>
+        <p class="role">
+          Role: Nora Beckett · Resident. Nora has missed two weeks. The screen
+          opens in KEEP THE CHAIN.
+        </p>
+        <div class="callout">
+          This is the most original mechanic in the product. Read the card copy
+          <strong>verbatim</strong>. Do not improve it.
+        </div>
+        <div class="cue">
+          <span class="tag tag-point">Point</span>
+          <div class="body">The large rep card.</div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <p class="meta">Verbatim from the card</p>
+            <blockquote class="say">
+              You've missed the last two. That happens. This one is five minutes
+              — enough to keep the chain alive.
+            </blockquote>
+            <blockquote class="say">
+              Miss a week and the system does not guilt you, count down, or warn
+              you about your streak. It shrinks the ask. Miss two and it offers
+              five minutes so the chain stays alive. Every habit system in
+              fitness knows this. No civic system does it.
+            </blockquote>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-do">Do</span>
+          <div class="body">
+            Under the card, <strong>DEMO: REP STATE</strong>. Click
+            <strong>STANDARD</strong>, then <strong>SCOPED DOWN</strong>, then
+            back to <strong>KEEP THE CHAIN</strong>. Let them read each body
+            line. Do not paraphrase.
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>State</th>
+              <th>Scope</th>
+              <th>Body (verbatim — do not rewrite)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>STANDARD</td>
+              <td>20 min</td>
+              <td>Same time, same partner, every week. Nothing to decide.</td>
+            </tr>
+            <tr>
+              <td>SCOPED DOWN</td>
+              <td>10 min</td>
+              <td>
+                You missed last week, so this one's smaller. No need to make it
+                up.
+              </td>
+            </tr>
+            <tr>
+              <td>KEEP THE CHAIN</td>
+              <td>5 min</td>
+              <td>
+                You've missed the last two. That happens. This one is five
+                minutes — enough to keep the chain alive.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="cue">
+          <span class="tag tag-do">Do</span>
+          <div class="body">
+            Optional: click <strong>Can't this week</strong>. Toast:
+            <code>WAIVED · DOES NOT COUNT AGAINST YOUR SHOW-RATE</code>. Waived
+            is excluded from show-rate entirely — neither numerator nor
+            denominator. That is how a hard month is not punished.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-point">Point</span>
+          <div class="body">
+            Show-rate ring <strong>76%</strong> —
+            <code>25 KEPT · 8 MISSED</code>. Then
+            <code>1 REP / WEEK · CAP ENFORCED</code>. There is no “take another
+            rep” anywhere in the product. Creek Side panel:
+            <em
+              >Creek Side held the line while you were out. Streaks belong to
+              the squad.</em
+            >
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <blockquote class="say">
+              Show-rate is commitments kept over commitments made. Not hours.
+              Not tasks. Twenty minutes a week for two years beats forty hours
+              once. That is why a commitment is a first-class record, not a side
+              effect of finishing a task.
+            </blockquote>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-do">Do</span>
+          <div class="body"><strong>See your squad →</strong></div>
+        </div>
+
+        <h2 id="squad">
+          <span class="route">/squad/creek-side</span>
+          5. Squad Detail
+        </h2>
+        <p class="role">
+          Role: Resident (individual show-rates are visible here
+          <em>because</em> you are a squadmate).
+        </p>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <blockquote class="say">
+              Four to eight neighbors. Small enough that you know everyone,
+              large enough to absorb a bad month. The squad is the unit of
+              accountability precisely so the individual isn't.
+            </blockquote>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-point">Point</span>
+          <div class="body">
+            <code>31 WEEKS UNBROKEN</code>. Squad show-rate
+            <strong>90.3%</strong>. Member cards with personal rings. Then the
+            visibility note:
+            <blockquote class="say">
+              You can see individual show-rates because you're a squadmate. The
+              town cannot. Public rankings are squad-level only.
+            </blockquote>
+            Coverage gaps on this squad are derived — Creek Side has the town's
+            only pump operator, so do not say “no pump operator.” Gaps will
+            include things like no Spanish interpreter, no wilderness first
+            responder, no plow.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <blockquote class="say">
+              The person having a hard month gets carried instead of shamed. The
+              social pressure is the good kind — people you know are counting on
+              you.
+            </blockquote>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-dont">Don't</span>
+          <div class="body">
+            On <code>/wall</code> or <code>/readiness</code>, ever show or invent
+            an individual ranking. If someone asks “who's the best volunteer,”
+            the answer is: the town does not publish that.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-next">Next</span>
+          <div class="body">Nav → <strong>Registry</strong>.</div>
+        </div>
+
+        <h2 id="registry">
+          <span class="route">/registry</span>
+          6. Capability Registry
+        </h2>
+        <p class="role">Any role</p>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <blockquote class="say">
+              Capability, not intention. The registry knows the town owns four
+              generators and one bilingual paramedic. It does not know who
+              <em>meant</em> to help.
+            </blockquote>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-point">Point</span>
+          <div class="body">
+            Headline strip —
+            <strong
+              >4 generators · 9 tow-capable trucks · 12 chainsaw-qualified · 1
+              bilingual paramedic</strong
+            >. These must match. If they don't, the seed is wrong.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-do">Do</span>
+          <div class="body">
+            Default view is <strong>QUALS</strong>. Find
+            <strong>Pump Operator</strong> and
+            <strong>Spanish Interpreter</strong>. Both carry
+            <strong>SINGLE POINT OF FAILURE</strong>.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <blockquote class="say">
+              Three trash pumps in town and one person qualified to run one. The
+              registry does not just find capacity. It finds the places where
+              the town is one person's bad week away from being unable to
+              respond.
+            </blockquote>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-do">Do</span>
+          <div class="body">
+            Switch to <strong>EQUIPMENT</strong>. Point at utilization:
+            <strong
+              >19 of 31 registered assets used in the last 90 days —
+              61%.</strong
+            >
+            Optional, 10 seconds: search <code>plow</code> or
+            <code>Spanish</code> to show the filter is real.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <blockquote class="say">
+              An idle welder is a supply failure, not an apathy problem. Almost
+              no volunteer program tracks utilization, because most of them do
+              not know what they have.
+            </blockquote>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-next">Next</span>
+          <div class="body">
+            Avatar → <strong>VIEWING AS</strong> →
+            <strong>Park County · Administrator</strong>. Nav gains
+            <strong>Readiness</strong>.
+          </div>
+        </div>
+
+        <h2 id="readiness">
+          <span class="route">/readiness</span>
+          7. Readiness Dashboard
+        </h2>
+        <p class="role">
+          Role: Park County · Administrator. This is what government actually
+          buys.
+        </p>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <blockquote class="say">
+              Not a volunteer list. A readiness picture, with the gaps named
+              specifically enough to fix with a purchase order.
+            </blockquote>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-point">Point</span>
+          <div class="body">
+            Row 1 — say the numbers, do not round them into friendliness.
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Label</th>
+              <th>Value</th>
+              <th>Why it matters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Town show-rate</td>
+              <td>90.7%</td>
+              <td>915 kept / 94 missed</td>
+            </tr>
+            <tr>
+              <td>Median unbroken weeks</td>
+              <td>19.5</td>
+              <td>
+                Retention at 6 months 78%, 12 months 61% — the number no
+                volunteer program publishes
+              </td>
+            </tr>
+            <tr>
+              <td>Median time to met</td>
+              <td>6 days</td>
+              <td>Last 90 days, 9 needs</td>
+            </tr>
+            <tr>
+              <td>Capacity utilization</td>
+              <td>61%</td>
+              <td>19 of 31 assets, 90 days</td>
+            </tr>
+            <tr>
+              <td>Surge response</td>
+              <td>4 hrs</td>
+              <td>14 residents fielded, Middle Fork flood</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="cue">
+          <span class="tag tag-point">Point</span>
+          <div class="body">
+            Squad standings. Red Hill 92.0 · Kenosha Pass 91.8 · Creek Side 90.3
+            · Tarryall 87.7. <strong>No names.</strong> Capacity gaps: pump
+            operator (3 pumps, 1 operator); plow coverage (both trucks on
+            Kenosha Pass; Tarryall and Red Hill uncovered); Spanish interpreter
+            (one qualified, no backup on the Tuesday desk). Optional: 12-week
+            participation bars — residents completing their weekly rep.
+            Hand-rolled. No chart library.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <blockquote class="say">
+              Individual show-rates are not published. Rankings are squad-level
+              by design.
+            </blockquote>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-next">Next</span>
+          <div class="body">
+            Nav → <strong>The Wall</strong>. Palette shifts. Let that land for a
+            second.
+          </div>
+        </div>
+
+        <h2 id="wall">
+          <span class="route">/wall</span>
+          8. The Wall
+        </h2>
+        <p class="role">
+          Any role. Warm / letterpress. This should feel like paper at the
+          library, Tweek Bros., and the hardware store — not like software.
+          Least interactive screen in the product, on purpose.
+        </p>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <blockquote class="say">
+              The digital system exists to feed this board.
+            </blockquote>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-point">Point</span>
+          <div class="body">
+            <strong>MET THIS MONTH</strong> — wheelchair ramp, Alma Duthie,
+            Bijou Street. Stamp: <code>MET · 3 MARCH</code>. Nine residents, 13
+            commitments, 12 kept, 1 waived. Met in 7 days. Then the AAR, four
+            blocks. Spend time on <strong>WHAT WE'D DO DIFFERENTLY</strong>.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <blockquote class="say">
+              Every completed need gets a short public after-action report.
+              Effort becomes visible and legible, which is what actually
+              produces the next turnout. Most volunteer software has no concept
+              of an outcome at all.
+            </blockquote>
+            <blockquote class="say">
+              An honest AAR names what went wrong. This one says the town bought
+              lumber it already owned — which is exactly the failure the
+              registry exists to prevent, admitted in public.
+            </blockquote>
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-point">Point</span>
+          <div class="body">
+            <strong>STILL OPEN</strong> — Vasquez still unmet:
+            <code>6 DAYS · NEEDS A PLOW TRUCK ON THE TARRYALL SIDE</code>. Do
+            not resolve it here either. Squads with streak weeks only. Caption:
+            <em>Streaks are held by the squad.</em> No individuals, no
+            show-rates. <strong>HONORED LOCALLY</strong> — Tweek Bros. and the
+            rest. Recognition by your own town, not a gift-card economy.
+          </div>
+        </div>
+
+        <h2 id="close">Close · 20 seconds</h2>
+        <div class="cue">
+          <span class="tag tag-do">Do</span>
+          <div class="body">
+            Stay on the Wall, or go back to <code>/</code> if you want the
+            thesis on screen.
+          </div>
+        </div>
+        <div class="cue">
+          <span class="tag tag-say">Say</span>
+          <div class="body">
+            <blockquote class="say">
+              We already know how to make a body strong and how to make a unit
+              ready. We have never applied either to citizenship. PitchIn is the
+              claim that a healthier public culture is less a matter of
+              persuasion than of reps, logistics, and keeping small promises to
+              people you can see.
+            </blockquote>
+          </div>
+        </div>
+        <p>
+          Stop. Do not add a roadmap, a monetization slide, or a joke about the
+          town name.
+        </p>
+
+        <h2 id="timing">Timing card</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Stop</th>
+              <th>12 min</th>
+              <th>8 min</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Landing</td>
+              <td>1:00</td>
+              <td>0:45</td>
+            </tr>
+            <tr>
+              <td>Board + Vasquez</td>
+              <td>1:30</td>
+              <td>1:15</td>
+            </tr>
+            <tr>
+              <td>Post → decompose</td>
+              <td>1:30</td>
+              <td>1:00 (prefill + decompose, skip narration of rows)</td>
+            </tr>
+            <tr>
+              <td>Hansen need</td>
+              <td>2:00</td>
+              <td>1:15 (blocked task + Verify tooltip only)</td>
+            </tr>
+            <tr>
+              <td>My Rep</td>
+              <td>1:30</td>
+              <td>1:15 (KEEP THE CHAIN + cycle the three states)</td>
+            </tr>
+            <tr>
+              <td>Squad</td>
+              <td>1:00</td>
+              <td>skip</td>
+            </tr>
+            <tr>
+              <td>Registry</td>
+              <td>1:15</td>
+              <td>1:00</td>
+            </tr>
+            <tr>
+              <td>Readiness</td>
+              <td>1:00</td>
+              <td>0:45</td>
+            </tr>
+            <tr>
+              <td>Wall + close</td>
+              <td>1:15</td>
+              <td>0:45</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          If you run long, cut Squad first, then the live Claim click. Never cut
+          Vasquez, the shrinking ask, or the AAR.
+        </p>
+
+        <h2 id="numbers">Numbers you must not mis-say</h2>
+        <p>
+          If a screen shows a different figure, the transcription is wrong — do
+          not “correct” the talk track to match a bug. Reset, or note it and
+          move on.
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Quantity</th>
+              <th>Say</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Town show-rate</td>
+              <td>90.7% (915 kept / 94 missed)</td>
+            </tr>
+            <tr>
+              <td>Median unbroken participation</td>
+              <td>19.5 weeks</td>
+            </tr>
+            <tr>
+              <td>Squad show-rates</td>
+              <td>
+                90.3 / 91.8 / 92.0 / 87.7 (Creek Side / Kenosha Pass / Red Hill
+                / Tarryall)
+              </td>
+            </tr>
+            <tr>
+              <td>Registry headline</td>
+              <td>
+                4 generators · 9 tow trucks · 12 chainsaw-qualified · 1
+                bilingual paramedic
+              </td>
+            </tr>
+            <tr>
+              <td>Equipment utilization</td>
+              <td>61% (19 of 31)</td>
+            </tr>
+            <tr>
+              <td>Hansen flood</td>
+              <td>
+                16 people committed · 26.75 person-hours · 3 of 11 verified · 1
+                blocked
+              </td>
+            </tr>
+            <tr>
+              <td>Duthie ramp</td>
+              <td>
+                9 residents · 13 commitments (12 kept, 1 waived) · 29.0
+                person-hours
+              </td>
+            </tr>
+            <tr>
+              <td>Nora's show-rate</td>
+              <td>76% (25 kept · 8 missed)</td>
+            </tr>
+            <tr>
+              <td>Creek Side streak</td>
+              <td>31 weeks</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          Claiming the photo-inventory task as Nora moves Hansen people
+          committed <strong>16 → 17</strong>. If you already claimed it, say 17
+          or Reset.
+        </p>
+
+        <h2 id="clicks">Live clicks that are safe</h2>
+        <p>These are the only mutations worth doing in front of people:</p>
+        <ol>
+          <li>
+            <strong>Use the Hansen flood</strong> →
+            <strong>Decompose</strong> → <strong>Post to the board</strong>
+            (requester).
+          </li>
+          <li>
+            <strong>Claim</strong> photograph-and-inventory as Nora.
+          </li>
+          <li>
+            <strong>Verify</strong> an in-progress Hansen task as Park County EM
+            (then show it disabled as Nora / admin).
+          </li>
+          <li>
+            Cycle <strong>DEMO: REP STATE</strong>, or click
+            <strong>I'm on it</strong> / <strong>Can't this week</strong>.
+          </li>
+          <li>Search the registry; filter the board.</li>
+        </ol>
+        <p>If anything feels sticky: avatar → <strong>Reset demo</strong>.</p>
+        <p>
+          Skip unless asked: the messages drawer in the header. It is not part
+          of the nine-screen argument.
+        </p>
+
+        <h2 id="questions">Likely questions</h2>
+        <h3>Is this a real town / real people?</h3>
+        <p>
+          South Park is the TV town, played straight. Businesses keep the names;
+          every resident is invented. Frozen date, mock data, no backend.
+          Refresh resets.
+        </p>
+        <h3>Why doesn't someone just drive the plow over?</h3>
+        <p>
+          Because the product is diagnosing geography and inventory, not
+          scolding neighbors. Kenosha Pass is 22 minutes from Tarryall. The
+          stall is the demo.
+        </p>
+        <h3>Why not points / badges / a leaderboard?</h3>
+        <p>
+          Any metric becomes a target. Show-rate is capped at one rep a week,
+          verification is requester-only, public rank is squad-only, rewards are
+          coffee and recognition. The reward layer is thin so it cannot become
+          the reason.
+        </p>
+        <h3>What does “standing” get you?</h3>
+        <p>
+          Sustained readiness unlocks sponsorship rights, a vote on the
+          quarterly task menu, the ability to stand up a squad. Earned authority
+          over the system, not points.
+        </p>
+        <h3>Is the decompose step actually AI?</h3>
+        <p>
+          In this prototype, no. It is a staged reveal of the seed's eleven
+          Hansen tasks. The product claim is that decomposition is the hard
+          language problem; the demo must never be able to fail live.
+        </p>
+        <h3>Why can I see Nora's 76% here but not on Readiness?</h3>
+        <p>
+          Because you are looking as a squadmate. The town cannot. That rule is
+          load-bearing.
+        </p>
+
+        <h2 id="notes">Annotation cheat sheet</h2>
+        <p>
+          Toggle <strong>Explain this screen</strong> if you want the product to
+          narrate itself. Eighteen notes, verbatim:
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Screen</th>
+              <th>n</th>
+              <th>Beat</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Board</td>
+              <td>1</td>
+              <td>Vasquez is a supply failure, not apathy</td>
+            </tr>
+            <tr>
+              <td>Board</td>
+              <td>2</td>
+              <td>Sustainment vs surge</td>
+            </tr>
+            <tr>
+              <td>Board</td>
+              <td>3</td>
+              <td>One rep, nothing to decide</td>
+            </tr>
+            <tr>
+              <td>Post</td>
+              <td>1</td>
+              <td>Decomposition is the hard problem</td>
+            </tr>
+            <tr>
+              <td>Post</td>
+              <td>2</td>
+              <td>Eleven tasks, not a group text</td>
+            </tr>
+            <tr>
+              <td>Need</td>
+              <td>1</td>
+              <td>Original words kept</td>
+            </tr>
+            <tr>
+              <td>Need</td>
+              <td>2</td>
+              <td>Requester verifies</td>
+            </tr>
+            <tr>
+              <td>Need</td>
+              <td>3</td>
+              <td>Blocked = inventory intelligence</td>
+            </tr>
+            <tr>
+              <td>My Rep</td>
+              <td>1</td>
+              <td>Shrinking ask, no guilt</td>
+            </tr>
+            <tr>
+              <td>My Rep</td>
+              <td>2</td>
+              <td>Commitment is first-class</td>
+            </tr>
+            <tr>
+              <td>My Rep</td>
+              <td>3</td>
+              <td>Squad holds the streak</td>
+            </tr>
+            <tr>
+              <td>Squad</td>
+              <td>1</td>
+              <td>4–8 neighbors; unit of accountability</td>
+            </tr>
+            <tr>
+              <td>Registry</td>
+              <td>1</td>
+              <td>Single points of failure</td>
+            </tr>
+            <tr>
+              <td>Registry</td>
+              <td>2</td>
+              <td>Utilization, which volunteer programs never track</td>
+            </tr>
+            <tr>
+              <td>Readiness</td>
+              <td>1</td>
+              <td>Retention predicts next year's response</td>
+            </tr>
+            <tr>
+              <td>Readiness</td>
+              <td>2</td>
+              <td>Government buys a readiness picture</td>
+            </tr>
+            <tr>
+              <td>Wall</td>
+              <td>1</td>
+              <td>AAR makes effort legible</td>
+            </tr>
+            <tr>
+              <td>Wall</td>
+              <td>2</td>
+              <td>Honest AAR: bought lumber they already owned</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          Landing has no annotations. It argues. Everything else demonstrates.
+        </p>
+
+        <footer class="close">
+          <p class="meta">PitchIn · South Park, CO · 12 March 2026</p>
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

@@ -10,11 +10,14 @@ import { daysBetween, daysSince, fmtShort } from '../lib/format';
 import {
   capacityGaps, peopleCommitted, personHours, tasksForNeed, tasksVerified,
 } from '../lib/derive';
+import { PAPER } from '../lib/paper';
 import { ModeBadge } from '../components/ModeBadge';
 import { StatusChip } from '../components/StatusChip';
 import { StatCard } from '../components/StatCard';
 import { TaskRow } from '../components/TaskRow';
 import { Ann } from '../components/Ann';
+import { Flyer } from '../components/Flyer';
+import { Bulletin, Masthead } from '../components/Bulletin';
 
 const CLAIM_TOAST = 'COMMITMENT LOGGED · THU 12 MAR · COUNTS TOWARD YOUR SHOW-RATE';
 const GROUP_ORDER: TaskStatus[] = ['blocked', 'open', 'claimed', 'in_progress', 'verified', 'missed'];
@@ -56,22 +59,14 @@ function ActionButton({ label, tooltip, enabled, onClick }: {
 }) {
   if (enabled) {
     return (
-      <button
-        type="button"
-        onClick={onClick}
-        className="rounded-ops bg-ops-accent px-3 py-1.5 text-sm font-medium text-ops-bg hover:brightness-110"
-      >
+      <button type="button" onClick={onClick} className="paper-btn">
         {label}
       </button>
     );
   }
   return (
     <span title={tooltip} className="inline-block cursor-not-allowed">
-      <button
-        type="button"
-        disabled
-        className="rounded-ops border border-ops-border px-3 py-1.5 text-sm text-ops-text-3"
-      >
+      <button type="button" disabled className="paper-btn-ghost opacity-60">
         {label}
       </button>
     </span>
@@ -86,7 +81,11 @@ export default function NeedDetail() {
   const need = needs.find((n) => n.id === needId || n.id.replace(/^need-/, '') === needId);
 
   if (!need) {
-    return <p className="font-mono text-sm text-ops-text-3">Need not found.</p>;
+    return (
+      <Bulletin>
+        <p className="font-mono text-sm text-warm-ink-2">Need not found.</p>
+      </Bulletin>
+    );
   }
 
   const org = orgs.find((o) => o.id === need.requesterOrgId);
@@ -125,40 +124,46 @@ export default function NeedDetail() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl">
-      <div className="flex items-center gap-3">
-        <ModeBadge mode={need.mode} />
-        <StatusChip status={need.status} />
-      </div>
-      <h1 className="mt-2.5 text-3xl font-semibold text-ops-text">{need.title}</h1>
-      <div className="mt-1.5 font-mono text-[11px] uppercase tracking-wider text-ops-text-3">
-        REQUESTED BY {org?.name ?? need.requesterOrgId} · POSTED {fmtShort(need.submittedAt)} · {daysOpen} DAYS OPEN
-      </div>
+    <Bulletin>
+      <Masthead
+        title={need.title}
+        sub={
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <ModeBadge mode={need.mode} />
+            <StatusChip status={need.status} />
+            <span className="font-mono text-[11px] uppercase tracking-wider">
+              REQUESTED BY {org?.name ?? need.requesterOrgId} · POSTED {fmtShort(need.submittedAt)} · {daysOpen} DAYS OPEN
+            </span>
+          </div>
+        }
+      />
 
-      <div className="relative mt-4 rounded-ops border border-l-[3px] border-ops-border border-l-ops-accent bg-ops-raised p-4">
+      <div className="relative mx-auto mt-8 max-w-3xl">
         <Ann route="need" n={1} className="-left-6 top-3" />
-        <div className="mb-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-ops-text-3">
-          AS SUBMITTED
-        </div>
-        <p className="italic text-ops-text-2">{need.rawText}</p>
+        <Flyer id="need-submitted" paper={PAPER.cream}>
+          <div className="mb-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-warm-ink-2">
+            AS SUBMITTED
+          </div>
+          <p className="italic text-warm-ink">{need.rawText}</p>
+        </Flyer>
       </div>
 
-      <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-4">
         <StatCard label="TASKS VERIFIED" value={`${tasksVerified(need.id, tasks)}/${nTasks.length}`} />
         <StatCard label="PEOPLE COMMITTED" value={peopleCommitted(need.id, tasks)} />
         <StatCard label="PERSON-HOURS COMMITTED" value={fmtHours(personHours(need.id, tasks))} />
         <StatCard label="CAPACITY GAPS" value={capacityGaps(need.id, tasks)} accent={capacityGaps(need.id, tasks) > 0} />
       </div>
 
-      <div className="mt-8 space-y-6">
+      <div className="mt-10 space-y-8">
         {grouped.map((g) => (
           <section key={g.status} className="relative">
             {g.status === 'in_progress' ? <Ann route="need" n={2} className="-left-6 top-0" /> : null}
             {g.status === 'blocked' ? <Ann route="need" n={3} className="-left-6 top-0" /> : null}
-            <h2 className="mb-2 font-mono text-[11px] uppercase tracking-[0.08em] text-ops-text-3">
+            <h2 className="mb-3 text-center font-mono text-[11px] uppercase tracking-[0.08em] text-[#f4efe4]/80">
               {(g.status === 'in_progress' ? 'IN PROGRESS' : g.status.toUpperCase())} · {g.items.length}
             </h2>
-            <div className="space-y-3">
+            <div className="space-y-5">
               {g.items.map((task) => (
                 <TaskRow key={task.id} task={task} people={people} action={actionFor(task)} />
               ))}
@@ -166,6 +171,6 @@ export default function NeedDetail() {
           </section>
         ))}
       </div>
-    </div>
+    </Bulletin>
   );
 }

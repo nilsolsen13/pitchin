@@ -8,7 +8,7 @@ export function Ann({
   route,
   n,
   className,
-  warm,
+  warm = true,
 }: {
   route: string;
   n: number;

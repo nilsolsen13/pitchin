@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PitchIn — logo drafts (SUPERSEDED)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Oswald:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ops-bg: #0e1116;
+        --ops-surface: #161b22;
+        --ops-border: #2a3441;
+        --ops-text-2: #8b98a9;
+        --ops-accent: #e8a33d;
+        --warm-paper: #f4efe4;
+        --warm-paper-deep: #eae2d2;
+        --warm-ink: #2a2620;
+        --warm-ink-2: #6b6250;
+        --warm-rule: #c9bfa9;
+        --warm-stamp: #a63d2e;
+        --wood: #5c3a1e;
+        --wood-deep: #3a2410;
+        --cream: #f4efe4;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+        background: var(--wood-deep);
+        color: var(--cream);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .page {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 32px;
+      }
+
+      h1 {
+        font-family: Oswald, sans-serif;
+        font-weight: 700;
+        font-size: 2.375rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin: 0;
+      }
+
+      .lede {
+        max-width: 42rem;
+        color: #d7cbb8;
+        line-height: 1.55;
+        margin: 12px 0 0;
+      }
+
+      .mono {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 0.75rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: #b08958;
+      }
+
+      .hero-mark {
+        margin-top: 28px;
+        background: var(--warm-paper);
+        color: var(--warm-stamp);
+        border-radius: 2px;
+        padding: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 220px;
+      }
+
+      .hero-mark svg {
+        width: 280px;
+        height: 180px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 24px;
+        margin-top: 24px;
+      }
+
+      @media (max-width: 960px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .option {
+        background: var(--warm-paper);
+        color: var(--warm-ink);
+        border-radius: 2px;
+        overflow: hidden;
+      }
+
+      .option header {
+        padding: 20px 20px 16px;
+        border-bottom: 1px solid var(--warm-rule);
+      }
+
+      .option header h2 {
+        font-family: Oswald, sans-serif;
+        font-weight: 700;
+        font-size: 1.25rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin: 4px 0 8px;
+        color: var(--warm-stamp);
+      }
+
+      .option header p {
+        margin: 0;
+        font-size: 0.875rem;
+        line-height: 1.45;
+        color: var(--warm-ink-2);
+      }
+
+      .panel {
+        padding: 20px;
+      }
+
+      .panel + .panel {
+        border-top: 1px solid var(--warm-rule);
+      }
+
+      .label {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 0.6875rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--warm-ink-2);
+        margin: 0 0 12px;
+      }
+
+      .swatch {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 140px;
+      }
+
+      .swatch.warm {
+        background: var(--warm-paper-deep);
+        color: var(--warm-stamp);
+        border: 1px solid var(--warm-rule);
+        border-radius: 2px;
+      }
+
+      .swatch.ops {
+        background: var(--ops-bg);
+        color: var(--ops-accent);
+        border: 1px solid var(--ops-border);
+        border-radius: 6px;
+      }
+
+      .mark {
+        width: 140px;
+        height: 90px;
+        display: block;
+        overflow: visible;
+      }
+
+      .lockup {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .wordmark {
+        font-family: Oswald, sans-serif;
+        font-weight: 700;
+        font-size: 1.875rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        line-height: 1;
+      }
+
+      .sizes {
+        display: flex;
+        align-items: flex-end;
+        gap: 16px;
+        color: var(--warm-stamp);
+      }
+
+      .nav-bar {
+        display: flex;
+        align-items: center;
+        height: 64px;
+        padding: 0 20px;
+        background: var(--wood);
+        color: var(--cream);
+        gap: 10px;
+      }
+
+      .nav-bar .mark {
+        width: 40px;
+        height: 26px;
+      }
+
+      .nav-bar .wordmark {
+        font-size: 1.125rem;
+        letter-spacing: 0.08em;
+      }
+
+      .nav-ghost {
+        margin-left: 16px;
+        font-size: 0.8125rem;
+        color: #d7cbb8;
+        opacity: 0.7;
+      }
+
+      .hero {
+        background: var(--warm-paper-deep);
+        border: 1px solid var(--warm-rule);
+        border-radius: 2px;
+        padding: 24px;
+        color: var(--warm-ink);
+      }
+
+      .hero .mark {
+        width: 72px;
+        height: 46px;
+        color: var(--warm-stamp);
+      }
+
+      .hero .wordmark {
+        font-size: 2.375rem;
+        color: var(--warm-ink);
+      }
+
+      .hero .rule {
+        width: 120px;
+        height: 3px;
+        background: var(--warm-stamp);
+        margin-top: 12px;
+      }
+
+      .icon-tile {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .icon-tile svg {
+        width: 36px;
+        height: 24px;
+      }
+
+      .icon-tile.stamp {
+        background: var(--warm-stamp);
+        color: var(--warm-paper);
+        border-radius: 2px;
+      }
+
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      /* ─── Your lockup ───────────────────────────────────────────
+         Pick a meeting: #mark-sides, #mark-meet, or #mark-cup.
+         Then tune the three tokens. This is the 64px wood bar.
+      */
+      .your-pick {
+        --nav-mark-w: 40px;
+        --nav-mark-h: 26px;
+        --nav-gap: 10px;
+        --nav-ink: #f4efe4;
+      }
+
+      .your-nav {
+        display: flex;
+        align-items: center;
+        height: 64px;
+        padding: 0 20px;
+        background: var(--wood);
+        color: var(--nav-ink);
+        gap: var(--nav-gap);
+      }
+
+      .your-nav .mark {
+        width: var(--nav-mark-w);
+        height: var(--nav-mark-h);
+      }
+
+      .your-nav .wordmark {
+        font-size: 1.125rem;
+        letter-spacing: 0.08em;
+      }
+
+      .footer-board {
+        margin-top: 32px;
+        background: var(--ops-surface);
+        border: 1px solid var(--ops-border);
+        border-radius: 6px;
+        padding: 24px;
+      }
+
+      .footer-board h2 {
+        font-family: Oswald, sans-serif;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        font-size: 1.125rem;
+        color: var(--ops-accent);
+        margin: 0 0 8px;
+      }
+
+      .footer-board p {
+        margin: 0 0 16px;
+        color: var(--ops-text-2);
+        font-size: 0.875rem;
+        line-height: 1.5;
+        max-width: 46rem;
+      }
+    </style>
+  </head>
+  <body>
+    <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
+      <defs>
+        <!--
+          One palm-up hand. Wrist at the bottom, palm facing us-from-above,
+          short fingers (foreshortened, like 🤲), thumb on the INNER edge
+          so a mirror pair reads as coming together, not as a stop sign.
+        -->
+        <g id="hand-up" fill="currentColor">
+          <!-- Fingers: real gaps so they don't read as a ridged bowl rim. -->
+          <rect x="3.5" y="13" width="5.2" height="18" rx="2.6" transform="rotate(-10 6.1 31)" />
+          <rect x="11.2" y="8.5" width="5.6" height="22.5" rx="2.8" transform="rotate(-4 14 31)" />
+          <rect x="19.4" y="6.5" width="5.8" height="24.5" rx="2.9" />
+          <rect x="27.8" y="10" width="5.4" height="21" rx="2.7" transform="rotate(7 30.5 31)" />
+          <!-- Palm -->
+          <path d="M5.5 29h29.5c1.5 0 2.6 1.4 2.4 2.9L35 44.8c-.5 2.8-3 4.9-5.8 4.9H12.2C8.4 49.7 5.5 46.6 5.5 42.6V29z" />
+          <!-- Thumb on the inner edge, pointing the same way as the fingers (🤲). -->
+          <rect x="32.5" y="18" width="5.6" height="16.5" rx="2.8" transform="rotate(22 35.3 26.2)" />
+        </g>
+
+        <!-- From the sides: wrists out. A gap stays down the middle. -->
+        <symbol id="mark-sides" viewBox="0 0 96 64">
+          <g fill="currentColor">
+            <g transform="translate(4 12) rotate(50 16 46)">
+              <use href="#hand-up" />
+            </g>
+            <g transform="translate(92 12) scale(-1 1) rotate(50 16 46)">
+              <use href="#hand-up" />
+            </g>
+          </g>
+        </symbol>
+
+        <!-- Meeting: pulled in until the inner fingers almost touch. -->
+        <symbol id="mark-meet" viewBox="0 0 96 64">
+          <g fill="currentColor">
+            <g transform="translate(8 8) rotate(38 16 46)">
+              <use href="#hand-up" />
+            </g>
+            <g transform="translate(88 8) scale(-1 1) rotate(38 16 46)">
+              <use href="#hand-up" />
+            </g>
+          </g>
+        </symbol>
+
+        <!-- Cup: more upright, hollow in the middle — closest to 🤲. -->
+        <symbol id="mark-cup" viewBox="0 0 96 64">
+          <g fill="currentColor">
+            <g transform="translate(10 6) rotate(26 16 46)">
+              <use href="#hand-up" />
+            </g>
+            <g transform="translate(86 6) scale(-1 1) rotate(26 16 46)">
+              <use href="#hand-up" />
+            </g>
+          </g>
+        </symbol>
+      </defs>
+    </svg>
+
+    <div class="page">
+      <p class="mono">Superseded by PitchIn_logo_spec.md · do not copy these SVGs</p>
+      <h1>Coming together</h1>
+      <p class="lede">
+        Palms up, like 🤲 — not palms at you. One hand enters from the left, one from the right.
+        The three columns are the same hands at three meeting distances.
+      </p>
+
+      <div class="hero-mark">
+        <svg viewBox="0 0 96 64"><use href="#mark-meet" /></svg>
+      </div>
+
+      <div class="grid">
+        <article class="option">
+          <header>
+            <p class="mono">A · 50°</p>
+            <h2>From the sides</h2>
+            <p>
+              Most horizontal. Wrists stay on the edges; fingers reach in. Reads as two people
+              pitching in, not one person’s pair of hands.
+            </p>
+          </header>
+          <div class="panel">
+            <p class="label">Mark</p>
+            <div class="swatch warm">
+              <svg class="mark" viewBox="0 0 96 64"><use href="#mark-sides" /></svg>
+            </div>
+          </div>
+          <div class="panel">
+            <p class="label">Ops</p>
+            <div class="swatch ops">
+              <svg class="mark" viewBox="0 0 96 64"><use href="#mark-sides" /></svg>
+            </div>
+          </div>
+          <div class="panel">
+            <p class="label">Wood nav</p>
+            <div class="nav-bar">
+              <svg class="mark" viewBox="0 0 96 64"><use href="#mark-sides" /></svg>
+              <span class="wordmark">PitchIn</span>
+              <span class="nav-ghost">Board · Registry · Wall</span>
+            </div>
+          </div>
+          <div class="panel">
+            <p class="label">Landing</p>
+            <div class="hero">
+              <div class="lockup">
+                <svg class="mark" viewBox="0 0 96 64"><use href="#mark-sides" /></svg>
+                <span class="wordmark">PitchIn</span>
+              </div>
+              <div class="rule"></div>
+            </div>
+          </div>
+          <div class="panel">
+            <p class="label">16 / 24 / 32 / 48</p>
+            <div class="row">
+              <div class="sizes">
+                <svg width="24" height="16" viewBox="0 0 96 64"><use href="#mark-sides" /></svg>
+                <svg width="36" height="24" viewBox="0 0 96 64"><use href="#mark-sides" /></svg>
+                <svg width="48" height="32" viewBox="0 0 96 64"><use href="#mark-sides" /></svg>
+                <svg width="72" height="48" viewBox="0 0 96 64"><use href="#mark-sides" /></svg>
+              </div>
+              <div class="icon-tile stamp">
+                <svg viewBox="0 0 96 64"><use href="#mark-sides" /></svg>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="option">
+          <header>
+            <p class="mono">B · 38°</p>
+            <h2>Meeting</h2>
+            <p>
+              The brief. Hands come in from each side and meet. Still a gap at the wrists so it
+              does not collapse into a heart.
+            </p>
+          </header>
+          <div class="panel">
+            <p class="label">Mark</p>
+            <div class="swatch warm">
+              <svg class="mark" viewBox="0 0 96 64"><use href="#mark-meet" /></svg>
+            </div>
+          </div>
+          <div class="panel">
+            <p class="label">Ops</p>
+            <div class="swatch ops">
+              <svg class="mark" viewBox="0 0 96 64"><use href="#mark-meet" /></svg>
+            </div>
+          </div>
+          <div class="panel">
+            <p class="label">Wood nav</p>
+            <div class="nav-bar">
+              <svg class="mark" viewBox="0 0 96 64"><use href="#mark-meet" /></svg>
+              <span class="wordmark">PitchIn</span>
+              <span class="nav-ghost">Board · Registry · Wall</span>
+            </div>
+          </div>
+          <div class="panel">
+            <p class="label">Landing</p>
+            <div class="hero">
+              <div class="lockup">
+                <svg class="mark" viewBox="0 0 96 64"><use href="#mark-meet" /></svg>
+                <span class="wordmark">PitchIn</span>
+              </div>
+              <div class="rule"></div>
+            </div>
+          </div>
+          <div class="panel">
+            <p class="label">16 / 24 / 32 / 48</p>
+            <div class="row">
+              <div class="sizes">
+                <svg width="24" height="16" viewBox="0 0 96 64"><use href="#mark-meet" /></svg>
+                <svg width="36" height="24" viewBox="0 0 96 64"><use href="#mark-meet" /></svg>
+                <svg width="48" height="32" viewBox="0 0 96 64"><use href="#mark-meet" /></svg>
+                <svg width="72" height="48" viewBox="0 0 96 64"><use href="#mark-meet" /></svg>
+              </div>
+              <div class="icon-tile stamp">
+                <svg viewBox="0 0 96 64"><use href="#mark-meet" /></svg>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="option">
+          <header>
+            <p class="mono">C · 26°</p>
+            <h2>The cup</h2>
+            <p>
+              Closest to the emoji. A hollow in the middle — room to hold a need. Less “two
+              people,” more “one offering.”
+            </p>
+          </header>
+          <div class="panel">
+            <p class="label">Mark</p>
+            <div class="swatch warm">
+              <svg class="mark" viewBox="0 0 96 64"><use href="#mark-cup" /></svg>
+            </div>
+          </div>
+          <div class="panel">
+            <p class="label">Ops</p>
+            <div class="swatch ops">
+              <svg class="mark" viewBox="0 0 96 64"><use href="#mark-cup" /></svg>
+            </div>
+          </div>
+          <div class="panel">
+            <p class="label">Wood nav</p>
+            <div class="nav-bar">
+              <svg class="mark" viewBox="0 0 96 64"><use href="#mark-cup" /></svg>
+              <span class="wordmark">PitchIn</span>
+              <span class="nav-ghost">Board · Registry · Wall</span>
+            </div>
+          </div>
+          <div class="panel">
+            <p class="label">Landing</p>
+            <div class="hero">
+              <div class="lockup">
+                <svg class="mark" viewBox="0 0 96 64"><use href="#mark-cup" /></svg>
+                <span class="wordmark">PitchIn</span>
+              </div>
+              <div class="rule"></div>
+            </div>
+          </div>
+          <div class="panel">
+            <p class="label">16 / 24 / 32 / 48</p>
+            <div class="row">
+              <div class="sizes">
+                <svg width="24" height="16" viewBox="0 0 96 64"><use href="#mark-cup" /></svg>
+                <svg width="36" height="24" viewBox="0 0 96 64"><use href="#mark-cup" /></svg>
+                <svg width="48" height="32" viewBox="0 0 96 64"><use href="#mark-cup" /></svg>
+                <svg width="72" height="48" viewBox="0 0 96 64"><use href="#mark-cup" /></svg>
+              </div>
+              <div class="icon-tile stamp">
+                <svg viewBox="0 0 96 64"><use href="#mark-cup" /></svg>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <section class="footer-board your-pick">
+        <h2>Your lockup</h2>
+        <p>
+          Point <code>#your-nav-mark</code> at <code>#mark-sides</code>, <code>#mark-meet</code>,
+          or <code>#mark-cup</code>, then set the tokens in <code>.your-pick</code>.
+        </p>
+        <div class="your-nav">
+          <svg class="mark" id="your-nav-mark" viewBox="0 0 96 64"><use href="#mark-meet" /></svg>
+          <span class="wordmark">PitchIn</span>
+          <span class="nav-ghost">Board · Registry · Wall</span>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

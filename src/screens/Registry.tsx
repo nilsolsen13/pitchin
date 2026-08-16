@@ -11,11 +11,14 @@ import {
   qualHolders,
 } from '../lib/derive';
 import { fmtPctInt, fmtShort } from '../lib/format';
+import { PAPER } from '../lib/paper';
 import { Avatar } from '../components/Avatar';
 import { StatCard } from '../components/StatCard';
 import { PersonCard } from '../components/PersonCard';
 import { MaterielChip } from '../components/MaterielChip';
 import { Ann } from '../components/Ann';
+import { Flyer } from '../components/Flyer';
+import { Bulletin, Masthead, PaperTab } from '../components/Bulletin';
 
 type View = 'PEOPLE' | 'QUALS' | 'EQUIPMENT';
 const VIEWS: View[] = ['PEOPLE', 'QUALS', 'EQUIPMENT'];
@@ -50,72 +53,67 @@ export default function Registry() {
   const filteredEquip = equipment.filter((e) => !q || e.label.toLowerCase().includes(q));
 
   return (
-    <div>
-      <h1 className="text-3xl font-semibold text-ops-text">Capability Registry</h1>
-      <p className="mt-1 text-ops-text-2">What the town actually has. Capability, not intention.</p>
+    <Bulletin>
+      <Masthead
+        title="Capability Registry"
+        sub="What the town actually has. Capability, not intention."
+      />
 
-      <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-4">
         <StatCard label="GENERATORS" value={equipmentCount('generator', equipment)} />
         <StatCard label="TOW-CAPABLE TRUCKS" value={equipmentCount('truck-tow', equipment)} />
         <StatCard label="CHAINSAW-QUALIFIED" value={qualHolders('chainsaw', people).length} />
         <StatCard label="BILINGUAL PARAMEDIC" value={bilingualParamedics(people).length} />
       </div>
 
-      <div className="mt-6 flex flex-wrap items-center gap-3">
+      <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search a skill, a language, a piece of equipment…"
-          className="w-full max-w-md rounded-ops border border-ops-border bg-ops-surface px-3 py-2 text-sm text-ops-text placeholder:text-ops-text-3 focus:border-ops-accent focus:outline-none"
+          className="paper-input w-full max-w-md text-sm"
         />
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {VIEWS.map((v) => (
-            <button
-              key={v}
-              type="button"
-              onClick={() => setView(v)}
-              className={`rounded-full border px-3 py-1 font-mono text-xs uppercase tracking-wider transition-colors ${
-                view === v
-                  ? 'border-ops-accent bg-ops-accent/15 text-ops-accent'
-                  : 'border-ops-border text-ops-text-2 hover:text-ops-text'
-              }`}
-            >
+            <PaperTab key={v} active={view === v} onClick={() => setView(v)}>
               {v}
-            </button>
+            </PaperTab>
           ))}
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-12">
+      <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-12">
         <div className="lg:col-span-8">
           {view === 'QUALS' ? (
-            <div className="space-y-3">
+            <div className="space-y-5">
               {filteredQuals.map((qual) => {
                 const holders = qualHolders(qual.id as QualId, people);
                 const spof = holders.length === 1;
                 return (
-                  <div key={qual.id} className="relative rounded-ops border border-ops-border bg-ops-surface p-4">
+                  <div key={qual.id} className="relative">
                     {qual.id === 'pump-operator' ? <Ann route="registry" n={1} className="-left-6 top-3" /> : null}
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-medium text-ops-text">{qual.name}</span>
-                      <span className="font-mono text-[11px] uppercase tracking-wider text-ops-text-3">
-                        {qual.category} · {holders.length} {holders.length === 1 ? 'HOLDER' : 'HOLDERS'}
-                      </span>
-                      {spof ? (
-                        <span
-                          className="rounded-ops px-1.5 py-0.5 font-mono text-[11px] uppercase tracking-wider"
-                          style={{ color: '#C4544A', border: '1px solid #C4544A55' }}
-                        >
-                          SINGLE POINT OF FAILURE
+                    <Flyer id={`qual-${qual.id}`} paper={spof ? PAPER.rose : PAPER.cream}>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-medium text-warm-ink">{qual.name}</span>
+                        <span className="font-mono text-[11px] uppercase tracking-wider text-warm-ink-2">
+                          {qual.category} · {holders.length} {holders.length === 1 ? 'HOLDER' : 'HOLDERS'}
                         </span>
-                      ) : null}
-                    </div>
-                    <p className="mt-1.5 text-sm text-ops-text-2">{qual.demonstration}</p>
-                    <div className="mt-2 flex flex-wrap gap-1">
-                      {holders.map((p) => (
-                        <Avatar key={p.id} id={p.id} name={p.name} size={24} />
-                      ))}
-                    </div>
+                        {spof ? (
+                          <span
+                            className="rounded-warm px-1.5 py-0.5 font-mono text-[11px] uppercase tracking-wider"
+                            style={{ color: '#C4544A', border: '1px solid #C4544A55' }}
+                          >
+                            SINGLE POINT OF FAILURE
+                          </span>
+                        ) : null}
+                      </div>
+                      <p className="mt-1.5 text-sm text-warm-ink-2">{qual.demonstration}</p>
+                      <div className="mt-2 flex flex-wrap gap-1">
+                        {holders.map((p) => (
+                          <Avatar key={p.id} id={p.id} name={p.name} size={24} />
+                        ))}
+                      </div>
+                    </Flyer>
                   </div>
                 );
               })}
@@ -123,7 +121,7 @@ export default function Registry() {
           ) : null}
 
           {view === 'PEOPLE' ? (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               {filteredPeople.map((p) => (
                 <PersonCard key={p.id} person={p} />
               ))}
@@ -136,36 +134,33 @@ export default function Registry() {
                 const items = filteredEquip.filter((e) => e.type === type);
                 if (items.length === 0) return null;
                 return (
-                  <div key={type}>
+                  <Flyer key={type} id={`equip-${type}`} paper={PAPER.cream}>
                     <div className="mb-2 flex items-center gap-2">
                       <MaterielChip type={type} />
-                      <span className="font-mono text-[11px] text-ops-text-3">{items.length}</span>
+                      <span className="font-mono text-[11px] text-warm-ink-2">{items.length}</span>
                     </div>
-                    <div className="space-y-2">
+                    <div className="divide-y divide-warm-rule">
                       {items.map((e) => (
-                        <div
-                          key={e.id}
-                          className="flex items-center justify-between gap-4 rounded-ops border border-ops-border bg-ops-surface px-3 py-2"
-                        >
+                        <div key={e.id} className="flex items-center justify-between gap-4 py-2">
                           <div>
-                            <div className="text-sm text-ops-text">{e.label}</div>
-                            <div className="font-mono text-[11px] uppercase tracking-wider text-ops-text-3">
+                            <div className="text-sm text-warm-ink">{e.label}</div>
+                            <div className="font-mono text-[11px] uppercase tracking-wider text-warm-ink-2">
                               {ownerName(e.ownerId, e.ownerOrgId)}
                             </div>
                           </div>
                           {e.lastUsed === null ? (
-                            <span className="font-mono text-[11px] uppercase tracking-wider text-ops-text-3">
+                            <span className="font-mono text-[11px] uppercase tracking-wider text-warm-ink-2">
                               NEVER USED
                             </span>
                           ) : (
-                            <span className="font-mono text-[11px] uppercase tracking-wider text-ops-text-2">
+                            <span className="font-mono text-[11px] uppercase tracking-wider text-warm-ink">
                               {fmtShort(e.lastUsed)}
                             </span>
                           )}
                         </div>
                       ))}
                     </div>
-                  </div>
+                  </Flyer>
                 );
               })}
             </div>
@@ -174,17 +169,17 @@ export default function Registry() {
 
         <aside className="relative lg:col-span-4">
           <Ann route="registry" n={2} className="-left-6 top-2" />
-          <div className="rounded-ops border border-ops-border bg-ops-surface p-4">
-            <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-ops-text-3">Utilization</div>
-            <p className="mt-2 font-mono text-sm text-ops-text">
+          <Flyer id="registry-util" paper={PAPER.yellow}>
+            <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-warm-ink-2">Utilization</div>
+            <p className="mt-2 font-mono text-sm text-warm-ink">
               {used} of {equipment.length} registered assets used in the last 90 days — {util}
             </p>
-            <p className="mt-2 text-sm text-ops-text-2">
+            <p className="mt-2 text-sm text-warm-ink-2">
               An idle welder is a supply failure, not an apathy problem.
             </p>
-          </div>
+          </Flyer>
         </aside>
       </div>
-    </div>
+    </Bulletin>
   );
 }

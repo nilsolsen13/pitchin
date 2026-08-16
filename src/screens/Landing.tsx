@@ -2,6 +2,9 @@
 // rather than demonstrates. All copy is verbatim.
 
 import { Link } from 'react-router-dom';
+import { Bulletin } from '../components/Bulletin';
+import { Flyer } from '../components/Flyer';
+import { PAPER } from '../lib/paper';
 
 const FAILURES: { label: string; body: string }[] = [
   {
@@ -27,10 +30,9 @@ const TARGETS: string[] = [
 
 export default function Landing() {
   return (
-    <div data-surface="warm" className="min-h-screen bg-canvas text-warm-ink">
-      {/* Section 1 — Hero */}
-      <section className="mx-auto max-w-content px-8 pt-20">
-        <h1 className="font-display text-6xl font-bold uppercase tracking-[0.06em] text-warm-ink">
+    <Bulletin full>
+      <Flyer id="landing-hero" paper={PAPER.masthead} className="!p-8">
+        <h1 className="wordmark text-6xl leading-tight text-warm-ink">
           PitchIn
         </h1>
         <div className="mt-4 h-[3px] w-[120px] bg-warm-stamp" />
@@ -39,64 +41,64 @@ export default function Landing() {
           reward for the one thing civic life never measures: showing up when you said you would,
           week after week.
         </p>
-      </section>
+      </Flyer>
 
-      {/* Section 2 — three failures */}
-      <section className="mx-auto mt-20 max-w-content px-8">
-        <h2 className="font-display text-3xl font-semibold uppercase tracking-[0.04em] text-warm-ink">
-          Civic volunteering does not fail on goodwill.
-        </h2>
-        <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3">
-          {FAILURES.map((f) => (
-            <div key={f.label}>
-              <div className="font-display text-lg font-semibold uppercase tracking-[0.06em] text-warm-stamp">
-                {f.label}
-              </div>
-              <p className="mt-2 leading-relaxed text-warm-ink-2">{f.body}</p>
+      <h2 className="mt-12 text-center font-display text-2xl font-semibold uppercase tracking-[0.04em] text-warm-ink">
+        Civic volunteering does not fail on goodwill.
+      </h2>
+      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
+        {FAILURES.map((f) => (
+          <Flyer key={f.label} id={`fail-${f.label}`} paper={PAPER.cream}>
+            <div className="font-display text-lg font-semibold uppercase tracking-[0.06em] text-warm-stamp">
+              {f.label}
             </div>
-          ))}
-        </div>
-      </section>
+            <p className="mt-2 leading-relaxed text-warm-ink-2">{f.body}</p>
+          </Flyer>
+        ))}
+      </div>
 
-      {/* Section 3 — the claim */}
-      <section className="mt-20 bg-warm-paper-deep py-16">
-        <p className="mx-auto max-w-[52rem] px-8 text-center text-3xl leading-snug text-warm-ink">
-          Volunteering forty hours once and then vanishing is worth less than twenty minutes a week
-          for two years. PitchIn is the first system that says so out loud.
-        </p>
-      </section>
+      <div className="mt-10">
+        <Flyer id="landing-claim" paper={PAPER.yellow} className="!p-8">
+          <p className="text-center text-3xl leading-snug text-warm-ink">
+            Volunteering forty hours once and then vanishing is worth less than twenty minutes a week
+            for two years. PitchIn is the first system that says so out loud.
+          </p>
+        </Flyer>
+      </div>
 
-      {/* Section 4 — any metric becomes a target */}
-      <section className="mx-auto mt-20 max-w-content px-8">
-        <h2 className="font-display text-3xl font-semibold uppercase tracking-[0.04em] text-warm-ink">
-          Any metric becomes a target.
-        </h2>
-        <ul className="mt-8 space-y-4">
-          {TARGETS.map((t) => (
-            <li key={t} className="flex items-start gap-3 text-lg text-warm-ink">
-              <span className="mt-2 h-2.5 w-2.5 shrink-0 bg-warm-stamp" />
-              {t}
-            </li>
-          ))}
-        </ul>
-        <p className="mt-8 max-w-[46rem] text-lg italic text-warm-ink-2">
-          If we get this wrong, we crowd out the intrinsic motive and the whole thing dies. So the
-          reward layer stays deliberately thin.
-        </p>
-      </section>
+      <div className="mt-10">
+        <Flyer id="landing-targets" paper={PAPER.cream} className="!p-8">
+          <h2 className="font-display text-3xl font-semibold uppercase tracking-[0.04em] text-warm-ink">
+            Any metric becomes a target.
+          </h2>
+          <ul className="mt-8 space-y-4">
+            {TARGETS.map((t) => (
+              <li key={t} className="flex items-start gap-3 text-lg text-warm-ink">
+                <span className="mt-2 h-2.5 w-2.5 shrink-0 bg-warm-stamp" />
+                {t}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-8 max-w-[46rem] text-lg italic text-warm-ink-2">
+            If we get this wrong, we crowd out the intrinsic motive and the whole thing dies. So the
+            reward layer stays deliberately thin.
+          </p>
+        </Flyer>
+      </div>
 
-      {/* Section 5 — CTA */}
-      <section className="mx-auto mt-20 max-w-content px-8 pb-24">
-        <Link
-          to="/board"
-          className="inline-block rounded-warm bg-warm-stamp px-6 py-3 font-display text-lg font-semibold uppercase tracking-[0.06em] text-warm-paper hover:brightness-110"
-        >
-          Enter South Park
-        </Link>
-        <p className="mt-4 font-mono text-sm text-warm-ink-2">
-          Working prototype · South Park, Park County, Colorado · Pop. 4,187 · Thursday, March 12, 2026
-        </p>
-      </section>
-    </div>
+      <div className="mt-10 pb-8">
+        <Flyer id="landing-cta" paper={PAPER.masthead} className="text-center">
+          <Link
+            to="/board"
+            className="inline-block rounded-warm bg-warm-stamp px-6 py-3 font-display text-lg font-semibold uppercase tracking-[0.06em] text-warm-paper hover:brightness-110"
+          >
+            Enter South Park
+          </Link>
+          <p className="mt-4 font-mono text-sm text-warm-ink-2">
+            Working prototype · South Park, Park County, Colorado · Pop. 4,187 · Thursday, March 12, 2026
+          </p>
+        </Flyer>
+      </div>
+    </Bulletin>
   );
 }

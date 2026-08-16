@@ -11,7 +11,7 @@ export function ShowRateRing({ value, size = 96 }: { value: number; size?: numbe
   return (
     <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
       <svg width={size} height={size} className="-rotate-90">
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#2A3441" strokeWidth={stroke} />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#C9BFA9" strokeWidth={stroke} />
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -24,7 +24,7 @@ export function ShowRateRing({ value, size = 96 }: { value: number; size?: numbe
         />
       </svg>
       <span
-        className="absolute font-mono font-medium text-ops-text"
+        className="absolute font-mono font-medium text-warm-ink"
         style={{ fontSize: size * 0.24 }}
       >
         {Math.round(clamped)}%

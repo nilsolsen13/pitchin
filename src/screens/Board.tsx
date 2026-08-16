@@ -1,4 +1,6 @@
 // Needs Board (spec §7.2). Filters, ordered cards, right rail. Real state.
+// Visual: dorm cork bulletin. Spec copy, order, filters, and stalled
+// diagnosis are unchanged.
 
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -7,9 +9,12 @@ import { useDemo } from '../state/DemoState';
 import { equipment, quals, squads } from '../data/seed';
 import { DEMO_TODAY } from '../data/seed';
 import { daysSince } from '../lib/format';
+import { PAPER } from '../lib/paper';
 import { NeedCard } from '../components/NeedCard';
 import { RepCard } from '../components/RepCard';
 import { Ann } from '../components/Ann';
+import { Flyer } from '../components/Flyer';
+import { Bulletin, Masthead, PaperTab } from '../components/Bulletin';
 
 type Filter = 'ALL' | 'SURGE' | 'SUSTAINMENT' | 'STALLED' | 'MET';
 const FILTERS: Filter[] = ['ALL', 'SURGE', 'SUSTAINMENT', 'STALLED', 'MET'];
@@ -25,7 +30,6 @@ function matches(need: Need, filter: Filter): boolean {
   }
 }
 
-// surge first, then stalled, then by age descending (oldest first).
 function priority(need: Need): number {
   if (need.mode === 'surge') return 0;
   if (need.status === 'stalled') return 1;
@@ -48,83 +52,86 @@ export default function Board() {
   const metNeeds = needs.filter((n) => n.status === 'met');
 
   return (
-    <div>
-      <header>
-        <h1 className="text-3xl font-semibold text-ops-text">Needs Board</h1>
-        <p className="mt-1 text-ops-text-2">
-          Six needs. Five active, one met. One surge. One stalled.
-        </p>
-      </header>
+    <Bulletin>
+      <Masthead
+        title="Needs Board"
+        sub="Six needs. Five active, one met. One surge. One stalled."
+      />
 
-      <div className="mt-5 flex flex-wrap gap-2">
+      <div className="mt-8 flex flex-wrap justify-center gap-3">
         {FILTERS.map((f) => (
-          <button
+          <PaperTab
             key={f}
-            type="button"
+            active={filter === f}
             onClick={() => setFilter(f)}
-            className={`rounded-full border px-3 py-1 font-mono text-xs uppercase tracking-wider transition-colors ${
-              filter === f
-                ? 'border-ops-accent bg-ops-accent/15 text-ops-accent'
-                : 'border-ops-border text-ops-text-2 hover:text-ops-text'
-            }`}
+            tilt={f === 'ALL' ? '-0.6deg' : f === 'MET' ? '0.8deg' : '0.3deg'}
           >
             {f}
-          </button>
+          </PaperTab>
         ))}
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-12">
-        <div className="space-y-4 lg:col-span-8">
+      <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-12">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-8 lg:gap-x-8 lg:gap-y-10">
           {ordered.map((need) => (
             <div key={need.id} className="relative">
-              {need.mode === 'surge' ? <Ann route="board" n={2} className="-left-6 top-4" /> : null}
-              {need.status === 'stalled' ? <Ann route="board" n={1} className="-left-6 top-4" /> : null}
+              {need.mode === 'surge' ? <Ann route="board" n={2} className="-left-5 top-3" warm /> : null}
+              {need.status === 'stalled' ? <Ann route="board" n={1} className="-left-5 top-3" warm /> : null}
               <NeedCard need={need} />
             </div>
           ))}
           {ordered.length === 0 ? (
-            <p className="font-mono text-sm text-ops-text-3">No needs match this filter.</p>
+            <p className="font-mono text-sm text-warm-ink-2 sm:col-span-2">
+              No needs match this filter.
+            </p>
           ) : null}
         </div>
 
-        <aside className="space-y-6 lg:col-span-4">
+        <aside className="space-y-8 lg:col-span-4">
           {role === 'resident' ? (
             <div className="relative">
-              <Ann route="board" n={3} className="-left-6 top-2" />
-              <RepCard variant="compact" onAccept={acceptRep} onWaive={waiveRep} />
+              <Ann route="board" n={3} className="-left-5 top-2" warm />
+              <Flyer id="board-rep" paper={PAPER.masthead}>
+                <RepCard
+                  variant="compact"
+                  onAccept={acceptRep}
+                  onWaive={waiveRep}
+                  className="rounded-none border-0 bg-transparent p-0 hover:bg-transparent"
+                />
+              </Flyer>
             </div>
           ) : null}
 
-          <div className="rounded-ops border border-ops-border bg-ops-surface p-4">
-            <h2 className="font-mono text-[11px] uppercase tracking-[0.08em] text-ops-text-3">
+          <Flyer id="board-capacity" paper={PAPER.cream}>
+            <h2 className="font-mono text-[11px] uppercase tracking-[0.08em] text-warm-ink-2">
               Town capacity
             </h2>
-            <ul className="mt-3 space-y-1.5 font-mono text-sm text-ops-text">
+            <ul className="mt-3 space-y-1.5 font-mono text-sm text-warm-ink">
               <li>{people.length} RESIDENTS REGISTERED</li>
               <li>{equipment.length} ASSETS REGISTERED</li>
               <li>{quals.length} QUALS IN CIRCULATION</li>
               <li>{squads.length} SQUADS</li>
             </ul>
-            <Link to="/registry" className="mt-3 inline-block text-sm text-ops-accent hover:underline">
+            <Link to="/registry" className="mt-3 inline-block text-sm text-warm-stamp hover:underline">
               View registry →
             </Link>
-          </div>
+          </Flyer>
 
-          <div className="rounded-ops border border-ops-border bg-ops-surface p-4">
-            <h2 className="font-mono text-[11px] uppercase tracking-[0.08em] text-ops-text-3">
+          <Flyer id="board-wall" paper={PAPER.green}>
+            <h2 className="font-mono text-[11px] uppercase tracking-[0.08em] text-warm-ink-2">
               This month on the wall
             </h2>
-            <ul className="mt-3 space-y-1.5 text-sm text-ops-text-2">
+            <ul className="mt-3 space-y-1.5 text-sm text-warm-ink">
               {metNeeds.map((n) => (
                 <li key={n.id}>{n.title}</li>
               ))}
             </ul>
-            <Link to="/wall" className="mt-3 inline-block text-sm text-ops-accent hover:underline">
+            <Link to="/wall" className="mt-3 inline-block text-sm text-warm-stamp hover:underline">
               See the wall →
             </Link>
-          </div>
+          </Flyer>
         </aside>
       </div>
-    </div>
+    </Bulletin>
   );
 }

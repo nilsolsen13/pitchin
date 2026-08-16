@@ -14,7 +14,7 @@
  */
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 /* ─── Ops: dark, operational. Every screen except / and /wall. ─── */
@@ -54,9 +54,22 @@ body,
 
 body {
   margin: 0;
-  background-color: #0e1116;
+  background-color: #3a2410;
   font-family: Inter, ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+/*
+ * Wordmark. Defined here (not only as a Tailwind font-hand utility) so a
+ * tailwind.config.ts change cannot leave the landing hero on Inter. Kalam is
+ * loaded from index.html; cursive is the fallback if the file is still in flight.
+ */
+.wordmark,
+.font-hand {
+  font-family: Kalam, cursive;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 /* Mono numerals should align in tables and stat cards. */
@@ -107,6 +120,186 @@ body {
   animation: task-reveal 220ms ease-out both;
 }
 
+@keyframes drawer-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-drawer-in {
+  animation: drawer-in 200ms ease-out;
+}
+
+/* ─── Needs Board: dorm cork bulletin (visual only; copy stays spec) ─── */
+.board-cork {
+  background-color: #b08958;
+  background-image:
+    radial-gradient(circle at 18% 22%, rgba(72, 42, 18, 0.18) 0 1.1px, transparent 1.4px),
+    radial-gradient(circle at 72% 64%, rgba(72, 42, 18, 0.14) 0 1px, transparent 1.3px),
+    radial-gradient(circle at 44% 81%, rgba(255, 236, 200, 0.16) 0 0.8px, transparent 1.1px),
+    repeating-linear-gradient(
+      12deg,
+      rgba(92, 54, 24, 0.07) 0 1px,
+      transparent 1px 8px
+    ),
+    repeating-linear-gradient(
+      98deg,
+      rgba(92, 54, 24, 0.05) 0 1px,
+      transparent 1px 11px
+    );
+  box-shadow:
+    inset 0 0 0 10px #6b4423,
+    inset 0 0 0 12px #4a2e16,
+    inset 0 40px 80px rgba(60, 32, 12, 0.18);
+}
+
+.board-pin {
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  z-index: 3;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  border-radius: 50%;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+.board-pin::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  margin: -2px 0 0 -2px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.board-flyer {
+  position: relative;
+  border-radius: 2px;
+  transform: rotate(var(--flyer-tilt, 0deg));
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.35) inset,
+    0 10px 18px rgba(40, 22, 8, 0.28);
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.board-flyer:hover,
+.board-flyer:focus-within {
+  z-index: 4;
+  transform: rotate(0deg);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.4) inset,
+    0 14px 24px rgba(40, 22, 8, 0.34);
+}
+
+.board-flyer-stalled {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.35) inset,
+    0 10px 18px rgba(40, 22, 8, 0.28),
+    inset 3px 0 0 #C4544A;
+}
+
+.board-flyer-stalled:hover,
+.board-flyer-stalled:focus-within {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.4) inset,
+    0 14px 24px rgba(40, 22, 8, 0.34),
+    inset 3px 0 0 #C4544A;
+}
+
+.board-tape {
+  position: absolute;
+  top: 10px;
+  right: -8px;
+  z-index: 2;
+  width: 46px;
+  height: 16px;
+  background: rgba(232, 214, 150, 0.55);
+  transform: rotate(8deg);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
+}
+
+.paper-input {
+  width: 100%;
+  border-radius: 2px;
+  border: 1px solid #c9bfa9;
+  background: #fbf6ea;
+  color: #2a2620;
+  padding: 0.5rem 0.75rem;
+}
+.paper-input::placeholder {
+  color: #6b6250;
+}
+.paper-input:focus {
+  outline: none;
+  border-color: #a63d2e;
+}
+.paper-btn {
+  border-radius: 2px;
+  background: #a63d2e;
+  color: #f4efe4;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.paper-btn:hover {
+  filter: brightness(1.1);
+}
+.paper-btn-ghost {
+  border-radius: 2px;
+  border: 1px solid #c9bfa9;
+  color: #6b6250;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+.paper-btn-ghost:hover {
+  border-color: #2a2620;
+  color: #2a2620;
+}
+.paper-select {
+  border-radius: 2px;
+  border: 1px solid #c9bfa9;
+  background: #fbf6ea;
+  color: #2a2620;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+}
+.paper-select:focus {
+  outline: none;
+  border-color: #a63d2e;
+}
+.paper-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.paper-table th {
+  text-align: left;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b6250;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #c9bfa9;
+}
+.paper-table td {
+  padding: 0.5rem 0.75rem;
+  border-top: 1px solid #c9bfa9;
+  color: #2a2620;
+}
+
 /* Spec §8.5 — skip the scanline sweep and the staggered task reveal, but
    still land on the same end state so the decomposition flow reads. */
 @media (prefers-reduced-motion: reduce) {
@@ -116,5 +309,11 @@ body {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .board-flyer,
+  .board-flyer:hover,
+  .board-flyer:focus-within {
+    transform: none !important;
   }
 }

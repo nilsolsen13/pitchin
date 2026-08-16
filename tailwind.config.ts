@@ -76,6 +76,8 @@ export default {
         mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
         // The Wall + landing headings only
         display: ['Oswald', 'ui-sans-serif', 'sans-serif'],
+        // Wordmark only — mixed-case handwriting so PitchIn ≠ PITCHIN
+        hand: ['Kalam', 'cursive'],
       },
 
       fontSize: {

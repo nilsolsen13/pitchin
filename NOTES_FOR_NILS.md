@@ -69,3 +69,14 @@ non-guilting strings consistent with the house style: **"REP ACCEPTED"** and **"
 the three most legible open needs: the Hansen flood, the Vasquez driveway (with its exact
 "6 DAYS · NEEDS A PLOW TRUCK ON THE TARRYALL SIDE" stamp), and the Tuesday interpreter desk. Days
 open are derived.
+
+### 10. Cork bulletin visual (post-build, requested)
+
+§6 specifies Ops (dispatch) for working screens and Warm (letterpress) only for `/` and
+`/wall`. After the prototype landed, every screen was restyled as a cork dorm bulletin —
+pinned flyers, paper stock, warm ink, wood hallway chrome — so the whole demo reads as
+community posting rather than a control room. Spec copy, filters, card order, stalled
+diagnosis, shrinking-ask strings, permission rules, derived figures, and the annotations
+are unchanged. Palettes are still not a theme toggle: both token sets remain, and cork
+is applied as a property of the screens.
+

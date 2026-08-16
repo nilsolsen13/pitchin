@@ -5,10 +5,12 @@
 import type { ReactNode } from 'react';
 import type { Person, Task } from '../types';
 import { fmtDuration } from '../lib/format';
+import { PAPER } from '../lib/paper';
 import { StatusChip } from './StatusChip';
 import { QualBadge } from './QualBadge';
 import { MaterielChip } from './MaterielChip';
 import { Avatar } from './Avatar';
+import { Flyer } from './Flyer';
 
 export function TaskRow({
   task,
@@ -29,22 +31,23 @@ export function TaskRow({
   const blocked = task.status === 'blocked';
 
   return (
-    <div
-      className="rounded-ops border bg-ops-surface p-4"
-      style={blocked ? { borderColor: '#C4544A' } : { borderColor: '#2A3441' }}
+    <Flyer
+      id={task.id}
+      paper={blocked ? PAPER.rose : PAPER.cream}
+      className={blocked ? 'board-flyer-stalled' : ''}
     >
       <div className="flex items-start gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <StatusChip status={task.status} />
             {showFill ? (
-              <span className="font-mono text-[11px] uppercase tracking-wider text-ops-text-3">
+              <span className="font-mono text-[11px] uppercase tracking-wider text-warm-ink-2">
                 {task.assigneeIds.length} OF {task.peopleNeeded} FILLED
               </span>
             ) : null}
           </div>
-          <h3 className="mt-1.5 text-base font-medium text-ops-text">{task.title}</h3>
-          <p className="mt-0.5 text-sm text-ops-text-2">{task.detail}</p>
+          <h3 className="mt-1.5 text-base font-medium text-warm-ink">{task.title}</h3>
+          <p className="mt-0.5 text-sm text-warm-ink-2">{task.detail}</p>
 
           {(task.requiredQuals.length > 0 || task.requiredEquipment.length > 0) && (
             <div className="mt-2.5 flex flex-wrap gap-1.5">
@@ -64,7 +67,7 @@ export function TaskRow({
                   <Avatar key={p.id} id={p.id} name={p.name} size={24} />
                 ))}
               </div>
-              <span className="font-mono text-[11px] text-ops-text-3">
+              <span className="font-mono text-[11px] text-warm-ink-2">
                 {assignees.map((p) => p.name).join(', ')}
               </span>
             </div>
@@ -72,10 +75,10 @@ export function TaskRow({
         </div>
 
         <div className="flex shrink-0 flex-col items-end gap-2 text-right">
-          <div className="font-mono text-[11px] uppercase tracking-wider text-ops-text-3">
+          <div className="font-mono text-[11px] uppercase tracking-wider text-warm-ink-2">
             {task.window}
           </div>
-          <div className="font-mono text-xs text-ops-text-2">
+          <div className="font-mono text-xs text-warm-ink-2">
             {fmtDuration(task.durationMin)} · {task.peopleNeeded} NEEDED
           </div>
           {action}
@@ -83,10 +86,10 @@ export function TaskRow({
       </div>
 
       {blocked && task.blockReason ? (
-        <div className="mt-3 rounded-ops border border-l-[3px] border-ops-border border-l-status-blocked bg-ops-raised p-3 font-mono text-xs leading-relaxed text-ops-text-2">
+        <div className="mt-3 border border-warm-rule border-l-[3px] border-l-status-blocked bg-[#f7ebe4] p-3 font-mono text-xs leading-relaxed text-warm-ink">
           {task.blockReason}
         </div>
       ) : null}
-    </div>
+    </Flyer>
   );
 }

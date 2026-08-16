@@ -9,7 +9,7 @@ export function AnnotationMarker({
   n,
   text,
   className = '',
-  warm = false,
+  warm = true,
 }: {
   n: number;
   text: string;

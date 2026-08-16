@@ -1,8 +1,7 @@
-// NeedCard (spec §6.5, §7.2). Board card: mode, status, title, requester,
+// NeedCard (spec §6.5, §7.2). Board flyer: mode, status, title, requester,
 // progress bar, unfilled-requirement chips. Stalled cards get a blocked border
 // and the capacity-gap diagnosis. Do not soften the stalled card (AGENTS rule 2).
 
-import { Link } from 'react-router-dom';
 import type { EquipmentType, Need, QualId } from '../types';
 import { useDemo } from '../state/DemoState';
 import { orgs } from '../data/seed';
@@ -13,10 +12,19 @@ import { ModeBadge } from './ModeBadge';
 import { StatusChip } from './StatusChip';
 import { QualBadge } from './QualBadge';
 import { MaterielChip } from './MaterielChip';
+import { PAPER } from '../lib/paper';
+import { Flyer } from './Flyer';
 
 // §7.2 board diagnosis for the stalled Vasquez need (literal copy).
 const STALLED_DIAGNOSIS =
   'CAPACITY GAP — both plow-equipped trucks registered to Kenosha Pass, 22 min from Tarryall Rd.';
+
+function paperFor(need: Need): string {
+  if (need.status === 'stalled') return PAPER.rose;
+  if (need.status === 'met') return PAPER.green;
+  if (need.mode === 'surge') return PAPER.yellow;
+  return PAPER.cream;
+}
 
 export function NeedCard({ need }: { need: Need }) {
   const { tasks } = useDemo();
@@ -28,7 +36,6 @@ export function NeedCard({ need }: { need: Need }) {
   const days = daysSince(need.submittedAt, DEMO_TODAY);
   const stalled = need.status === 'stalled';
 
-  // Unfilled requirements across not-yet-verified tasks.
   const quals = new Set<QualId>();
   const materiel = new Set<EquipmentType>();
   for (const t of nTasks) {
@@ -44,30 +51,28 @@ export function NeedCard({ need }: { need: Need }) {
   const more = chips.length - shown.length;
 
   return (
-    <Link
+    <Flyer
+      id={need.id}
+      paper={paperFor(need)}
+      tape={need.mode === 'surge'}
       to={`/need/${need.id.replace(/^need-/, '')}`}
-      className="block rounded-ops border bg-ops-surface p-4 transition-colors hover:bg-ops-raised"
-      style={
-        stalled
-          ? { borderColor: '#2A3441', borderLeft: '3px solid #C4544A' }
-          : { borderColor: '#2A3441' }
-      }
+      className={`text-warm-ink${stalled ? ' board-flyer-stalled' : ''}`}
     >
       <div className="flex items-start justify-between gap-3">
         <ModeBadge mode={need.mode} />
         <StatusChip status={need.status} />
       </div>
 
-      <h3 className="mt-2.5 text-lg font-semibold text-ops-text">{need.title}</h3>
-      <div className="mt-1 font-mono text-[11px] uppercase tracking-wider text-ops-text-3">
+      <h3 className="mt-2.5 text-lg font-semibold leading-snug text-warm-ink">{need.title}</h3>
+      <div className="mt-1 font-mono text-[11px] uppercase tracking-wider text-warm-ink-2">
         {org?.name ?? need.requesterOrgId} · posted {days} day{days === 1 ? '' : 's'} ago
       </div>
 
       <div className="mt-3">
-        <div className="h-1.5 w-full overflow-hidden rounded-full bg-ops-raised">
-          <div className="h-full rounded-full bg-status-verified" style={{ width: `${pct}%` }} />
+        <div className="h-1.5 w-full overflow-hidden bg-[#d9cbb3]">
+          <div className="h-full bg-status-verified" style={{ width: `${pct}%` }} />
         </div>
-        <div className="mt-1 font-mono text-[11px] uppercase tracking-wider text-ops-text-3">
+        <div className="mt-1 font-mono text-[11px] uppercase tracking-wider text-warm-ink-2">
           {verified}/{total} TASKS VERIFIED
         </div>
       </div>
@@ -82,7 +87,7 @@ export function NeedCard({ need }: { need: Need }) {
             ),
           )}
           {more > 0 ? (
-            <span className="font-mono text-[11px] text-ops-text-3">+{more} more</span>
+            <span className="font-mono text-[11px] text-warm-ink-2">+{more} more</span>
           ) : null}
         </div>
       )}
@@ -92,6 +97,6 @@ export function NeedCard({ need }: { need: Need }) {
           {STALLED_DIAGNOSIS}
         </div>
       ) : null}
-    </Link>
+    </Flyer>
   );
 }

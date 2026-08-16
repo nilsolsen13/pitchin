@@ -16,11 +16,12 @@ Set in **South Park, Park County, Colorado**. Pop. 4,187. Frozen at Thursday, 12
 |---|---|
 | **[`AGENTS.md`](./AGENTS.md)** | **Start here if you are an AI agent.** Constraints, pinned deps, and the five rules that must not be broken. |
 | [`PitchIn_MVP_build_spec.md`](./PitchIn_MVP_build_spec.md) | The authoritative build spec. Data model, state machines, design system, nine screen specs with literal copy, full seed data, ten-phase build order, acceptance checklist. |
+| [`PitchIn_logo_spec.md`](./PitchIn_logo_spec.md) | Mark + wordmark brief. Draw from this; do not copy `logo-mockups/`. Does not supersede the build spec. |
 | [`PitchIn_spec_v1.md`](./PitchIn_spec_v1.md) | The original pitch narrative. Read for tone and vocabulary — it describes no screens, so do not build from it. |
 | [`PitchIn_spec_v2.md`](./PitchIn_spec_v2.md) | Planning notes on how the build spec was scoped. **Not a spec despite the filename**, and partly stale — the build spec wins wherever they disagree. |
 
 > **Note on the filenames:** `v2` does not supersede `v1`, and neither supersedes the build spec.
-> `PitchIn_MVP_build_spec.md` is the only buildable document here.
+> `PitchIn_MVP_build_spec.md` is the product spec. `PitchIn_logo_spec.md` is the mark brief only.
 
 ## Run it
 
