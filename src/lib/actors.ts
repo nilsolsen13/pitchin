@@ -35,7 +35,3 @@ export function actorForRole(role: Role, people: Person[]): Actor {
 export function displayName(id: string, people: Person[]): string {
   return DESKS[id]?.name ?? people.find((p) => p.id === id)?.name ?? id;
 }
-
-export function isDesk(id: string): boolean {
-  return id in DESKS;
-}
