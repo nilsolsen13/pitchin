@@ -1,5 +1,5 @@
-// Demo-legibility controls (Increment 2 §1.1–§1.2). Live in the top bar so a
-// grader never has to open a menu to find the role switcher or annotations.
+// Demo-legibility controls. Live in the top bar so a grader never has to
+// open a menu to find the role switcher or annotations.
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import type { Role } from '../types';
@@ -12,12 +12,6 @@ const ROLES: { role: Role; label: string; short: string; title: string }[] = [
     label: 'RESIDENT',
     short: 'RES',
     title: 'Nora Beckett — resident, Creek Side squad',
-  },
-  {
-    role: 'requester',
-    label: 'REQUESTER',
-    short: 'REQ',
-    title: 'Park County Emergency Management — requester',
   },
   {
     role: 'admin',
@@ -37,7 +31,7 @@ export function RoleSwitcher() {
     setRole(newRole);
     if (!allowed) {
       navigate('/board');
-      setToast(`VIEW CHANGED · ${newRole.toUpperCase()}`);
+      setToast(`VIEW CHANGED · ${newRole === 'admin' ? 'COUNTY' : 'RESIDENT'}`);
     }
   }
 

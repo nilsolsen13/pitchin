@@ -4,7 +4,7 @@
 
 import type {
   AAR, CalendarEntry, Commitment, Equipment, EquipmentType, HonorStatus, ISODate,
-  Merchant, Need, Person, QualId, Squad, Task,
+  Merchant, Need, Person, QualId, Role, Squad, Task,
 } from '../types';
 import { DEMO_TODAY } from '../data/seed';
 import { dayNumber, fmtLongNoYear } from './format';
@@ -152,6 +152,13 @@ export function squadHasEquipment(
   return equipment.some(
     (e) => e.type === type && e.ownerId !== null && mateIds.includes(e.ownerId),
   );
+}
+
+export function canVerify(role: Role, need: Need): boolean {
+  if (role === 'admin') {
+    return need.requesterOrgId === 'org-pcem' || need.requesterOrgId === 'org-county';
+  }
+  return need.postedByResident;
 }
 
 export function canClaimTask(

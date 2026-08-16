@@ -25,7 +25,6 @@ interface NavItem {
 
 const NAV: NavItem[] = [
   { to: '/board', label: 'Board', roles: 'all' },
-  { to: '/post', label: 'Post a Need', roles: ['requester'] },
   { to: '/registry', label: 'Registry', roles: 'all' },
   { to: '/me', label: 'My Rep', roles: ['resident'] },
   { to: '/calendar', label: 'Calendar', roles: ['resident'] },
@@ -74,18 +73,12 @@ export function AppShell({ children }: { children: ReactNode }) {
             className="ml-auto flex shrink-0 items-center gap-3"
             aria-label={`Demo controls, viewing as ${actor.name}`}
           >
-            <NavLink
-              to="/rewards"
-              className={({ isActive }) =>
-                `shrink-0 rounded-warm px-3 py-1.5 text-sm font-semibold ${
-                  isActive
-                    ? 'bg-[#f6e6a8] text-[#2a2620]'
-                    : 'bg-[#a63d2e] text-[#f4efe4] hover:brightness-110'
-                }`
-              }
+            <Link
+              to="/post"
+              className="shrink-0 rounded-warm bg-warm-stamp px-3 py-1.5 font-mono text-xs uppercase tracking-wide text-warm-paper hover:brightness-110"
             >
-              Rewards
-            </NavLink>
+              Post a need
+            </Link>
             <RoleSwitcher />
             <AnnotationsSwitch />
             <ProfileMenu />

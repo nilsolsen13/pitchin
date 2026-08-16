@@ -43,7 +43,6 @@ const SCREENS: { name: string; href: string; description: string; role?: Role }[
   {
     name: 'POST A NEED',
     href: '/post',
-    role: 'requester',
     description:
       'Describe a flood in plain English and watch it become eleven staffable tasks with skill and equipment requirements.',
   },

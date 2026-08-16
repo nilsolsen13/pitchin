@@ -3,8 +3,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { NeedMode } from '../types';
-import { needs, tasks as seedTasks } from '../data/seed';
+import type { Need, NeedMode, Task } from '../types';
+import { DEMO_TODAY, needs as seedNeeds, tasks as seedTasks } from '../data/seed';
+import { useDemo } from '../state/DemoState';
 import { fmtDuration } from '../lib/format';
 import { PAPER } from '../lib/paper';
 import { QualBadge } from '../components/QualBadge';
@@ -18,7 +19,7 @@ type Stage = 'compose' | 'decomposing' | 'done';
 const PLACEHOLDER =
   "e.g. The Middle Fork came up over the bank behind the Hansen place. Basement's flooded, there's mud through the ground floor, and they've got a seven-year-old.";
 
-const hansen = needs.find((n) => n.id === 'need-hansen-flood')!;
+const hansen = seedNeeds.find((n) => n.id === 'need-hansen-flood')!;
 const hansenTasks = seedTasks.filter((t) => t.needId === 'need-hansen-flood');
 
 // Summary counts derive from the parsed tasks (not hardcoded).
@@ -33,6 +34,7 @@ function prefersReducedMotion(): boolean {
 
 export default function PostNeed() {
   const navigate = useNavigate();
+  const { role, postNeed } = useDemo();
   const [text, setText] = useState('');
   const [mode, setMode] = useState<NeedMode>('surge');
   const [stage, setStage] = useState<Stage>('compose');
@@ -84,6 +86,46 @@ export default function PostNeed() {
     setShowSummary(false);
   }
 
+  function postToBoard() {
+    const stamp = String(Date.now());
+    const needId = `need-posted-${stamp}`;
+    const postedByResident = role === 'resident';
+    const title =
+      text.trim() === hansen.rawText
+        ? hansen.title
+        : text.trim().slice(0, 80) || 'Untitled need';
+    const newTasks: Task[] = hansenTasks.map((t, i) => {
+      let status = t.status;
+      if (status === 'verified' || status === 'claimed') status = 'open';
+      return {
+        ...t,
+        id: `t-posted-${stamp}-${i}`,
+        needId,
+        status,
+        assigneeIds: [],
+        verifiedById: null,
+        verifiedAt: null,
+      };
+    });
+    const need: Need = {
+      id: needId,
+      title,
+      rawText: text.trim() || hansen.rawText,
+      requesterOrgId: postedByResident ? 'org-neighbor' : 'org-pcem',
+      submittedAt: `${DEMO_TODAY}T12:00:00-07:00`,
+      mode,
+      status: 'staffing',
+      taskIds: newTasks.map((t) => t.id),
+      metAt: null,
+      aarId: null,
+      stallReason: null,
+      postedByResident,
+      mapPoint: { x: 340, y: 430 },
+    };
+    postNeed(need, newTasks);
+    navigate(`/need/${needId.replace(/^need-/, '')}`);
+  }
+
   const locked = stage !== 'compose';
 
   return (
@@ -119,8 +161,12 @@ export default function PostNeed() {
             <div className="mt-4 flex flex-wrap items-end gap-6">
               <label className="flex flex-col">
                 <span className="mb-1 font-mono text-[11px] uppercase tracking-wider text-warm-ink-2">Requester</span>
-                <select className="paper-select" defaultValue="org-pcem">
-                  <option value="org-pcem">Park County Emergency Management</option>
+                <select className="paper-select" disabled value={role === 'admin' ? 'org-pcem' : 'resident'}>
+                  {role === 'admin' ? (
+                    <option value="org-pcem">Park County Emergency Management</option>
+                  ) : (
+                    <option value="resident">Nora Beckett, Creek Side</option>
+                  )}
                 </select>
               </label>
 
@@ -217,7 +263,7 @@ export default function PostNeed() {
 
       {stage === 'done' ? (
         <div className="mx-auto mt-6 flex max-w-3xl gap-3">
-          <button type="button" onClick={() => navigate('/need/hansen-flood')} className="paper-btn">
+          <button type="button" onClick={postToBoard} className="paper-btn">
             Post to the board
           </button>
           <button type="button" onClick={startOver} className="paper-btn-ghost">

@@ -5,7 +5,7 @@
 
 export type ISODate = string; // "2026-03-12"
 export type ISODateTime = string; // "2026-03-12T18:00:00-07:00"
-export type Role = 'resident' | 'requester' | 'admin';
+export type Role = 'resident' | 'admin';
 
 // ─── People and capability ───────────────────────────────────────────────────
 
@@ -91,6 +91,8 @@ export interface Need {
   metAt: ISODateTime | null;
   aarId: string | null;
   stallReason: string | null; // shown on the board when status === 'stalled'
+  postedByResident: boolean; // true only for needs this resident posted in-session
+  mapPoint: { x: number; y: number } | null; // schematic coords; seed filled in Part C
 }
 
 export type TaskStatus =

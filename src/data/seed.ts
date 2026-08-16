@@ -175,7 +175,7 @@ export const equipment: Equipment[] = [
 
 // ─── A.7 Needs (6) ───────────────────────────────────────────────────────────
 
-export const needs: Need[] = [
+const NEED_SEED: Omit<Need, 'postedByResident' | 'mapPoint'>[] = [
   {
     id: 'need-hansen-flood',
     title: 'Flood response — the Hansen place, Middle Fork',
@@ -262,6 +262,12 @@ export const needs: Need[] = [
     stallReason: null,
   },
 ];
+
+export const needs: Need[] = NEED_SEED.map((n) => ({
+  ...n,
+  postedByResident: false,
+  mapPoint: null,
+}));
 
 // ─── A.8 Tasks — the Hansen flood (11) + A.9 other needs' tasks ──────────────
 

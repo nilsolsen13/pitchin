@@ -73,18 +73,10 @@ export function ProfileMenu() {
                 <MenuLink to="/me" onClick={() => setOpen(false)}>
                   My Rep
                 </MenuLink>
-                <MenuLink to="/rewards" onClick={() => setOpen(false)}>
-                  Rewards
-                </MenuLink>
                 <MenuLink to="/squad/creek-side" onClick={() => setOpen(false)}>
                   Creek Side squad
                 </MenuLink>
               </>
-            ) : null}
-            {role === 'requester' ? (
-              <MenuLink to="/post" onClick={() => setOpen(false)}>
-                Post a Need
-              </MenuLink>
             ) : null}
             {role === 'admin' ? (
               <>

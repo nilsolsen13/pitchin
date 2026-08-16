@@ -8,7 +8,7 @@ import { equipment as seedEquipment, orgs, quals } from '../data/seed';
 import { DEMO_TODAY } from '../data/seed';
 import { daysBetween, daysSince, fmtShort } from '../lib/format';
 import {
-  capacityGaps, peopleCommitted, personHours, squadHasEquipment, tasksForNeed, tasksVerified,
+  canVerify, capacityGaps, peopleCommitted, personHours, squadHasEquipment, tasksForNeed, tasksVerified,
 } from '../lib/derive';
 import { PAPER } from '../lib/paper';
 import { ModeBadge } from '../components/ModeBadge';
@@ -101,11 +101,11 @@ export default function NeedDetail() {
       );
     }
     if (task.status === 'in_progress') {
-      const canVerify = role === 'requester' && need!.requesterOrgId === 'org-pcem';
+      const allowed = canVerify(role, need!);
       return (
         <ActionButton
           label="Verify"
-          enabled={canVerify}
+          enabled={allowed}
           tooltip="Only the requester can verify a task."
           onClick={() => verifyTask(task.id)}
         />
@@ -123,7 +123,7 @@ export default function NeedDetail() {
             <ModeBadge mode={need.mode} />
             <StatusChip status={need.status} />
             <span className="font-mono text-[11px] uppercase tracking-wider">
-              REQUESTED BY {org?.name ?? need.requesterOrgId} · POSTED {fmtShort(need.submittedAt)} · {daysOpen} DAYS OPEN
+              REQUESTED BY {need.postedByResident ? 'Nora Beckett' : (org?.name ?? need.requesterOrgId)} · POSTED {fmtShort(need.submittedAt)} · {daysOpen} DAYS OPEN
             </span>
           </div>
         }

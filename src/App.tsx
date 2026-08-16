@@ -40,7 +40,7 @@ export default function App() {
           <Route path="/" element={<Landing />} />
           <Route element={<ShellLayout />}>
             <Route path="/board" element={<Board />} />
-            <Route path="/post" element={<RequireRole role="requester"><PostNeed /></RequireRole>} />
+            <Route path="/post" element={<PostNeed />} />
             <Route path="/need/:needId" element={<NeedDetail />} />
             <Route path="/me" element={<RequireRole role="resident"><MyRep /></RequireRole>} />
             <Route path="/calendar" element={<RequireRole role="resident"><Calendar /></RequireRole>} />

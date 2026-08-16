@@ -24,6 +24,7 @@ type Action =
   | { type: 'TOGGLE_ANNOTATIONS' }
   | { type: 'CLAIM_TASK'; taskId: string; personId: string; toast: string }
   | { type: 'VERIFY_TASK'; taskId: string }
+  | { type: 'POST_NEED'; need: Need; tasks: Task[] }
   | { type: 'SET_REP_STATE'; repState: RepState }
   | { type: 'ACCEPT_REP' }
   | { type: 'WAIVE_REP' }
@@ -36,7 +37,8 @@ const ANNOTATIONS_KEY = 'pitchin.annotations';
 function readStoredRole(): Role {
   try {
     const v = sessionStorage.getItem(ROLE_KEY);
-    if (v === 'resident' || v === 'requester' || v === 'admin') return v;
+    if (v === 'admin') return 'admin';
+    if (v === 'resident' || v === 'requester') return 'resident';
   } catch {
     // Blocked storage — degrade to in-memory defaults.
   }
@@ -146,6 +148,14 @@ function reducer(state: DemoState, action: Action): DemoState {
       return withToast({ ...state, tasks }, 'TASK VERIFIED');
     }
 
+    case 'POST_NEED': {
+      return {
+        ...state,
+        needs: [action.need, ...state.needs],
+        tasks: [...state.tasks, ...action.tasks],
+      };
+    }
+
     case 'SET_REP_STATE':
       return { ...state, repState: action.repState };
 
@@ -186,6 +196,7 @@ interface DemoContextValue extends DemoState {
   toggleAnnotations: () => void;
   claimTask: (taskId: string, personId: string, toast: string) => void;
   verifyTask: (taskId: string) => void;
+  postNeed: (need: Need, tasks: Task[]) => void;
   setRepState: (repState: RepState) => void;
   acceptRep: () => void;
   waiveRep: () => void;
@@ -218,6 +229,7 @@ export function DemoStateProvider({ children }: { children: ReactNode }) {
     },
     claimTask: (taskId, personId, toast) => dispatch({ type: 'CLAIM_TASK', taskId, personId, toast }),
     verifyTask: (taskId) => dispatch({ type: 'VERIFY_TASK', taskId }),
+    postNeed: (need, tasks) => dispatch({ type: 'POST_NEED', need, tasks }),
     setRepState: (repState) => dispatch({ type: 'SET_REP_STATE', repState }),
     acceptRep: () => dispatch({ type: 'ACCEPT_REP' }),
     waiveRep: () => dispatch({ type: 'WAIVE_REP' }),

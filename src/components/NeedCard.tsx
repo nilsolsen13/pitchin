@@ -35,6 +35,9 @@ function paperFor(need: Need): string {
 export function NeedCard({ need }: { need: Need }) {
   const { tasks } = useDemo();
   const org = orgs.find((o) => o.id === need.requesterOrgId);
+  const requesterLabel = need.postedByResident
+    ? 'Nora Beckett'
+    : (org?.name ?? need.requesterOrgId);
   const nTasks = tasksForNeed(need.id, tasks);
   const verified = tasksVerified(need.id, tasks);
   const total = nTasks.length;
@@ -71,7 +74,7 @@ export function NeedCard({ need }: { need: Need }) {
 
       <h3 className="mt-2.5 text-lg font-semibold leading-snug text-warm-ink">{need.title}</h3>
       <div className="mt-1 font-mono text-[11px] uppercase tracking-wider text-warm-ink-2">
-        {org?.name ?? need.requesterOrgId} · posted {days} day{days === 1 ? '' : 's'} ago
+        {requesterLabel} · posted {days} day{days === 1 ? '' : 's'} ago
       </div>
 
       {need.id === 'need-hansen-flood' ? (
