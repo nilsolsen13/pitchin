@@ -2,10 +2,10 @@
 // prescribed; the demo control reaches all three states + waived.
 
 import { Link } from 'react-router-dom';
-import type { Commitment, RepState } from '../types';
+import type { Commitment, RepState, Standing } from '../types';
 import { useDemo } from '../state/DemoState';
 import { aars, squads } from '../data/seed';
-import { showRate, ribbonsFor } from '../lib/derive';
+import { showRate, ribbonsFor, standingFor } from '../lib/derive';
 import { PAPER } from '../lib/paper';
 import { RepCard } from '../components/RepCard';
 import { QualBadge } from '../components/QualBadge';
@@ -29,11 +29,30 @@ const DEMO_OPTIONS: { state: RepState; label: string }[] = [
   { state: 'KEEP_THE_CHAIN', label: 'KEEP THE CHAIN' },
 ];
 
+const STANDING_RUNGS: { standing: Standing; requires: string; unlocks: string }[] = [
+  {
+    standing: 'Provisional',
+    requires: 'Everyone starts here.',
+    unlocks: 'Hold a weekly rep · claim tasks you are qualified for',
+  },
+  {
+    standing: 'Established',
+    requires: 'Streak ≥ 12 wk and show-rate ≥ 85%.',
+    unlocks: '+ vote on the quarterly task menu',
+  },
+  {
+    standing: 'Sponsoring',
+    requires: 'Streak ≥ 26 wk and show-rate ≥ 90%.',
+    unlocks: '+ sponsor a need onto the board · stand up a new squad',
+  },
+];
+
 export default function MyRep() {
   const { people, commitments, needs, tasks, repState, setRepState, acceptRep, waiveRep } = useDemo();
   const nora = people.find((p) => p.id === 'p-beckett')!;
   const creekSide = squads.find((s) => s.id === 'creek-side')!;
   const earned = new Set(ribbonsFor(nora, needs, tasks, commitments, aars));
+  const standing = standingFor(nora);
 
   // The 12-week strip: Nora's completed weekly reps in date order.
   const strip = commitments
@@ -102,6 +121,27 @@ export default function MyRep() {
               </div>
               <p className="mt-2 text-center text-xs text-warm-ink-2">
                 Show-rate is commitments kept over commitments made. Not hours. Not tasks.
+              </p>
+              <ol className="mt-5 w-full space-y-3">
+                {STANDING_RUNGS.map((rung) => {
+                  const current = rung.standing === standing;
+                  return (
+                    <li
+                      key={rung.standing}
+                      className="border-l-2 pl-3"
+                      style={{ borderColor: current ? '#A63D2E' : 'transparent' }}
+                    >
+                      <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-warm-ink">
+                        {rung.standing}
+                      </div>
+                      <div className="mt-0.5 text-xs text-warm-ink-2">{rung.requires}</div>
+                      <div className="mt-0.5 text-xs text-warm-ink">{rung.unlocks}</div>
+                    </li>
+                  );
+                })}
+              </ol>
+              <p className="mt-4 text-sm text-warm-ink-2">
+                Standing is earned by keeping small promises over time. It is the only thing in PitchIn that gives you authority over the system, and it is deliberately slow.
               </p>
             </Flyer>
           </div>

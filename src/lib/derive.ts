@@ -4,7 +4,7 @@
 
 import type {
   AAR, CalendarEntry, Commitment, Equipment, EquipmentType, HonorStatus, ISODate,
-  Merchant, Need, OnBehalfOf, Person, QualId, RibbonId, Role, Squad, Task,
+  Merchant, Need, OnBehalfOf, Person, QualId, RibbonId, Role, Squad, Standing, Task,
 } from '../types';
 import { DEMO_TODAY } from '../data/seed';
 import { dayNumber, fmtLongNoYear } from './format';
@@ -463,4 +463,11 @@ export function ribbonsEarnedThisMonth(
   if (held.has('surge-responder')) ids.push('surge-responder');
   if (held.has('backstop')) ids.push('backstop');
   return ids;
+}
+
+export function standingFor(person: Person): Standing {
+  const rate = showRate(person);
+  if (person.streakWeeks >= 26 && rate >= 0.9) return 'Sponsoring';
+  if (person.streakWeeks >= 12 && rate >= 0.85) return 'Established';
+  return 'Provisional';
 }

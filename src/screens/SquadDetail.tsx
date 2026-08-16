@@ -7,7 +7,7 @@ import { useDemo } from '../state/DemoState';
 import { useParams } from 'react-router-dom';
 import { equipment as seedEquipment, quals, squads, aars } from '../data/seed';
 import { fmtPct1, fmtShort } from '../lib/format';
-import { showRate, squadAssets, squadQualsHeld, squadShowRate, ribbonsFor } from '../lib/derive';
+import { showRate, squadAssets, squadQualsHeld, squadShowRate, ribbonsFor, standingFor } from '../lib/derive';
 import { PAPER } from '../lib/paper';
 import { SquadStreakBar } from '../components/SquadStreakBar';
 import { StatCard } from '../components/StatCard';
@@ -70,6 +70,7 @@ export default function SquadDetail() {
                 showRate={showRate(p) * 100}
                 equipment={seedEquipment.filter((e) => e.ownerId === p.id)}
                 ribbons={ribbonsFor(p, needs, tasks, commitments, aars)}
+                standingLabel={standingFor(p)}
               />
             ))}
           </div>

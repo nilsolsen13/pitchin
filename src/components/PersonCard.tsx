@@ -16,11 +16,13 @@ export function PersonCard({
   showRate,
   equipment,
   ribbons,
+  standingLabel,
 }: {
   person: Person;
   showRate?: number;
   equipment?: Equipment[];
   ribbons?: RibbonId[];
+  standingLabel?: string;
 }) {
   const squad = squads.find((s) => s.id === person.squadId);
   return (
@@ -34,6 +36,11 @@ export function PersonCard({
               <div className="font-mono text-[11px] uppercase tracking-wider text-warm-ink-2">
                 {squad?.name ?? person.squadId} · AGE {person.age}
               </div>
+              {standingLabel ? (
+                <div className="mt-0.5 font-mono text-[11px] uppercase tracking-wider text-warm-ink-2">
+                  {standingLabel}
+                </div>
+              ) : null}
             </div>
             {showRate !== undefined ? <ShowRateRing value={showRate} size={48} /> : null}
           </div>

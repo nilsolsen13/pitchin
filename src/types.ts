@@ -7,6 +7,8 @@ export type ISODate = string; // "2026-03-12"
 export type ISODateTime = string; // "2026-03-12T18:00:00-07:00"
 export type Role = 'resident' | 'admin';
 
+export type Standing = 'Provisional' | 'Established' | 'Sponsoring';
+
 // ─── People and capability ───────────────────────────────────────────────────
 
 export type QualId =
@@ -65,7 +67,7 @@ export interface Squad {
   name: string; // "Creek Side"
   memberIds: string[]; // 4–8 members
   streakWeeks: number; // squad-held streak
-  standing: 'Provisional' | 'Established' | 'Sponsoring';
+  standing: Standing;
   formedDate: ISODate;
   territory: SquadTerritory;
   // showRate is DERIVED from member kept/missed sums.
