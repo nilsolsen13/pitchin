@@ -13,7 +13,7 @@ export type QualId =
   | 'chainsaw' | 'pump-operator' | 'spanish-interpreter' | 'elder-checkin'
   | 'wildfire-prep' | 'meeting-minutes' | 'heavy-tow' | 'food-safety'
   | 'first-aid' | 'wfr' | 'generator' | 'plow' | 'muck-out'
-  | 'livestock' | 'child-cleared' | 'ham-radio';
+  | 'livestock' | 'child-cleared' | 'ham-radio' | 'emt-paramedic';
 
 export interface Qual {
   id: QualId;

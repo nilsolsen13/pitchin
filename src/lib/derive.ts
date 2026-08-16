@@ -66,9 +66,11 @@ export function equipmentUsedCount(equipment: Equipment[]): number {
 
 // ─── Registry headline helpers ────────────────────────────────────────────────
 
-// "1 bilingual paramedic" = holds spanish-interpreter AND wfr (Marisol Vega).
+// "1 bilingual paramedic" = holds emt-paramedic AND spanish-interpreter (Marisol Vega).
 export function bilingualParamedics(people: Person[]): Person[] {
-  return people.filter((p) => p.quals.includes('spanish-interpreter') && p.quals.includes('wfr'));
+  return people.filter(
+    (p) => p.quals.includes('emt-paramedic') && p.quals.includes('spanish-interpreter'),
+  );
 }
 
 // ─── Need-level derivations (spec §7.4) ───────────────────────────────────────

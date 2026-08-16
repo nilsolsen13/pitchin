@@ -16,8 +16,9 @@ export const TOWN = {
   elevationFt: 9800,
 };
 
-// ─── A.2 Quals (16) ──────────────────────────────────────────────────────────
+// ─── A.2 Quals (17) ──────────────────────────────────────────────────────────
 // holders is DERIVED from people[] below — computed, never hardcoded.
+// Increment 3 §2.1 adds EMT-Paramedic so the bilingual-paramedic headline is honest.
 
 const QUAL_META: Omit<Qual, 'holders'>[] = [
   { id: 'chainsaw', name: 'Chainsaw Operator', category: 'Response', demonstration: 'Felled and bucked a standing dead under observation.' },
@@ -36,6 +37,7 @@ const QUAL_META: Omit<Qual, 'holders'>[] = [
   { id: 'livestock', name: 'Livestock Handling', category: 'Logistics', demonstration: 'Moved and penned cattle under observation.' },
   { id: 'child-cleared', name: 'Child Supervision Cleared', category: 'Care', demonstration: 'Background check on file with the school district.' },
   { id: 'ham-radio', name: 'Ham Radio Operator', category: 'Response', demonstration: 'Current FCC Technician license or above.' },
+  { id: 'emt-paramedic', name: 'EMT-Paramedic', category: 'Response', demonstration: 'Current Colorado EMT-Paramedic certification, verified with the fire district.' },
 ];
 
 // ─── A.4 People (24) ─────────────────────────────────────────────────────────
@@ -65,7 +67,7 @@ export const people: Person[] = [
   { id: 'p-delacroix', name: 'Wes Delacroix', age: 38, squadId: 'creek-side', quals: ['muck-out', 'chainsaw'], languages: ['English'], availability: CREEK, repSlot: CREEK, partnerId: 'p-aguirre', keptCount: 31, missedCount: 4, streakWeeks: 15, joinedDate: FORMED_CREEK },
 
   // Kenosha Pass
-  { id: 'p-vega', name: 'Marisol Vega', age: 36, squadId: 'kenosha-pass', quals: ['spanish-interpreter', 'wfr', 'first-aid'], languages: ['English', 'Spanish (native)'], availability: KENOSHA, repSlot: KENOSHA, partnerId: 'p-mwangi', keptCount: 72, missedCount: 3, streakWeeks: 41, joinedDate: FORMED_KENOSHA },
+  { id: 'p-vega', name: 'Marisol Vega', age: 36, squadId: 'kenosha-pass', quals: ['spanish-interpreter', 'wfr', 'first-aid', 'emt-paramedic'], languages: ['English', 'Spanish (native)'], availability: KENOSHA, repSlot: KENOSHA, partnerId: 'p-mwangi', keptCount: 72, missedCount: 3, streakWeeks: 41, joinedDate: FORMED_KENOSHA },
   { id: 'p-tanaka', name: 'Bud Tanaka', age: 66, squadId: 'kenosha-pass', quals: ['plow', 'generator', 'heavy-tow'], languages: ['English'], availability: KENOSHA, repSlot: KENOSHA, partnerId: 'p-grange', keptCount: 58, missedCount: 5, streakWeeks: 38, joinedDate: FORMED_KENOSHA },
   { id: 'p-grange', name: 'Hollis Grange', age: 44, squadId: 'kenosha-pass', quals: ['plow', 'heavy-tow'], languages: ['English'], availability: KENOSHA, repSlot: KENOSHA, partnerId: 'p-tanaka', keptCount: 33, missedCount: 5, streakWeeks: 20, joinedDate: FORMED_KENOSHA },
   { id: 'p-mwangi', name: 'Estelle Mwangi', age: 31, squadId: 'kenosha-pass', quals: ['wfr', 'elder-checkin'], languages: ['English'], availability: KENOSHA, repSlot: KENOSHA, partnerId: 'p-vega', keptCount: 27, missedCount: 3, streakWeeks: 16, joinedDate: FORMED_KENOSHA },
