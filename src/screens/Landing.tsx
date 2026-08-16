@@ -1,7 +1,9 @@
 // Landing (spec §7.0). Warm palette, no shell. The only screen that argues
 // rather than demonstrates. All copy is verbatim.
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import type { Role } from '../types';
+import { useDemo } from '../state/DemoState';
 import { Bulletin } from '../components/Bulletin';
 import { Flyer } from '../components/Flyer';
 import { PAPER } from '../lib/paper';
@@ -26,6 +28,67 @@ const TARGETS: string[] = [
   'Tasks are verified by the requester, not self-reported.',
   'Rankings are squad-level, so individual glory-seeking has nowhere to go.',
   'Rewards stay symbolic and local, so no one has a financial reason to game them.',
+];
+
+const SCREENS: { name: string; href: string; description: string; role?: Role }[] = [
+  {
+    name: 'THE BOARD',
+    href: '/board',
+    description:
+      'Six needs from the county, a church, a school, a ball club, and a neighbor. One of them is stuck, and the board says why.',
+  },
+  {
+    name: 'POST A NEED',
+    href: '/post',
+    role: 'requester',
+    description:
+      'Describe a flood in plain English and watch it become eleven staffable tasks with skill and equipment requirements.',
+  },
+  {
+    name: 'A NEED, IN DEPTH',
+    href: '/need/hansen-flood',
+    description:
+      'Who has turned out, what is still open, and the one task nobody in town is equipped to do.',
+  },
+  {
+    name: 'THE WEEKLY REP',
+    href: '/me',
+    role: 'resident',
+    description:
+      'Twenty minutes, fixed time, named partner. Miss a week and the system shrinks the ask instead of guilting you.',
+  },
+  {
+    name: 'THE CALENDAR',
+    href: '/calendar',
+    role: 'resident',
+    description:
+      'What you have signed up for, what you have already done, and what is open to someone with your quals.',
+  },
+  {
+    name: 'A SQUAD',
+    href: '/squad/creek-side',
+    description:
+      'Four to eight neighbors. Streaks belong to the squad, so a bad month gets carried instead of punished.',
+  },
+  {
+    name: 'THE REGISTRY',
+    href: '/registry',
+    description:
+      'What the town actually owns. Four generators, one bilingual paramedic, and three pumps with one qualified operator.',
+  },
+  {
+    name: 'READINESS',
+    href: '/readiness',
+    role: 'admin',
+    description:
+      'What a county buys: show-rate, retention, time-to-met, and capacity gaps named specifically enough to fix.',
+  },
+  {
+    name: 'THE WALL',
+    href: '/wall',
+    description:
+      'The public board. What got met this month, who met it, and an after-action report that admits what went wrong.',
+  },
 ];
 
 export default function Landing() {
@@ -86,6 +149,27 @@ export default function Landing() {
         </Flyer>
       </div>
 
+      <div className="mt-10">
+        <Flyer id="landing-index" paper={PAPER.cream} className="!p-8">
+          <h2 className="font-display text-3xl font-semibold uppercase tracking-[0.06em] text-warm-stamp">
+            WHAT YOU'RE ABOUT TO SEE
+          </h2>
+          <p className="mt-3 max-w-[46rem] font-normal text-warm-ink-2">
+            A working prototype of a town that already runs this way. Nine screens, seeded with one Colorado town's real-shaped data. Every number on every dashboard is derived from that data, not typed in.
+          </p>
+          <ol className="mt-8 grid grid-cols-1 gap-x-10 gap-y-5 min-[800px]:grid-cols-2">
+            {SCREENS.map((s) => (
+              <li key={s.href}>
+                <IndexLink href={s.href} role={s.role}>
+                  {s.name}
+                </IndexLink>
+                <p className="mt-1 text-warm-ink-2">{s.description}</p>
+              </li>
+            ))}
+          </ol>
+        </Flyer>
+      </div>
+
       <div className="mt-10 pb-8">
         <Flyer id="landing-cta" paper={PAPER.masthead} className="text-center">
           <Link
@@ -100,5 +184,32 @@ export default function Landing() {
         </Flyer>
       </div>
     </Bulletin>
+  );
+}
+
+function IndexLink({
+  href,
+  role,
+  children,
+}: {
+  href: string;
+  role?: Role;
+  children: string;
+}) {
+  const { setRole } = useDemo();
+  const navigate = useNavigate();
+
+  return (
+    <a
+      href={href}
+      onClick={(e) => {
+        e.preventDefault();
+        if (role) setRole(role);
+        navigate(href);
+      }}
+      className="font-display font-semibold uppercase text-warm-ink hover:underline"
+    >
+      {children}
+    </a>
   );
 }

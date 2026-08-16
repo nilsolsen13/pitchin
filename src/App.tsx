@@ -14,6 +14,7 @@ import SquadDetail from './screens/SquadDetail';
 import Registry from './screens/Registry';
 import Readiness from './screens/Readiness';
 import Wall from './screens/Wall';
+import Calendar from './screens/Calendar';
 import Primitives from './screens/Primitives';
 
 function ShellLayout() {
@@ -41,6 +42,7 @@ export default function App() {
             <Route path="/post" element={<RequireRole role="requester"><PostNeed /></RequireRole>} />
             <Route path="/need/:needId" element={<NeedDetail />} />
             <Route path="/me" element={<RequireRole role="resident"><MyRep /></RequireRole>} />
+            <Route path="/calendar" element={<RequireRole role="resident"><Calendar /></RequireRole>} />
             <Route path="/squad/:squadId" element={<SquadDetail />} />
             <Route path="/registry" element={<Registry />} />
             <Route path="/readiness" element={<RequireRole role="admin"><Readiness /></RequireRole>} />

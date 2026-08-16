@@ -4,7 +4,7 @@ import type { Role } from '../types';
 
 export function isRouteAllowed(path: string, role: Role): boolean {
   if (path.startsWith('/post')) return role === 'requester';
-  if (path.startsWith('/me')) return role === 'resident';
+  if (path.startsWith('/me') || path.startsWith('/calendar')) return role === 'resident';
   if (path.startsWith('/readiness')) return role === 'admin';
   return true;
 }
