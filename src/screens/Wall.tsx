@@ -3,7 +3,7 @@
 // AAR text is verbatim (A.10). "Still open" lists Hansen, Vasquez, interpreter.
 
 import { useDemo } from '../state/DemoState';
-import { aars, orgs, squads } from '../data/seed';
+import { aars, orgs, squads, sponsorships } from '../data/seed';
 import { DEMO_TODAY } from '../data/seed';
 import {
   commitmentsForNeed, outcomeCount, peopleCommitted, onBehalfPublicLine,
@@ -72,6 +72,9 @@ export default function Wall() {
             </p>
             <p className="mt-2 font-mono text-sm text-warm-ink">
               Turned out: {duthieResidents} residents · {duthieCommits.length} commitments · {duthieKept} kept, {duthieWaived} waived
+            </p>
+            <p className="mt-2 text-sm text-warm-ink">
+              {`Materials covered by ${church?.name ?? 'the parish'} — $${sponsorships.find((s) => s.needId === duthie.id && s.valueUsd !== null)?.valueUsd}.`}
             </p>
           </Flyer>
           <Photo

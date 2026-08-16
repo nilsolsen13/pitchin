@@ -4,7 +4,7 @@
 import { useParams } from 'react-router-dom';
 import type { Equipment, Person, Task, TaskStatus } from '../types';
 import { useDemo } from '../state/DemoState';
-import { equipment as seedEquipment, orgs, quals } from '../data/seed';
+import { equipment as seedEquipment, merchants, orgs, quals, sponsorships } from '../data/seed';
 import { DEMO_TODAY } from '../data/seed';
 import { daysBetween, daysSince, fmtShort } from '../lib/format';
 import {
@@ -190,6 +190,31 @@ export default function NeedDetail() {
         <StatCard label="PERSON-HOURS COMMITTED" value={fmtHours(personHours(need.id, tasks))} />
         <StatCard label="CAPACITY GAPS" value={capacityGaps(need.id, tasks)} accent={capacityGaps(need.id, tasks) > 0} />
       </div>
+
+      {sponsorships.filter((s) => s.needId === need.id).length > 0 ? (
+        <div className="mx-auto mt-8 max-w-3xl">
+          <Flyer id="need-sponsored" paper={PAPER.green}>
+            <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-warm-ink-2">Sponsored by</div>
+            <ul className="mt-3 space-y-3">
+              {sponsorships.filter((s) => s.needId === need.id).map((s) => {
+                const name =
+                  orgs.find((o) => o.id === s.sponsorOrgId)?.name ??
+                  merchants.find((m) => m.id === s.sponsorOrgId)?.business ??
+                  s.sponsorOrgId;
+                return (
+                  <li key={s.id}>
+                    <div className="font-medium text-warm-ink">{name}</div>
+                    <div className="text-sm text-warm-ink-2">{s.what}</div>
+                    <div className="mt-0.5 font-mono text-sm text-warm-ink">
+                      {s.valueUsd === null ? 'in kind' : `$${s.valueUsd}`}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </Flyer>
+        </div>
+      ) : null}
 
       <div className="mt-10 space-y-8">
         {grouped.map((g) => (

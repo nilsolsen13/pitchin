@@ -396,6 +396,16 @@ export function honorsFor(
           : `${squad.name} has not filed an after-action report.`,
       };
     }
+    if (merchant.id === 'm-hardware') {
+      const standing = standingFor(person);
+      const eligible = standing === 'Established' || standing === 'Sponsoring';
+      return {
+        merchant,
+        tag: eligible ? 'available' : 'not-yet',
+        eligible,
+        record: eligible ? `${standing} standing.` : merchant.honoredFor,
+      };
+    }
     return {
       merchant,
       tag: 'not-yet',

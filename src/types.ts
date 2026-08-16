@@ -174,6 +174,14 @@ export interface Merchant {
   honoredFor: string; // "Any member with an active streak"
 }
 
+export interface Sponsorship {
+  id: string;
+  needId: string;
+  sponsorOrgId: string;
+  what: string;
+  valueUsd: number | null; // null = in kind
+}
+
 export type HonorTag = 'available' | 'not-yet' | 'squad';
 
 export interface HonorStatus {

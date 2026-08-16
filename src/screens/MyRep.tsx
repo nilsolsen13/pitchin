@@ -4,8 +4,8 @@
 import { Link } from 'react-router-dom';
 import type { Commitment, RepState, Standing } from '../types';
 import { useDemo } from '../state/DemoState';
-import { aars, squads } from '../data/seed';
-import { showRate, ribbonsFor, standingFor } from '../lib/derive';
+import { aars, merchants, squads } from '../data/seed';
+import { showRate, ribbonsFor, standingFor, honorsFor } from '../lib/derive';
 import { PAPER } from '../lib/paper';
 import { RepCard } from '../components/RepCard';
 import { QualBadge } from '../components/QualBadge';
@@ -189,6 +189,32 @@ export default function MyRep() {
                 );
               })}
             </ul>
+          </Flyer>
+
+          <Flyer id="me-honors" paper={PAPER.cream}>
+            <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-warm-ink-2">Honored locally</div>
+            <ul className="mt-3 space-y-4">
+              {honorsFor(nora, creekSide, merchants, needs, tasks, aars).map((h) => {
+                const tag =
+                  h.tag === 'available' ? 'AVAILABLE TO YOU' : h.tag === 'squad' ? 'SQUAD' : 'NOT YET';
+                const dim = h.tag === 'not-yet';
+                return (
+                  <li key={h.merchant.id} className={dim ? 'opacity-[0.45]' : undefined}>
+                    <div className="flex items-baseline justify-between gap-2">
+                      <div className="font-medium text-warm-ink">{h.merchant.business}</div>
+                      <div className="font-mono text-[11px] uppercase tracking-wider text-warm-ink-2">{tag}</div>
+                    </div>
+                    <p className="mt-0.5 text-sm text-warm-ink">{h.merchant.offer}</p>
+                    <p className="mt-0.5 text-xs text-warm-ink-2">
+                      {h.tag === 'not-yet' ? h.merchant.honoredFor : h.record}
+                    </p>
+                  </li>
+                );
+              })}
+            </ul>
+            <p className="mt-4 text-sm text-warm-ink-2">
+              Kept small and local on purpose. A coffee is not payment for your time — it is your town noticing.
+            </p>
           </Flyer>
 
           <Flyer id="me-cap" paper={PAPER.yellow}>

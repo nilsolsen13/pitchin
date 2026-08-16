@@ -2,7 +2,7 @@
 // Dashboard numbers are DERIVED from this (src/lib/derive.ts) and must reconcile.
 
 import type {
-  AAR, Commitment, Equipment, Merchant, Need, Org, Person, Qual, Squad, Task,
+  AAR, Commitment, Equipment, Merchant, Need, Org, Person, Qual, Sponsorship, Squad, Task,
 } from '../types';
 
 // ─── A.1 Constants ───────────────────────────────────────────────────────────
@@ -445,6 +445,31 @@ export const merchants: Merchant[] = [
   { id: 'm-tweek', business: 'Tweek Bros. Coffeehouse', offer: 'Drip coffee on the house, rep night.', honoredFor: 'Any member with an active streak.' },
   { id: 'm-citywok', business: 'City Wok', offer: 'Ten percent off, any Thursday.', honoredFor: 'Anyone who turned out for a surge in the last 30 days.' },
   { id: 'm-skeeters', business: "Skeeter's Bar", offer: 'First round after a surge closes.', honoredFor: 'Whole squad, when the AAR is filed.' },
+  { id: 'm-hardware', business: 'South Park Hardware', offer: 'Ten percent off tools and materials, always.', honoredFor: 'Anyone at Established standing or above.' },
+];
+
+export const sponsorships: Sponsorship[] = [
+  {
+    id: 'sp-ramp-materials',
+    needId: 'need-duthie-ramp',
+    sponsorOrgId: 'org-church',
+    what: 'Materials — lumber, hardware, and non-skid tread',
+    valueUsd: 612,
+  },
+  {
+    id: 'sp-flood-drying',
+    needId: 'need-hansen-flood',
+    sponsorOrgId: 'org-fire',
+    what: 'Dehumidifiers and air movers, in kind',
+    valueUsd: null,
+  },
+  {
+    id: 'sp-flood-meals',
+    needId: 'need-hansen-flood',
+    sponsorOrgId: 'm-citywok',
+    what: 'Meals for the family, Thursday through Sunday, in kind',
+    valueUsd: null,
+  },
 ];
 
 // ─── A.12 Commitments ────────────────────────────────────────────────────────
