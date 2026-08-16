@@ -265,8 +265,8 @@ export default function Calendar() {
 
       <section className="mt-10">
         <h2 className="font-display text-lg font-semibold uppercase tracking-[0.06em] text-[#f4efe4]">
-          UPCOMING — WHAT YOU'VE SIGNED UP FOR
-          <span className="ml-3 font-mono text-sm font-normal tracking-wider">
+          UPCOMING — WHAT YOU'VE SIGNED UP FOR{' '}
+          <span className="font-mono text-sm font-normal tracking-wider">
             {upcoming.length}
           </span>
         </h2>
@@ -290,8 +290,8 @@ export default function Calendar() {
       <section className="relative mt-10">
         <Ann route="calendar" n={2} className="-left-6 top-0" />
         <h2 className="font-display text-lg font-semibold uppercase tracking-[0.06em] text-[#f4efe4]">
-          OPEN TO YOU
-          <span className="ml-3 font-mono text-sm font-normal tracking-wider">{opps.length}</span>
+          OPEN TO YOU{' '}
+          <span className="font-mono text-sm font-normal tracking-wider">{opps.length}</span>
         </h2>
         <p className="mt-1 text-warm-ink-2">
           You see these because you hold the quals they require. Quals are earned by demonstration, not requested.
@@ -334,8 +334,8 @@ export default function Calendar() {
       <section className="relative mt-10">
         <Ann route="calendar" n={3} className="-left-6 top-0" />
         <h2 className="font-display text-lg font-semibold uppercase tracking-[0.06em] text-[#f4efe4]">
-          COMPLETED — YOUR RECORD
-          <span className="ml-3 font-mono text-sm font-normal tracking-wider">{history.length}</span>
+          COMPLETED — YOUR RECORD{' '}
+          <span className="font-mono text-sm font-normal tracking-wider">{history.length}</span>
         </h2>
         <p className="mt-1 font-mono text-sm text-[#f4efe4]/90">
           {kept} KEPT · {missed} MISSED · SHOW-RATE {rate}
@@ -360,18 +360,16 @@ export default function Calendar() {
       </section>
 
       {exportOpen ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <button
-            type="button"
-            className="absolute inset-0 bg-[#2a1a0c]/50"
-            aria-label="Dismiss"
-            onClick={closeExport}
-          />
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#2a1a0c]/50 p-4"
+          onClick={closeExport}
+        >
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="cal-export-title"
             className="relative w-full max-w-[30rem] rounded-warm bg-warm-paper p-6 text-warm-ink shadow-lg"
+            onClick={(e) => e.stopPropagation()}
           >
             <h2
               id="cal-export-title"

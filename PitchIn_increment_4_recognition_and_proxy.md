@@ -3,8 +3,11 @@
 **Status:** Ready to build
 **Predecessors:** Increments 1–3
 **Depends on:** Increment 3 complete. Do not start until its acceptance checklist passes.
-**Scope:** Three additive features — a recognition layer, business sponsorship, and posting on
-another resident's behalf.
+**Scope:** Six parts — a recognition layer, business sponsorship, proxy requests, a County map view,
+and removal of the requester role.
+
+> **This increment is large.** See §10 for the cut order. Every stopping point leaves a coherent
+> product; Part 6 first, because it corrects a modelling error everything else sits on top of.
 
 ---
 
@@ -394,3 +397,257 @@ Commit at each phase boundary.
 - No new dependencies. Ribbons are CSS, not an icon library.
 - Verify a flagged defect before acting on it (Increment 3 §1).
 - Disagreements to `NOTES_FOR_NILS.md`.
+
+---
+
+# PART 5 — County Map view
+
+## 5.1 Why a map, and what it must not be
+
+County officials need to spot trends across the basin. The trend worth spotting is already in the
+data and is invisible in every table the product currently renders: **capability is geographically
+clustered.** A table says "2 plow trucks." A map says "both plow trucks are here, and the need is
+over there."
+
+Verified from the seed — four capabilities exist in exactly one of four territories:
+
+| Qual | Held by | Uncovered territories |
+|---|---|---|
+| Snow Removal — Plow | Kenosha Pass only | Creek Side, Red Hill, **Tarryall** |
+| EMT-Paramedic | Kenosha Pass only | Creek Side, Red Hill, Tarryall |
+| Spanish Interpreter | Kenosha Pass only | Creek Side, Red Hill, Tarryall |
+| Pump Operator | Creek Side only | Kenosha Pass, Red Hill, Tarryall |
+
+Eleanor Vasquez's stalled need is in **Tarryall**. Every plow is in **Kenosha Pass**. That is the
+map's punchline and it must be legible in three seconds.
+
+**This is a hand-drawn SVG schematic. It is not a real map.** No mapping library, no tile server, no
+GeoJSON, no network requests, no lat/long. Three reasons, all binding:
+
+1. `AGENTS.md` forbids new dependencies and network calls.
+2. The demo must work with no internet.
+3. **South Park is fictional.** A real Park County basemap would show Fairplay and Hartsel and no
+   South Park at all, which would undercut the whole demo.
+
+Draw the basin. Do not fetch it.
+
+## 5.2 Route and access
+
+`/map`, **admin only** — redirects to `/board` otherwise, same pattern as `/readiness`. Nav label
+`Map`, placed immediately after `Readiness`.
+
+## 5.3 Geography — schematic coordinates
+
+Coordinates are abstract, in a `viewBox="0 0 1000 700"`. They are **not** geographic and the screen
+says so (§5.6).
+
+Add to `Squad`:
+```ts
+territory: { label: string; path: string; cx: number; cy: number };
+```
+
+Four territories filling the basin, roughly compass-placed on real Park County orientation:
+
+| Squad | Position | Centroid |
+|---|---|---|
+| Kenosha Pass | North | ~(500, 150) |
+| Tarryall | East | ~(790, 380) |
+| Creek Side | Centre-west, along the Middle Fork — contains the town centre | ~(330, 380) |
+| Red Hill | South | ~(520, 590) |
+
+Draw them as four irregular polygons that tile the frame with a small gap, so it reads as a
+surveyed basin rather than a pie chart. Ring the whole frame with a soft mountain edge.
+
+Static furniture, drawn once:
+- **The Middle Fork** — a line running roughly north-south through Creek Side, labelled
+- **Town centre** — a small cluster marker inside Creek Side labelled `SOUTH PARK`
+- **Roads** — two or three thin lines connecting territories
+- Territory name labels in `font-display` uppercase, `--warm-ink-2`
+
+Add to `Need`: `mapPoint: { x: number; y: number } | null`.
+
+| Need | Point | Sits in |
+|---|---|---|
+| `need-hansen-flood` | (295, 300) | Creek Side, on the Middle Fork |
+| `need-vasquez-plow` | (820, 350) | **Tarryall** |
+| `need-duthie-ramp` | (350, 415) | Creek Side, town centre |
+| `need-school-chaperones` | (315, 440) | Creek Side, town centre |
+| `need-cows-timing` | (375, 455) | Creek Side, town centre |
+| `need-interpreter-desk` | (340, 470) | Creek Side, town centre |
+
+Institutions clustering in the town centre is correct and realistic — the school, the parish, and
+the county offices are all there. The contrast that matters is Vasquez out east, alone.
+
+## 5.4 Two layers
+
+Selector at the top, mono uppercase pills: `NEEDS` · `COVERAGE`. Default `NEEDS`.
+
+### Layer: NEEDS
+- One pin per need at its `mapPoint`, coloured by status using the existing status tokens
+  (surge, stalled, in progress, staffing, met)
+- Pin size constant. **Do not scale pins by anything** — a size-encoded pin is a ranking
+- Hover: need title, requester, days open, tasks verified
+- Click: navigates to `/need/{id}`
+- Territories drawn in a flat neutral fill
+
+### Layer: COVERAGE
+- A qual selector beside the layer pills, listing all 17 quals. **Default: `Snow Removal — Plow`**
+- Territories shade by whether any member holds the selected qual:
+  - held → `--warm-green` at 18% opacity, mono label `COVERED · {n} holder(s)`
+  - absent → `--status-missed` at 14% opacity, mono label `NO COVERAGE`
+- Holder initials render as small dots inside covered territories
+- Needs requiring the selected qual keep their pins, outlined in `--status-missed`
+- **When `plow` is selected**, draw a dashed line from Kenosha Pass's centroid to the Vasquez pin,
+  labelled in mono: `22 MIN`. This is the single most important thing on the screen
+
+## 5.5 Findings panel — where "spot trends" actually happens
+
+A right-hand rail, headed `WHAT THE MAP SHOWS`. **Every entry is computed, never hardcoded.**
+
+**Section 1 — `SINGLE-TERRITORY CAPABILITIES`.** Any qual held in exactly one of four territories.
+Renders four rows from the current seed, each `"{Qual} — {Squad} only. {n} territories uncovered."`
+Clicking a row switches the COVERAGE layer to that qual.
+
+**Section 2 — `NEEDS IN UNCOVERED TERRITORY`.** Any open or stalled need whose required quals are
+absent from the territory containing its `mapPoint`. From the current seed this yields exactly one:
+
+`"Driveway plowing — Eleanor Vasquez. Tarryall has no plow. Nearest is Kenosha Pass, 22 minutes."`
+
+**Section 3 — `WHERE NEEDS CLUSTER`.** Count of needs per territory, listed by name. **Do not rank
+territories or render a bar chart** — a list, so it does not become a scoreboard of which
+neighbourhood is neediest.
+
+Closing line beneath the panel, `--warm-ink-2`:
+`"Two plough trucks is a number. Both plough trucks on the same side of the basin is a decision nobody made on purpose."`
+
+## 5.6 Honesty label — required
+
+Mono 0.6875rem, `--warm-ink-2`, directly beneath the map frame:
+
+`"SCHEMATIC — RELATIVE POSITIONS ONLY, NOT A SURVEY. SOUTH PARK IS FICTIONAL; PARK COUNTY IS NOT."`
+
+This is not optional. A hand-drawn diagram presented without qualification invites a reader to
+believe it is geographic data, and the product's credibility rests on never overclaiming.
+
+## 5.7 Annotation 24
+
+Key `map:1`, anchored to the findings panel:
+
+`"The registry already knew there were two plough trucks. It took a map to notice they are both on the same side of the basin, twenty-two minutes from the person who needed one. That is the difference between an inventory and a readiness picture, and it is the thing a county is actually buying."`
+
+---
+
+# PART 6 — Remove the requester role
+
+## 6.1 The correction
+
+Increment 1 modelled three roles: `resident`, `requester`, `admin`. **That was wrong.** Requester is
+not a role a person occupies — it is a **relationship to a specific need**. Anyone can be a
+requester by posting something.
+
+Modelling it as a mode forced a fiction where a viewer "becomes" the requester, and it made the
+product's most important permission rule look like a mode toggle rather than what it is.
+
+**Supersedes:** MVP spec §3 and §7.3, Increment 2 §1.2 and §1.3. Where those conflict with this
+part, this part wins.
+
+## 6.2 The new model
+
+**Two roles.** `Role = 'resident' | 'admin'`. Delete `'requester'` everywhere.
+
+| Role | Demo identity | Owns needs posted by |
+|---|---|---|
+| `resident` | Nora Beckett, Creek Side | anything she posts in-session |
+| `admin` | Park County | `org-pcem` and `org-county` |
+
+**Posting is open to both.** `Post a need` becomes a **standing button in the header**, present for
+every role — not a nav item, not gated. Style it as the one primary action in the top bar:
+`--warm-stamp` fill, `--warm-paper` text, 2px radius, mono uppercase, to the left of the role
+switcher.
+
+**The role switcher becomes two buttons:** `RESIDENT` · `COUNTY`. Below 1100px: `RES` · `CTY`.
+
+## 6.3 Verification permission — now derived, and better for it
+
+Replace the role check with an ownership check in `derive.ts`:
+
+```ts
+canVerify(role: Role, need: Need): boolean
+// true when the current account owns the need:
+//   admin    -> need.requesterOrgId is 'org-pcem' or 'org-county'
+//   resident -> need was posted by this resident in-session
+```
+
+What this produces on `/need/hansen-flood`, which is a **better demonstration than the old role
+toggle**:
+
+| Viewing as | Verify on the Hansen flood | Verify on the Duthie ramp |
+|---|---|---|
+| Resident (Nora) | Disabled — `"Only the requester can verify a task."` | Disabled — same |
+| County | **Enabled** — Park County EM posted it | Disabled — the parish posted it |
+
+Same screen, two different outcomes, and the difference is *who asked for the work* rather than
+which mode you selected. Keep the existing tooltip string exactly.
+
+## 6.4 Posting must now actually create a need
+
+Today `/post` stage 3 navigates to `/need/hansen-flood` without creating anything. With posting open
+to residents, that no longer holds together — a resident must be able to post and then verify.
+
+Change: `"Post to the board"` commits the decomposed need to in-memory state with a generated id,
+`requesterOrgId` set from the current account, `mode` from the form, `status: 'staffing'`, tasks in
+`open`, and `mapPoint` set to the town centre `(340, 430)`. Then navigate to that new need.
+
+It appears on the board, on the map, and in the ledger, and its poster can verify its tasks. Reset
+clears it, like all other session state.
+
+If the reviewer used the `"Use the Hansen flood"` prefill, still create a **new** need rather than
+navigating to the seeded one — otherwise the flow silently does nothing.
+
+## 6.5 Consequential edits
+
+- **Routing** — `/post` is no longer role-gated. `/me` stays resident-only. `/readiness` and `/map`
+  stay admin-only.
+- **Nav** — remove `Post a Need` from the nav array; it is a header button now.
+- **Increment 2 §1.3 landing index** — `POST A NEED` no longer needs an automatic role switch.
+  `READINESS` still switches to County. Add a tenth entry, `THE MAP` → `/map`, description:
+  `"Where the town's capability actually sits. Four capabilities exist in exactly one corner of the basin each."`
+- **Increment 2 §1.2** — the segmented control is two buttons, not three.
+- **`actorForRole`** — drop the requester branch.
+- **Anywhere `role === 'requester'` appears** — replace with the `canVerify` ownership check.
+
+---
+
+## 9. Revised build order
+
+Parts 1–4 keep phases 1–7 as specced. Then:
+
+| Phase | Work | Checkpoint |
+|---|---|---|
+| **8** | Part 6 role removal, header post button, `canVerify`, real need creation | Two roles only; posting works from both; County can verify the flood but not the ramp; Nora can verify neither until she posts something |
+| **9** | Part 5 map — geography, both layers, findings panel, honesty label | Findings compute the four single-territory quals and the one uncovered need; the 22 MIN line draws when plow is selected |
+| **10** | Annotation 24, landing index tenth entry | 24 annotations total |
+
+## 10. Cut order if time runs short
+
+Increment 4 is now large. Build in this order and stop wherever you must — every stopping point
+leaves a coherent product:
+
+1. **Part 6** (role removal) — corrects a modelling error and simplifies everything downstream
+2. **Part 4** (proxy) — strongest single idea in this increment
+3. **Part 5** (map) — best payoff per unit of work for the County story
+4. **Part 1–2** (ribbons, standing)
+5. **Part 3** (sponsorship, reciprocity panel)
+
+## 11. Additions to the acceptance checklist
+
+- [ ] `Role` has exactly two members; no `'requester'` remains anywhere in the codebase
+- [ ] `Post a need` is a header button visible in both roles and is not in the nav array
+- [ ] County can verify Hansen flood tasks; County **cannot** verify Duthie ramp tasks; Nora can verify neither
+- [ ] Posting creates a real need that appears on the board, the map, and the ledger, and whose poster can verify its tasks
+- [ ] `/map` is admin-only and redirects otherwise
+- [ ] Findings panel computes four single-territory quals and exactly one need in uncovered territory
+- [ ] Selecting Snow Removal — Plow draws the 22 MIN line from Kenosha Pass to the Vasquez pin
+- [ ] The schematic honesty label is present verbatim
+- [ ] No mapping library, no tile requests, no network calls of any kind
+- [ ] No pin is size-scaled and no territory ranking or bar chart exists
