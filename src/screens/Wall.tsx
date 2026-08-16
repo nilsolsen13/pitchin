@@ -7,13 +7,16 @@ import { aars, orgs, squads } from '../data/seed';
 import { DEMO_TODAY } from '../data/seed';
 import {
   commitmentsForNeed, outcomeCount, peopleCommitted, onBehalfPublicLine,
+  ribbonsEarnedThisMonth,
 } from '../lib/derive';
+import { ribbonById } from '../data/ribbons';
 import { daysBetween, daysSince, fmtLongNoYear, fmtMonthYearUpper } from '../lib/format';
 import { PAPER } from '../lib/paper';
 import { Ann } from '../components/Ann';
 import { Flyer } from '../components/Flyer';
 import { Photo } from '../components/Photo';
 import { Bulletin, Masthead } from '../components/Bulletin';
+import { RibbonChip } from '../components/RibbonChip';
 import { PHOTOS } from '../data/photos';
 
 function needById(needs: ReturnType<typeof useDemo>['needs'], id: string) {
@@ -21,7 +24,7 @@ function needById(needs: ReturnType<typeof useDemo>['needs'], id: string) {
 }
 
 export default function Wall() {
-  const { needs, tasks, commitments } = useDemo();
+  const { needs, tasks, commitments, people } = useDemo();
   const duthie = needById(needs, 'need-duthie-ramp');
   const hansen = needById(needs, 'need-hansen-flood');
   const vasquez = needById(needs, 'need-vasquez-plow');
@@ -78,6 +81,32 @@ export default function Wall() {
             width="lg"
             tilt={1}
           />
+        </div>
+      </section>
+
+      <section className="mt-10">
+        <h2 className="mb-4 text-center font-display text-lg font-semibold uppercase tracking-[0.06em] text-[#f4efe4]">
+          Ribbons earned this month
+        </h2>
+        <div className="flex flex-wrap justify-center gap-4">
+          {people.flatMap((person) =>
+            ribbonsEarnedThisMonth(person, needs, tasks, commitments, aars).map((id) => (
+              <Flyer
+                key={`${person.id}-${id}`}
+                id={`wall-ribbon-${person.id}-${id}`}
+                paper={PAPER.cream}
+                className="flex items-center gap-3 !px-4 !py-3"
+              >
+                <RibbonChip ribbon={ribbonById(id)} size="sm" />
+                <div>
+                  <div className="font-medium text-warm-ink">{person.name}</div>
+                  <div className="font-mono text-[11px] uppercase tracking-wider text-warm-ink-2">
+                    {ribbonById(id).name}
+                  </div>
+                </div>
+              </Flyer>
+            )),
+          )}
         </div>
       </section>
 

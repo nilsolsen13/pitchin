@@ -4,7 +4,7 @@
 
 import type {
   AAR, CalendarEntry, Commitment, Equipment, EquipmentType, HonorStatus, ISODate,
-  Merchant, Need, OnBehalfOf, Person, QualId, Role, Squad, Task,
+  Merchant, Need, OnBehalfOf, Person, QualId, RibbonId, Role, Squad, Task,
 } from '../types';
 import { DEMO_TODAY } from '../data/seed';
 import { dayNumber, fmtLongNoYear } from './format';
@@ -403,4 +403,64 @@ export function honorsFor(
       record: merchant.honoredFor,
     };
   });
+}
+
+// ─── Ribbons (final spec Part D) — derived, never stored ─────────────────────
+
+function earnsSurgeResponder(person: Person, needs: Need[], tasks: Task[]): boolean {
+  const surgeIds = new Set(needs.filter((n) => n.mode === 'surge').map((n) => n.id));
+  return tasks.some((t) => surgeIds.has(t.needId) && t.assigneeIds.includes(person.id));
+}
+
+function earnsBackstop(
+  person: Person,
+  commitments: Commitment[],
+  tasks: Task[],
+  aars: AAR[],
+): boolean {
+  const onWaivedTask = commitments.some((w) => {
+    if (w.outcome !== 'waived' || w.isWeeklyRep || w.personId === person.id) return false;
+    const task = tasks.find((t) => t.id === w.taskId);
+    return !!task?.assigneeIds.includes(person.id);
+  });
+  if (!onWaivedTask) return false;
+  // The crew on t-ramp-03 is three people; the AAR names who actually covered
+  // the waived slot. Without that clause the ribbon would go to the whole crew.
+  return aars.some((a) => a.whatItTook.includes(`${person.name} picked it up`));
+}
+
+export function ribbonsFor(
+  person: Person,
+  needs: Need[],
+  tasks: Task[],
+  commitments: Commitment[],
+  aars: AAR[],
+): RibbonId[] {
+  const ids: RibbonId[] = [];
+  if (person.keptCount >= 1) ids.push('first-rep');
+  if (person.streakWeeks >= 12) ids.push('twelve-weeks');
+  if (person.streakWeeks >= 26) ids.push('half-year');
+  if (person.streakWeeks >= 52) ids.push('full-year');
+  if (person.keptCount >= 50) ids.push('fifty-kept');
+  if (earnsSurgeResponder(person, needs, tasks)) ids.push('surge-responder');
+  if (earnsBackstop(person, commitments, tasks, aars)) ids.push('backstop');
+  if (person.quals.length >= 3) ids.push('multi-qual');
+  return ids;
+}
+
+export function ribbonsEarnedThisMonth(
+  person: Person,
+  needs: Need[],
+  tasks: Task[],
+  commitments: Commitment[],
+  aars: AAR[],
+): RibbonId[] {
+  // Ribbons have no earned-at. "This month" means the triggering event sits
+  // in the current demo month (March 2026): the Hansen surge, and Duthie
+  // closing with the one covered waiver.
+  const held = new Set(ribbonsFor(person, needs, tasks, commitments, aars));
+  const ids: RibbonId[] = [];
+  if (held.has('surge-responder')) ids.push('surge-responder');
+  if (held.has('backstop')) ids.push('backstop');
+  return ids;
 }

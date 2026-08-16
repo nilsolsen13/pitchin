@@ -1,22 +1,26 @@
 // PersonCard (spec §6.5). Initials avatar, name, squad, quals; optional ring.
 
-import type { Equipment, Person } from '../types';
+import type { Equipment, Person, RibbonId } from '../types';
 import { squads } from '../data/seed';
 import { PAPER } from '../lib/paper';
 import { Avatar } from './Avatar';
 import { QualBadge } from './QualBadge';
 import { MaterielChip } from './MaterielChip';
 import { ShowRateRing } from './ShowRateRing';
+import { RibbonChip } from './RibbonChip';
 import { Flyer } from './Flyer';
+import { ribbonById } from '../data/ribbons';
 
 export function PersonCard({
   person,
   showRate,
   equipment,
+  ribbons,
 }: {
   person: Person;
   showRate?: number;
   equipment?: Equipment[];
+  ribbons?: RibbonId[];
 }) {
   const squad = squads.find((s) => s.id === person.squadId);
   return (
@@ -33,6 +37,13 @@ export function PersonCard({
             </div>
             {showRate !== undefined ? <ShowRateRing value={showRate} size={48} /> : null}
           </div>
+          {ribbons && ribbons.length > 0 ? (
+            <div className="mt-2 flex flex-wrap gap-1">
+              {ribbons.map((id) => (
+                <RibbonChip key={id} ribbon={ribbonById(id)} size="sm" />
+              ))}
+            </div>
+          ) : null}
           <div className="mt-2 flex flex-wrap gap-1.5">
             {person.quals.map((q) => (
               <QualBadge key={q} qualId={q} size="sm" />

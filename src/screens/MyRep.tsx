@@ -4,15 +4,17 @@
 import { Link } from 'react-router-dom';
 import type { Commitment, RepState } from '../types';
 import { useDemo } from '../state/DemoState';
-import { squads } from '../data/seed';
-import { showRate } from '../lib/derive';
+import { aars, squads } from '../data/seed';
+import { showRate, ribbonsFor } from '../lib/derive';
 import { PAPER } from '../lib/paper';
 import { RepCard } from '../components/RepCard';
 import { QualBadge } from '../components/QualBadge';
 import { ShowRateRing } from '../components/ShowRateRing';
+import { RibbonChip } from '../components/RibbonChip';
 import { Ann } from '../components/Ann';
 import { Flyer } from '../components/Flyer';
 import { Bulletin, Masthead, PaperTab } from '../components/Bulletin';
+import { RIBBONS } from '../data/ribbons';
 
 const STRIP_COLOR: Record<Commitment['outcome'], string> = {
   kept: '#3FA66A',
@@ -28,9 +30,10 @@ const DEMO_OPTIONS: { state: RepState; label: string }[] = [
 ];
 
 export default function MyRep() {
-  const { people, commitments, repState, setRepState, acceptRep, waiveRep } = useDemo();
+  const { people, commitments, needs, tasks, repState, setRepState, acceptRep, waiveRep } = useDemo();
   const nora = people.find((p) => p.id === 'p-beckett')!;
   const creekSide = squads.find((s) => s.id === 'creek-side')!;
+  const earned = new Set(ribbonsFor(nora, needs, tasks, commitments, aars));
 
   // The 12-week strip: Nora's completed weekly reps in date order.
   const strip = commitments
@@ -128,6 +131,24 @@ export default function MyRep() {
             <p className="mt-2 text-xs text-warm-ink-2">
               Quals are earned by demonstration and determine what you get called for in a surge.
             </p>
+          </Flyer>
+
+          <Flyer id="me-ribbons" paper={PAPER.cream}>
+            <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-warm-ink-2">Your ribbons</div>
+            <ul className="mt-3 space-y-3">
+              {RIBBONS.map((ribbon) => {
+                const got = earned.has(ribbon.id);
+                return (
+                  <li key={ribbon.id} className="flex items-start gap-3">
+                    <RibbonChip ribbon={ribbon} earned={got} size="md" />
+                    <div className="min-w-0">
+                      <div className="font-medium text-warm-ink">{ribbon.name}</div>
+                      <div className="text-xs text-warm-ink-2">{ribbon.criterion}</div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
           </Flyer>
 
           <Flyer id="me-cap" paper={PAPER.yellow}>

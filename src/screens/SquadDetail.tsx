@@ -5,9 +5,9 @@
 import type { QualId } from '../types';
 import { useDemo } from '../state/DemoState';
 import { useParams } from 'react-router-dom';
-import { equipment as seedEquipment, quals, squads } from '../data/seed';
+import { equipment as seedEquipment, quals, squads, aars } from '../data/seed';
 import { fmtPct1, fmtShort } from '../lib/format';
-import { showRate, squadAssets, squadQualsHeld, squadShowRate } from '../lib/derive';
+import { showRate, squadAssets, squadQualsHeld, squadShowRate, ribbonsFor } from '../lib/derive';
 import { PAPER } from '../lib/paper';
 import { SquadStreakBar } from '../components/SquadStreakBar';
 import { StatCard } from '../components/StatCard';
@@ -20,7 +20,7 @@ import { PHOTOS } from '../data/photos';
 
 export default function SquadDetail() {
   const { squadId } = useParams();
-  const { people } = useDemo();
+  const { people, needs, tasks, commitments } = useDemo();
   const squad = squads.find((s) => s.id === squadId);
 
   if (!squad) {
@@ -69,6 +69,7 @@ export default function SquadDetail() {
                 person={p}
                 showRate={showRate(p) * 100}
                 equipment={seedEquipment.filter((e) => e.ownerId === p.id)}
+                ribbons={ribbonsFor(p, needs, tasks, commitments, aars)}
               />
             ))}
           </div>

@@ -181,6 +181,19 @@ export interface HonorStatus {
   record: string; // current fact, not a countdown
 }
 
+// ─── Ribbons (final spec Part D) — derived, never stored on a person ─────────
+
+export type RibbonId =
+  | 'first-rep' | 'twelve-weeks' | 'half-year' | 'full-year'
+  | 'fifty-kept' | 'surge-responder' | 'backstop' | 'multi-qual';
+
+export interface Ribbon {
+  id: RibbonId;
+  name: string;
+  criterion: string;
+  note: string;
+}
+
 // ─── Demo state (spec §8.1) ──────────────────────────────────────────────────
 
 export type RepState = 'STANDARD' | 'SCOPED_DOWN' | 'KEEP_THE_CHAIN' | 'WAIVED' | 'ACCEPTED';

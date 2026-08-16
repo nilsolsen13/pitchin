@@ -78,3 +78,14 @@ is messy.
 without touching the switch, `pitchin.annotations` is unset and hydrates to the
 default `true`. The checklist (County + refresh, annotations still on) passes.
 A stricter reading would persist the current annotations flag on role change too.
+
+## Notes from the final spec build
+
+### 17. Backstop ribbon — written rule vs verified distribution
+
+Part D.3's rule is "assignee on a task where another person's commitment was waived."
+`t-ramp-03` has that waiver (Duke) and three current assignees (Wes, Owen, Hank).
+The verified distribution is Hank alone. I kept the waiver+assignee test and
+narrowed with the AAR clause `"Hank Vasquez picked it up"` so the ribbon stays
+one person. A literal reading of the rule would award three.
+
