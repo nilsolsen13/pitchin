@@ -211,7 +211,10 @@ function entryFromCommitment(
     outcome: c.outcome,
     title: task?.title ?? c.taskId,
     date: task?.scheduledDate ?? null,
-    durationMin: c.scopeMinutes,
+    // scopeMinutes describes the WEEKLY REP's shrinking ask (20/10/5) and is
+    // meaningless for a claimed task. Take the real duration from the task, or
+    // a newly-claimed 5-hour chaperone reports itself as 20 minutes.
+    durationMin: task?.durationMin ?? c.scopeMinutes,
     needTitle: need?.title ?? null,
     needId: task?.needId ?? null,
     partnerName: null,
