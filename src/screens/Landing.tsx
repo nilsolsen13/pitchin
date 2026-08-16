@@ -6,6 +6,8 @@ import type { Role } from '../types';
 import { useDemo } from '../state/DemoState';
 import { Bulletin } from '../components/Bulletin';
 import { Flyer } from '../components/Flyer';
+import { Photo } from '../components/Photo';
+import { PHOTOS } from '../data/photos';
 import { PAPER } from '../lib/paper';
 
 const FAILURES: { label: string; body: string }[] = [
@@ -94,17 +96,28 @@ const SCREENS: { name: string; href: string; description: string; role?: Role }[
 export default function Landing() {
   return (
     <Bulletin full>
-      <Flyer id="landing-hero" paper={PAPER.masthead} className="!p-8">
-        <h1 className="wordmark text-6xl leading-tight text-warm-ink">
-          PitchIn
-        </h1>
-        <div className="mt-4 h-[3px] w-[120px] bg-warm-stamp" />
-        <p className="mt-6 max-w-[46rem] text-xl leading-relaxed text-warm-ink">
-          A town's unmet needs, matched to the capabilities its residents actually have — and a
-          reward for the one thing civic life never measures: showing up when you said you would,
-          week after week.
-        </p>
-      </Flyer>
+      <div className="grid items-start gap-8 lg:grid-cols-12">
+        <Flyer id="landing-hero" paper={PAPER.masthead} className="!p-8 lg:col-span-7">
+          <h1 className="wordmark text-6xl leading-tight text-warm-ink">
+            PitchIn
+          </h1>
+          <div className="mt-4 h-[3px] w-[120px] bg-warm-stamp" />
+          <p className="mt-6 max-w-[46rem] text-xl leading-relaxed text-warm-ink">
+            A town's unmet needs, matched to the capabilities its residents actually have — and a
+            reward for the one thing civic life never measures: showing up when you said you would,
+            week after week.
+          </p>
+        </Flyer>
+        <div className="flex justify-center lg:col-span-5 lg:justify-end">
+          <Photo
+            src={PHOTOS.sandbagLine.src}
+            alt={PHOTOS.sandbagLine.alt}
+            caption={PHOTOS.sandbagLine.caption}
+            width="lg"
+            tilt={-2}
+          />
+        </div>
+      </div>
 
       <h2 className="mt-12 text-center font-display text-2xl font-semibold uppercase tracking-[0.04em] text-warm-ink">
         Civic volunteering does not fail on goodwill.

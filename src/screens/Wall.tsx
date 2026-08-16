@@ -12,7 +12,9 @@ import { daysBetween, daysSince, fmtLongNoYear, fmtMonthYearUpper } from '../lib
 import { PAPER } from '../lib/paper';
 import { Ann } from '../components/Ann';
 import { Flyer } from '../components/Flyer';
+import { Photo } from '../components/Photo';
 import { Bulletin, Masthead } from '../components/Bulletin';
+import { PHOTOS } from '../data/photos';
 
 function needById(needs: ReturnType<typeof useDemo>['needs'], id: string) {
   return needs.find((n) => n.id === id)!;
@@ -51,23 +53,32 @@ export default function Wall() {
         <h2 className="mb-4 text-center font-display text-lg font-semibold uppercase tracking-[0.06em] text-[#f4efe4]">
           Met this month
         </h2>
-        <Flyer id="wall-duthie" paper={PAPER.green} className="!p-6">
-          <div className="flex items-start justify-between gap-4">
-            <h3 className="text-2xl font-semibold text-warm-ink">{duthie.title}</h3>
-            <span
-              className="shrink-0 border-2 border-warm-green px-3 py-1 font-display text-sm font-bold uppercase tracking-[0.08em] text-warm-green"
-              style={{ transform: 'rotate(-6deg)' }}
-            >
-              MET · {fmtLongNoYear(duthie.metAt ?? DEMO_TODAY).toUpperCase()}
-            </span>
-          </div>
-          <p className="mt-3 text-warm-ink-2">
-            Requested by {church?.name ?? 'the parish'}. Posted {fmtLongNoYear(duthie.submittedAt)}. Met in {metInDays} days.
-          </p>
-          <p className="mt-2 font-mono text-sm text-warm-ink">
-            Turned out: {duthieResidents} residents · {duthieCommits.length} commitments · {duthieKept} kept, {duthieWaived} waived
-          </p>
-        </Flyer>
+        <div className="flex flex-wrap items-start gap-6">
+          <Flyer id="wall-duthie" paper={PAPER.green} className="min-w-0 flex-1 !p-6">
+            <div className="flex items-start justify-between gap-4">
+              <h3 className="text-2xl font-semibold text-warm-ink">{duthie.title}</h3>
+              <span
+                className="shrink-0 border-2 border-warm-green px-3 py-1 font-display text-sm font-bold uppercase tracking-[0.08em] text-warm-green"
+                style={{ transform: 'rotate(-6deg)' }}
+              >
+                MET · {fmtLongNoYear(duthie.metAt ?? DEMO_TODAY).toUpperCase()}
+              </span>
+            </div>
+            <p className="mt-3 text-warm-ink-2">
+              Requested by {church?.name ?? 'the parish'}. Posted {fmtLongNoYear(duthie.submittedAt)}. Met in {metInDays} days.
+            </p>
+            <p className="mt-2 font-mono text-sm text-warm-ink">
+              Turned out: {duthieResidents} residents · {duthieCommits.length} commitments · {duthieKept} kept, {duthieWaived} waived
+            </p>
+          </Flyer>
+          <Photo
+            src={PHOTOS.rampFinished.src}
+            alt={PHOTOS.rampFinished.alt}
+            caption={PHOTOS.rampFinished.caption}
+            width="lg"
+            tilt={1}
+          />
+        </div>
       </section>
 
       <section className="relative mt-10">
@@ -99,9 +110,21 @@ export default function Wall() {
         </h2>
         <Flyer id="wall-open" paper={PAPER.cream} className="!p-0">
           <ul className="divide-y divide-warm-rule">
-            <li className="flex flex-wrap items-baseline justify-between gap-2 px-5 py-3">
-              <span className="text-warm-ink">{hansen.title}</span>
-              <span className="font-mono text-sm text-warm-ink-2">{daysSince(hansen.submittedAt, DEMO_TODAY)} DAYS OPEN</span>
+            <li className="flex flex-wrap items-start gap-4 px-5 py-3">
+              <div className="relative shrink-0">
+                <Ann route="wall" n={3} className="-left-5 top-1" />
+                <Photo
+                  src={PHOTOS.debrisCarry.src}
+                  alt={PHOTOS.debrisCarry.alt}
+                  caption={PHOTOS.debrisCarry.caption}
+                  width="md"
+                  tilt={-2}
+                />
+              </div>
+              <div className="flex min-w-0 flex-1 flex-wrap items-baseline justify-between gap-2 pt-2">
+                <span className="text-warm-ink">{hansen.title}</span>
+                <span className="font-mono text-sm text-warm-ink-2">{daysSince(hansen.submittedAt, DEMO_TODAY)} DAYS OPEN</span>
+              </div>
             </li>
             <li className="flex flex-wrap items-baseline justify-between gap-2 px-5 py-3">
               <span className="text-warm-ink">{vasquez.title}</span>

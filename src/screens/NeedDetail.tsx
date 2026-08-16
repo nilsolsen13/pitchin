@@ -17,7 +17,9 @@ import { StatCard } from '../components/StatCard';
 import { TaskRow } from '../components/TaskRow';
 import { Ann } from '../components/Ann';
 import { Flyer } from '../components/Flyer';
+import { Photo } from '../components/Photo';
 import { Bulletin, Masthead } from '../components/Bulletin';
+import { PHOTOS } from '../data/photos';
 
 const CLAIM_TOAST = 'COMMITMENT LOGGED · THU 12 MAR · COUNTS TOWARD YOUR SHOW-RATE';
 const GROUP_ORDER: TaskStatus[] = ['blocked', 'open', 'claimed', 'in_progress', 'verified', 'missed'];
@@ -135,6 +137,37 @@ export default function NeedDetail() {
           <p className="italic text-warm-ink">{need.rawText}</p>
         </Flyer>
       </div>
+
+      {need.id === 'need-hansen-flood' ? (
+        <div className="mt-8">
+          <div className="mb-3 text-center font-mono text-[11px] uppercase tracking-[0.08em] text-[#f4efe4]/80">
+            FILED WITH THE REQUEST
+          </div>
+          <div className="flex flex-wrap items-start justify-center gap-6">
+            <Photo
+              src={PHOTOS.floodInterior.src}
+              alt={PHOTOS.floodInterior.alt}
+              caption={PHOTOS.floodInterior.caption}
+              width="md"
+              tilt={-3}
+            />
+            <Photo
+              src={PHOTOS.muckout.src}
+              alt={PHOTOS.muckout.alt}
+              caption={PHOTOS.muckout.caption}
+              width="md"
+              tilt={1}
+            />
+            <Photo
+              src={PHOTOS.debrisHaul.src}
+              alt={PHOTOS.debrisHaul.alt}
+              caption={PHOTOS.debrisHaul.caption}
+              width="md"
+              tilt={-1}
+            />
+          </div>
+        </div>
+      ) : null}
 
       <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-4">
         <StatCard label="TASKS VERIFIED" value={`${tasksVerified(need.id, tasks)}/${nTasks.length}`} />

@@ -14,6 +14,8 @@ import { QualBadge } from './QualBadge';
 import { MaterielChip } from './MaterielChip';
 import { PAPER } from '../lib/paper';
 import { Flyer } from './Flyer';
+import { Photo } from './Photo';
+import { PHOTOS } from '../data/photos';
 
 // §7.2 board diagnosis for the stalled Vasquez need (literal copy).
 const STALLED_DIAGNOSIS =
@@ -67,6 +69,19 @@ export function NeedCard({ need }: { need: Need }) {
       <div className="mt-1 font-mono text-[11px] uppercase tracking-wider text-warm-ink-2">
         {org?.name ?? need.requesterOrgId} · posted {days} day{days === 1 ? '' : 's'} ago
       </div>
+
+      {need.id === 'need-hansen-flood' ? (
+        <div className="mt-3">
+          <Photo
+            src={PHOTOS.floodInterior.src}
+            alt={PHOTOS.floodInterior.alt}
+            caption={PHOTOS.floodInterior.caption}
+            width="sm"
+            tilt={2}
+            fastener="tape"
+          />
+        </div>
+      ) : null}
 
       <div className="mt-3">
         <div className="h-1.5 w-full overflow-hidden bg-[#d9cbb3]">

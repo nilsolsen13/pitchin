@@ -14,7 +14,9 @@ import { StatCard } from '../components/StatCard';
 import { PersonCard } from '../components/PersonCard';
 import { Ann } from '../components/Ann';
 import { Flyer } from '../components/Flyer';
+import { Photo } from '../components/Photo';
 import { Bulletin, Masthead } from '../components/Bulletin';
+import { PHOTOS } from '../data/photos';
 
 export default function SquadDetail() {
   const { squadId } = useParams();
@@ -73,6 +75,15 @@ export default function SquadDetail() {
         </div>
 
         <aside className="space-y-6 lg:col-span-4">
+          {squad.id === 'creek-side' ? (
+            <Photo
+              src={PHOTOS.sandbagLine.src}
+              alt={PHOTOS.sandbagLine.alt}
+              caption={PHOTOS.sandbagLine.caption}
+              width="md"
+              tilt={2}
+            />
+          ) : null}
           <Flyer id="squad-coverage" paper={PAPER.rose}>
             <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-warm-ink-2">Coverage</div>
             <div className="mt-3 flex flex-wrap gap-1.5">
