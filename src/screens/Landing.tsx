@@ -31,6 +31,7 @@ const TARGETS: string[] = [
   'Tasks are verified by the requester, not self-reported.',
   'Rankings are squad-level, so individual glory-seeking has nowhere to go.',
   'Rewards stay symbolic and local, so no one has a financial reason to game them.',
+  "Ribbons record what you did, not how much — and the one worth having is for covering somebody else's shift.",
 ];
 
 const SCREENS: { name: string; href: string; description: string; role?: Role }[] = [
@@ -60,13 +61,6 @@ const SCREENS: { name: string; href: string; description: string; role?: Role }[
       'Twenty minutes, fixed time, named partner. Miss a week and the system shrinks the ask instead of guilting you.',
   },
   {
-    name: 'REWARDS',
-    href: '/rewards',
-    role: 'resident',
-    description:
-      'What local businesses honor for showing up, and which of those currently apply to you.',
-  },
-  {
     name: 'THE CALENDAR',
     href: '/calendar',
     role: 'resident',
@@ -91,6 +85,13 @@ const SCREENS: { name: string; href: string; description: string; role?: Role }[
     role: 'admin',
     description:
       'What a county buys: show-rate, retention, time-to-met, and capacity gaps named specifically enough to fix.',
+  },
+  {
+    name: 'THE MAP',
+    href: '/map',
+    role: 'admin',
+    description:
+      "Where the town's capability actually sits. Four capabilities exist in exactly one corner of the basin each.",
   },
   {
     name: 'THE WALL',
@@ -166,8 +167,9 @@ export default function Landing() {
             ))}
           </ul>
           <p className="mt-8 max-w-[46rem] text-lg italic text-warm-ink-2">
-            If we get this wrong, we crowd out the intrinsic motive and the whole thing dies. So the
-            reward layer stays deliberately thin.
+            If we get this wrong, we crowd out the intrinsic motive and the whole thing dies. So every
+            reward is keyed to reliability, never to volume — there is no points total, no leaderboard,
+            and nothing you can win by doing more than your share.
           </p>
         </Flyer>
       </div>

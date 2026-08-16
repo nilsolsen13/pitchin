@@ -89,3 +89,11 @@ The verified distribution is Hank alone. I kept the waiver+assignee test and
 narrowed with the AAR clause `"Hank Vasquez picked it up"` so the ribbon stays
 one person. A literal reading of the rule would award three.
 
+### 18. `/rewards` is leftover, not in the final spec
+
+An earlier session built a Rewards screen with shop marks and coupons. Phase 1
+replaced the header control with Post a Need. Part F puts honors on `/me`. I
+dropped REWARDS from the landing index so THE MAP is the tenth entry. The route
+and coupon files are still in the tree, unlinked from the spec chrome.
+
+
