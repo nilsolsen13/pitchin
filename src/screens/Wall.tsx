@@ -3,7 +3,7 @@
 // AAR text is verbatim (A.10). "Still open" lists Hansen, Vasquez, interpreter.
 
 import { useDemo } from '../state/DemoState';
-import { aars, merchants, orgs, squads } from '../data/seed';
+import { aars, orgs, squads } from '../data/seed';
 import { DEMO_TODAY } from '../data/seed';
 import {
   commitmentsForNeed, outcomeCount, peopleCommitted,
@@ -155,26 +155,6 @@ export default function Wall() {
           ))}
         </div>
         <p className="mt-3 text-center font-mono text-xs text-[#f4efe4]/80">Streaks are held by the squad.</p>
-      </section>
-
-      <section className="mt-10">
-        <h2 className="mb-4 text-center font-display text-lg font-semibold uppercase tracking-[0.06em] text-[#f4efe4]">
-          Honored locally
-        </h2>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-          {merchants.map((m) => (
-            <Flyer key={m.id} id={`wall-merchant-${m.id}`} paper={PAPER.yellow}>
-              <div className="font-display text-base font-semibold uppercase tracking-[0.04em] text-warm-ink">
-                {m.business}
-              </div>
-              <p className="mt-1.5 text-warm-ink">{m.offer}</p>
-              <p className="mt-1 font-mono text-[11px] uppercase tracking-wider text-warm-ink-2">{m.honoredFor}</p>
-            </Flyer>
-          ))}
-        </div>
-        <p className="mt-3 text-center text-sm italic text-[#f4efe4]/80">
-          Kept small and local on purpose. The reward is recognition by your own town, not a gift-card economy.
-        </p>
       </section>
 
       <footer className="mt-12 text-center font-mono text-sm text-[#f4efe4]/80">

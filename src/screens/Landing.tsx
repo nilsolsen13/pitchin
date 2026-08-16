@@ -9,6 +9,7 @@ import { Flyer } from '../components/Flyer';
 import { Photo } from '../components/Photo';
 import { PHOTOS } from '../data/photos';
 import { PAPER } from '../lib/paper';
+import { SiteFooter, TAGLINE } from '../components/Tagline';
 
 const FAILURES: { label: string; body: string }[] = [
   {
@@ -60,6 +61,13 @@ const SCREENS: { name: string; href: string; description: string; role?: Role }[
       'Twenty minutes, fixed time, named partner. Miss a week and the system shrinks the ask instead of guilting you.',
   },
   {
+    name: 'REWARDS',
+    href: '/rewards',
+    role: 'resident',
+    description:
+      'What local businesses honor for showing up, and which of those currently apply to you.',
+  },
+  {
     name: 'THE CALENDAR',
     href: '/calendar',
     role: 'resident',
@@ -102,6 +110,9 @@ export default function Landing() {
             PitchIn
           </h1>
           <div className="mt-4 h-[3px] w-[120px] bg-warm-stamp" />
+          <p className="mt-5 max-w-[40rem] font-display text-xl font-semibold leading-snug tracking-[0.02em] text-warm-stamp">
+            {TAGLINE}
+          </p>
           <p className="mt-6 max-w-[46rem] text-xl leading-relaxed text-warm-ink">
             A town's unmet needs, matched to the capabilities its residents actually have — and a
             reward for the one thing civic life never measures: showing up when you said you would,
@@ -168,7 +179,7 @@ export default function Landing() {
             WHAT YOU'RE ABOUT TO SEE
           </h2>
           <p className="mt-3 max-w-[46rem] font-normal text-warm-ink-2">
-            A working prototype of a town that already runs this way. Nine screens, seeded with one Colorado town's real-shaped data. Every number on every dashboard is derived from that data, not typed in.
+            A working prototype of a town that already runs this way. Ten screens, seeded with one Colorado town's real-shaped data. Every number on every dashboard is derived from that data, not typed in.
           </p>
           <ol className="mt-8 grid grid-cols-1 gap-x-10 gap-y-5 min-[800px]:grid-cols-2">
             {SCREENS.map((s) => (
@@ -195,6 +206,7 @@ export default function Landing() {
             Working prototype · South Park, Park County, Colorado · Pop. 4,187 · Thursday, March 12, 2026
           </p>
         </Flyer>
+        <SiteFooter surface="warm" />
       </div>
     </Bulletin>
   );

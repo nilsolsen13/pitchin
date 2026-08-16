@@ -7,13 +7,20 @@ Park, Park County, Colorado.
 authoritative for Increment 1. Later increment docs win where they disagree, in this order:
 Increment 3 > Increment 2 > MVP spec. Read the increment doc you are building before editing.
 
-### Spec files that are not the product spec
+### Which document is which
 
-Do not be misled by version numbers — `v2` does not supersede `v1`, and neither supersedes the
-build spec.
-
-| File | What it actually is | Build from it? |
+| File | What it is | Build from it? |
 |---|---|---|
+| `PitchIn_final_build_spec.md` | **The current build target.** Remaining work, invariants, acceptance. Wins over everything else | **Yes — start here** |
+| `PitchIn_MVP_build_spec.md` | Reference for the data model, screen layouts, exact copy, and **all seed data (Appendix A)** | Yes, for detail the final spec does not restate |
+| `PitchIn_logo_spec.md` | Mark + wordmark brief | Yes — the logo only |
+| `PitchIn_spec_v1.md` | Original pitch narrative. Read for tone and vocabulary; it describes no screens | No |
+| `NOTES_FOR_NILS.md` | Your own findings from earlier builds. All 16 are resolved in the final spec §2 | No — append only |
+
+Increments 2, 3, and 4 were consolidated into the final build spec and deleted. Do not go looking
+for them.
+
+---|---|---|
 | `PitchIn_MVP_build_spec.md` | Increment 1 specification. Screens, data, copy, seed. | **Yes — Increment 1.** |
 | `PitchIn_increment_2_calendar_and_polish.md` | Demo legibility, calendar, photographs. | **Yes — Increment 2.** Wins over the MVP spec where they disagree. |
 | `PitchIn_increment_3_corrections.md` | EMT-Paramedic qual, Vasquez policy line, ratifications. | **Yes — Increment 3.** Wins over Increment 2 where they disagree. |

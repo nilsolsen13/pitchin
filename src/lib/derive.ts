@@ -3,10 +3,11 @@
 // are computed from the seed and must reconcile with it.
 
 import type {
-  CalendarEntry, Commitment, Equipment, EquipmentType, ISODate, Need, Person, QualId, Squad, Task,
+  AAR, CalendarEntry, Commitment, Equipment, EquipmentType, HonorStatus, ISODate,
+  Merchant, Need, Person, QualId, Squad, Task,
 } from '../types';
 import { DEMO_TODAY } from '../data/seed';
-import { dayNumber } from './format';
+import { dayNumber, fmtLongNoYear } from './format';
 
 const UTIL_WINDOW_DAYS = 90;
 
@@ -301,4 +302,88 @@ export function entriesInMonth(
     map.set(e.date, list);
   }
   return map;
+}
+
+// ─── Local reciprocity (merchant honors) ─────────────────────────────────────
+// Eligibility is derived, like show-rate. Record lines state the current fact.
+// No "3 weeks to go" — a countdown toward a reward is the volume framing
+// the product rejects.
+
+const SURGE_WINDOW_DAYS = 30;
+
+export function recentSurgeNeed(
+  personId: string,
+  needs: Need[],
+  tasks: Task[],
+  today: ISODate = DEMO_TODAY,
+  windowDays = SURGE_WINDOW_DAYS,
+): Need | null {
+  const cutoff = dayNumber(today) - windowDays;
+  const surgeIds = new Set(needs.filter((n) => n.mode === 'surge').map((n) => n.id));
+  for (const task of tasks) {
+    if (!surgeIds.has(task.needId)) continue;
+    if (!task.assigneeIds.includes(personId)) continue;
+    const when = task.scheduledDate ?? today;
+    if (dayNumber(when) >= cutoff) {
+      return needs.find((n) => n.id === task.needId) ?? null;
+    }
+  }
+  return null;
+}
+
+export function squadAar(squad: Squad, aars: AAR[]): AAR | null {
+  return aars.find((a) => squad.memberIds.includes(a.authorId)) ?? null;
+}
+
+export function honorsFor(
+  person: Person,
+  squad: Squad,
+  merchants: Merchant[],
+  needs: Need[],
+  tasks: Task[],
+  aars: AAR[],
+): HonorStatus[] {
+  const surge = recentSurgeNeed(person.id, needs, tasks);
+  const aar = squadAar(squad, aars);
+  const aarNeed = aar ? needs.find((n) => n.id === aar.needId) : undefined;
+
+  return merchants.map((merchant) => {
+    if (merchant.id === 'm-tweek') {
+      const eligible = person.streakWeeks > 0;
+      return {
+        merchant,
+        tag: eligible ? 'available' : 'not-yet',
+        eligible,
+        record: eligible
+          ? `${person.streakWeeks} weeks unbroken.`
+          : 'No active streak.',
+      };
+    }
+    if (merchant.id === 'm-citywok') {
+      return {
+        merchant,
+        tag: surge ? 'available' : 'not-yet',
+        eligible: surge !== null,
+        record: surge
+          ? `Turned out for ${surge.title}.`
+          : 'No surge turnout in the last 30 days.',
+      };
+    }
+    if (merchant.id === 'm-skeeters') {
+      return {
+        merchant,
+        tag: 'squad',
+        eligible: aar !== null,
+        record: aar
+          ? `${squad.name} filed an after-action report on ${fmtLongNoYear(aar.publishedAt)}${aarNeed ? ` for ${aarNeed.title}` : ''}.`
+          : `${squad.name} has not filed an after-action report.`,
+      };
+    }
+    return {
+      merchant,
+      tag: 'not-yet',
+      eligible: false,
+      record: merchant.honoredFor,
+    };
+  });
 }

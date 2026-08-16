@@ -73,6 +73,9 @@ export function ProfileMenu() {
                 <MenuLink to="/me" onClick={() => setOpen(false)}>
                   My Rep
                 </MenuLink>
+                <MenuLink to="/rewards" onClick={() => setOpen(false)}>
+                  Rewards
+                </MenuLink>
                 <MenuLink to="/squad/creek-side" onClick={() => setOpen(false)}>
                   Creek Side squad
                 </MenuLink>

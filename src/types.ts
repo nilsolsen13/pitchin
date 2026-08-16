@@ -152,6 +152,15 @@ export interface Merchant {
   honoredFor: string; // "Any member with an active streak"
 }
 
+export type HonorTag = 'available' | 'not-yet' | 'squad';
+
+export interface HonorStatus {
+  merchant: Merchant;
+  tag: HonorTag;
+  eligible: boolean;
+  record: string; // current fact, not a countdown
+}
+
 // ─── Demo state (spec §8.1) ──────────────────────────────────────────────────
 
 export type RepState = 'STANDARD' | 'SCOPED_DOWN' | 'KEEP_THE_CHAIN' | 'WAIVED' | 'ACCEPTED';

@@ -15,6 +15,7 @@ import { Toast } from './Toast';
 import { ProfileMenu } from './ProfileMenu';
 import { AnnotationsSwitch, RoleSwitcher } from './DemoControls';
 import { Wordmark } from './Wordmark';
+import { SiteFooter } from './Tagline';
 
 interface NavItem {
   to: string;
@@ -73,6 +74,18 @@ export function AppShell({ children }: { children: ReactNode }) {
             className="ml-auto flex shrink-0 items-center gap-3"
             aria-label={`Demo controls, viewing as ${actor.name}`}
           >
+            <NavLink
+              to="/rewards"
+              className={({ isActive }) =>
+                `shrink-0 rounded-warm px-3 py-1.5 text-sm font-semibold ${
+                  isActive
+                    ? 'bg-[#f6e6a8] text-[#2a2620]'
+                    : 'bg-[#a63d2e] text-[#f4efe4] hover:brightness-110'
+                }`
+              }
+            >
+              Rewards
+            </NavLink>
             <RoleSwitcher />
             <AnnotationsSwitch />
             <ProfileMenu />
@@ -87,6 +100,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       </div>
 
       <main className="mx-auto max-w-content px-8 py-8">{children}</main>
+      <SiteFooter surface="wood" />
       <Toast />
     </div>
   );
